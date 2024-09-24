@@ -15,10 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@material.com',
-            'password' => ('secret')
-        ]);
+        if (!User::where('email', 'admin@material.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@material.com',
+                'password' => ('secret') 
+            ]);
+        }
+
+        $this->call(FoodSeeder::class);
+
     }
 }
