@@ -51,5 +51,8 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
-
+    public function charity()
+    {
+        return $this->belongsTo(Charity::class);
+    }
 }
