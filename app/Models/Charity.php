@@ -40,9 +40,18 @@ class Charity extends Model
         return $this->hasMany(User::class);
     }
 
-  /*   public function donations()
-    {
-        return $this->hasMany(Donation::class);
-    } */
+    public function events(){
+        return $this->hasMany(Event::class);
+    }
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
+
+
+    public function pickupRequests(){
+        return $this->hasMany(PickupRequest::class);
+    }
+
    
 }

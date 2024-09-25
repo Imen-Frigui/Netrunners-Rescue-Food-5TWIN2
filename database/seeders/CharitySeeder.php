@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 use App\Models\Charity;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use App\Models\Restaurant;
+use App\Models\User;
 
 class CharitySeeder extends Seeder
 {
@@ -17,8 +18,6 @@ class CharitySeeder extends Seeder
     {
     $faker = Faker::create();
         
-        // $restaurants = Restaurant::pluck('id')->toArray();
-        // $charities = Charity::pluck('id')->toArray();
 
         // Seed 10 events
         foreach (range(1, 10) as $index) {
@@ -54,7 +53,7 @@ class CharitySeeder extends Seeder
                 'charity_approval_status' => $faker->randomElement(['approved', 'pending', 'rejected']),
           
                 // 'donation_id' => $faker->randomElement($donations),
-                // 'user_id' => $faker->randomElement($users),
+                'user_id' => 1,
             ]);
         }
 }

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\PickupRequest;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FoodSeeder::class);
         $this->call(RestaurantSeeder::class);
         $this->call(EventSeeder::class);
+        $this->call(PickupRequest::class);
         $this->call(ReviewSeeder::class);
 
     }
