@@ -25,11 +25,9 @@ class Food extends Model
         'event_id',
         'review_id'
     ];
-
-
-     // public function restaurant() {
-    //     return $this->belongsTo(Restaurant::class);
-    // }
+     public function restaurants() {
+        return $this->belongsToMany(Restaurant::class);
+    }
 
     // public function charity() {
     //     return $this->belongsTo(Charity::class);
