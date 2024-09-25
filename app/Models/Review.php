@@ -24,4 +24,8 @@ class Review extends Model
         return $this->belongsTo(Charity::class);
     }
 
+    public function event(){
+        return $this->belongsTo(Event::class);
+    }
+
 }

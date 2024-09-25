@@ -16,7 +16,7 @@ public function run(){$faker = Faker::create();
             Review::create([
                 'user_id' => 1,                             // Always set userId to 1
                 'comment' => $faker->sentence(10),       // Random comment
-                'rating' => $faker->numberBetween(1, 5), // Random rating between 1 and 5
+                'rating' => $faker->numberBetween(1, 5),// Random rating between 1 and 5
             ]);
         }
     }

@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('comment');
-            $table->string('rating');
-            $table->timestamps();
-            $table->foreignId('user_id')->nullable()->onDelete('cascade');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('location');
+            $table->dateTime('event_date');
+            $table->integer('max_participants')->nullable();
             $table->foreignId('restaurant_id')->nullable()->onDelete('cascade');
             $table->foreignId('charity_id')->nullable()->onDelete('cascade');
-            $table->foreignId('event_id')->nullable()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('events');
     }
 };
