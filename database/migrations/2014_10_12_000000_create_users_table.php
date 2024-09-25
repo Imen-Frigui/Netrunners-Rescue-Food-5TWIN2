@@ -24,8 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->unsignedBigInteger('charity_id')->nullable(); // Charity ID foreign key
-            $table->foreign('charity_id')->references('id')->on('charities')->onDelete('cascade');
         });
     }
 

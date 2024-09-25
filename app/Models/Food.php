@@ -19,23 +19,20 @@ class Food extends Model
         'storage_conditions',
         'image',
         'donation_date',
-        'restaurant_id',
-        'charity_id',
-        'pickup_request_id',
-        'event_id',
-        'review_id'
     ];
      public function restaurants() {
         return $this->belongsToMany(Restaurant::class);
     }
 
+    
+
     // public function charity() {
     //     return $this->belongsTo(Charity::class);
     // }
 
-    // public function pickupRequest() {
-    //     return $this->belongsTo(PickupRequest::class);
-    // }
+    public function pickupRequest() {
+        return $this->belongsToMany(PickupRequest::class);
+    }
 
     // public function event() {
     //     return $this->belongsTo(Event::class);

@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class PickupRequest extends Model
 {
     use HasFactory;
-    protected $table = 'pickup_requests';
+    // protected $table = 'pickup_requests';
 
 
     protected $fillable = [
         'user_id',
         'restaurant_id',
+        'food_id',
         'pickup_time',
+        'pickup_address',
         'status',
     ];
 
@@ -28,8 +30,8 @@ class PickupRequest extends Model
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function foods(){
-        return $this->belongsToMany(Food::class);
+    public function food(){
+        return $this->belongsTo(Food::class);
     }
 
 

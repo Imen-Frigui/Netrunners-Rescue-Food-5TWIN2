@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FoodSeeder::class);
         $this->call(RestaurantSeeder::class);
         $this->call(EventSeeder::class);
-        $this->call(PickupRequest::class);
         $this->call(ReviewSeeder::class);
+        $this->call(PickupRequestSeeder::class);
 
     }
 }
