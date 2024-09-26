@@ -1,0 +1,37 @@
+/* styles.css */
+.gray-background {
+    background-color: #f8f9fa; /* Light gray color */
+}
+
+.white-background {
+    background-color: #ffffff; /* White color */
+}
+
+  
+  .success__icon {
+    width: 20px;
+    height: 20px;
+    transform: translateY(-2px);
+    margin-right: 8px;
+  }
+  
+  .success__icon path {
+    fill: #84D65A;
+  }
+  
+  .success__title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #2B641E;
+  }
+  
+  .success__close {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .success__close path {
+    fill: #2B641E;
+  }

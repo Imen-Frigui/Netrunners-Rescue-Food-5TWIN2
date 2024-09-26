@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CharityController;
             
 
 Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
@@ -53,4 +53,32 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+// Route for listing charities (index)
+Route::get('charities', [CharityController::class, 'index'])->name('charities');
+
+// Route for searching charities
+Route::get('charities/search', [CharityController::class, 'search'])->name('charities.search');
+
+// Route for showing charity details
+Route::get('/charities/{id}/details', [CharityController::class, 'showdetails'])->name('charities.details');
+
+// Route for showing the form to create a charity
+Route::get('/charities/create', [CharityController::class, 'create'])->name('charities.create');
+
+// Route for storing a new charity
+Route::post('/charities', [CharityController::class, 'store'])->name('charities.store');
+
+// Route for showing a charity (optional if you have a charity show page)
+Route::get('/charities/{charity}', [CharityController::class, 'show'])->name('charities.show');
+
+// Route for editing a charity
+Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
+
+// Route for updating a charity
+Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
+
+// Route for deleting a charity
+Route::delete('/charities/{charity}', [CharityController::class, 'destroy'])->name('charities.destroy');
+
+
 });
