@@ -34,23 +34,52 @@ class CharityController extends Controller
     
 
     // Store a newly created charity in the database
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'charity_name' => 'required',
-            'address' => 'required',
-            'contact_info' => 'required|array',
-            'charity_type' => 'required',
-            'beneficiaries_count' => 'required|integer',
-            'preferred_food_types' => 'nullable|string', // Allow null for optional field
-            'last_received_donation' => 'nullable|date', // Add this line
-
+    public function store(Request $request) {
+        $request->validate([
+            'charity_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'contact_info.email' => 'required|email|max:255',
+            'contact_info.phone' => 'required|string|max:15', // Change max length as needed
+            'charity_type' => 'required|string|max:100',
+            'beneficiaries_count' => 'required|integer|min:1', // At least one beneficiary
+            'preferred_food_types' => 'nullable|string|max:255',
+            'request_history' => 'nullable|string', // Changed here
+            'inventory_status' => 'nullable|string', // Changed here
+            'last_received_donation' => 'nullable|date', // Check if the date is valid
+            'donation_frequency' => 'nullable|string|max:100',
+            'assigned_drivers_volunteers' => 'nullable|string|max:255',
+            'current_requests' => 'nullable|string',
+            'charity_rating' => 'nullable|numeric|min:0|max:5', // Rating between 0 and 5
+            'charity_approval_status' => 'required|in:approved,pending,rejected', // Must be one of the given options
+        ], [
+            // Custom error messages (optional)
+            'charity_name.required' => 'Le nom de la charité est requis.',
+            'address.required' => 'L\'adresse est requise.',
+            'contact_info.email.required' => 'L\'email est requis.',
+            'contact_info.phone.required' => 'Le numéro de téléphone est requis.',
+            'charity_type.required' => 'Le type de charité est requis.',
+            'beneficiaries_count.required' => 'Le nombre de bénéficiaires est requis.',
+            'beneficiaries_count.integer' => 'Le nombre de bénéficiaires doit être un nombre entier.',
+            'beneficiaries_count.min' => 'Le nombre de bénéficiaires doit être au moins 1.',
+            'preferred_food_types.max' => 'La longueur des types d\'aliments préférés ne peut pas dépasser 255 caractères.',
+            'request_history.json' => 'L\'historique des demandes doit être un JSON valide.',
+            'inventory_status.json' => 'Le statut de l\'inventaire doit être un JSON valide.',
+            'last_received_donation.date' => 'La date de la dernière donation reçue doit être une date valide.',
+            'donation_frequency.max' => 'La fréquence de donation ne peut pas dépasser 100 caractères.',
+            'assigned_drivers_volunteers.max' => 'Les chauffeurs/volontaires assignés ne peuvent pas dépasser 255 caractères.',
+            'charity_rating.numeric' => 'La note de la charité doit être un nombre.',
+            'charity_rating.min' => 'La note de la charité doit être au moins 0.',
+            'charity_rating.max' => 'La note de la charité ne peut pas dépasser 5.',
+            'charity_approval_status.required' => 'Le statut d\'approbation de la charité est requis.',
+            'charity_approval_status.in' => 'Le statut d\'approbation de la charité doit être approuvé, en attente ou rejeté.',
         ]);
-        $validated['preferred_food_types'] = $validated['preferred_food_types'] ?? 'none';
-
-        Charity::create($validated);
-        return redirect()->route('charities')->with('success', 'Charity created successfully!');
+    
+        // Save the charity data
+        Charity::create($request->all());
+    
+        return redirect()->route('charities')->with('success', 'Charity added successfully!');
     }
+    
 
     // Show a single charity
 /*     public function show(Charity $charity)
@@ -58,26 +87,47 @@ class CharityController extends Controller
         return view('charities.show', compact('charity'));
     }
  */
-    // Show the form for editing a charity
-    public function edit(Charity $charity)
-    {
-        return view('charities.edit', compact('charity'));
-    }
+   
 
-    // Update the charity in the database
-    public function update(Request $request, Charity $charity)
-    {
-        $validated = $request->validate([
-            'charity_name' => 'required',
-            'address' => 'required',
-            'contact_info' => 'required|array',
-            'charity_type' => 'required',
-            'beneficiaries_count' => 'required|integer',
-        ]);
 
-        $charity->update($validated);
-        return redirect()->route('charities.index')->with('success', 'Charity updated successfully!');
-    }
+
+ public function edit($id) {
+    $charity = Charity::findOrFail($id);
+    return view('charity.edit', compact('charity'));
+}
+
+
+ // Update the charity in the database
+ public function update(Request $request, Charity $charity)
+ {
+     // Validate the incoming request
+     $validated = $request->validate([
+        'charity_approval_status' => 'required|in:approved,pending,rejected',
+         'charity_name' => 'required|string|max:255',
+         'address' => 'required|string',
+         'contact_info' => 'required|array',
+         'charity_type' => 'required|string',
+         'beneficiaries_count' => 'required|integer',
+         'preferred_food_types' => 'nullable|string',
+         'last_received_donation' => 'nullable|date'
+     ]);
+
+     // Update the charity record
+     $charity->update($validated);
+
+     // Redirect back to the charity list with a success message
+     return redirect()->route('charities')->with('success', 'Charity updated successfully!');
+ }
+
+
+
+
+
+
+
+
+
+
 
 // Delete a charity from the database
 public function destroy($id)

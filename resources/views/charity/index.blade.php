@@ -90,7 +90,7 @@
         <div class="ripple-container"></div>
     </a>
    
-                                                <a rel="tooltip" class="btn btn-warning btn-link"
+                                                <a href="{{ route('charities.edit', $charity->id) }}" rel="tooltip" class="btn btn-warning btn-link"
                                                     href="" data-original-title=""
                                                     title="">
                                                     <i class="material-icons">edit</i>
@@ -132,7 +132,7 @@
 <style>
  .success {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  width: 50%;
+  width: 100%;
   padding: 12px;
   display: flex;
   flex-direction: row;

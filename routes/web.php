@@ -79,6 +79,11 @@ Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('
 
 // Route for deleting a charity
 Route::delete('/charities/{charity}', [CharityController::class, 'destroy'])->name('charities.destroy');
+// Show the form for editing a charity
+Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
+
+// Update the charity in the database
+Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
 
 
 });
