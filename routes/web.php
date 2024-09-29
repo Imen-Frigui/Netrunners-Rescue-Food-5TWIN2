@@ -3,6 +3,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\FoodController;
+use App\Exports\FoodsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 
             
@@ -53,4 +56,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+	Route::get('/foods/export', function () {
+		return Excel::download(new FoodsExport, 'foods.xlsx');
+	})->name('foods.export');
+	Route::resource('foods', FoodController::class);
+	
 });
