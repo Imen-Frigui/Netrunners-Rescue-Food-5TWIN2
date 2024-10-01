@@ -12,12 +12,11 @@
                             </div>
                         </div>
                         <div class="card-body px-0 pb-2">
-                            <form action="{{ route('foods.update', $food->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('foods.update', $food->id) }}" method="POST" enctype="multipart/form-data" novalidate>
                                 @csrf
                                 @method('PUT')
                                 @include('foods.partials._form')
 
-                                <!-- Centering the button -->
                                 <div class="text-center mt-4">
                                     <button type="submit" class="btn btn-primary">Update Food</button>
                                 </div>
@@ -30,4 +29,21 @@
         </div>
     </main>
     <x-plugins></x-plugins>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        this.classList.remove('is-invalid');
+                        const errorFeedback = this.nextElementSibling;
+                        if (errorFeedback && errorFeedback.classList.contains('invalid-feedback')) {
+                            errorFeedback.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </x-layout>
