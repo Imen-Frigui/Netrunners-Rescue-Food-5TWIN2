@@ -16,6 +16,8 @@ class PickupRequest extends Model
         'restaurant_id',
         'pickup_time',
         'status',
+        'pickup_address', 
+        'food_id',
     ];
 
     public function user()
@@ -23,8 +25,8 @@ class PickupRequest extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function restaurant()
-    {
-        return $this->belongsTo(Restaurant::class);
-    }
+    // public function restaurant()
+    // {
+    //     return $this->belongsTo(Restaurant::class);
+    // }
 }
