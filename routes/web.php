@@ -3,10 +3,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\RestaurantController;
+
 use Illuminate\Support\Facades\Route;
 
             
-
 Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
@@ -26,6 +27,7 @@ Route::post('sign-out', [SessionsController::class, 'destroy'])->middleware('aut
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
+
 	Route::get('billing', function () {
 		return view('pages.billing');
 	})->name('billing');
@@ -53,4 +55,26 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+	
 });
+# restaurant routes rami :
+// Index route - shows the list of restaurants
+Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
+
+// Create route - shows the form to create a new restaurant
+Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
+
+// Store route - stores a new restaurant in the database
+Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
+
+// Show route - shows details of a specific restaurant
+Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
+
+// Edit route - shows the form to edit an existing restaurant
+Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
+
+// Update route - updates a specific restaurant in the database
+Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
+
+// Delete route - deletes a specific restaurant from the database
+Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
