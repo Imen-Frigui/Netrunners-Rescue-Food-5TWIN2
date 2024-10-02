@@ -28,7 +28,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('restaurants.create');
     }
 
     /**
@@ -39,7 +39,15 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        Restaurant::create($request->all());
+
+        return redirect()->route('restaurants')->with('success', 'Restaurant created successfully.');
     }
 
     /**

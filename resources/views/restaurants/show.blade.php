@@ -1,4 +1,3 @@
-<!-- resources/views/restaurants/show.blade.php -->
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
     <x-navbars.sidebar activePage="restaurants"></x-navbars.sidebar>
     
@@ -9,6 +8,7 @@
             <h1>{{ $restaurant->name }}</h1>
             <p><strong>Address:</strong> {{ $restaurant->address }}</p>
             <p><strong>Phone:</strong> {{ $restaurant->phone }}</p>
+            <p><strong>Email:</strong> {{ $restaurant->email }}</p>
             
             <a href="{{ route('restaurants.edit', $restaurant->id) }}" class="btn btn-warning">Edit</a>
             <form action="{{ route('restaurants.destroy', $restaurant->id) }}" method="POST" style="display:inline;">
