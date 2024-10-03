@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
 
             
 
@@ -53,4 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+
+	//Event routes
+	Route::resource('events', EventController::class);
 });
