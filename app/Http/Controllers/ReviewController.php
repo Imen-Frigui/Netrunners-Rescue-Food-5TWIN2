@@ -15,8 +15,13 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        return response()->json(Review::all(), 200);
+        $reviews = Review::all(); // Fetch all reviews
+        return view('components.reviews.index', compact('reviews')); // Updated to match your file path
     }
+    
+
+
+    
 
     /**
      * Show the form for creating a new resource.
