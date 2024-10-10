@@ -53,7 +53,7 @@ class CharitySeeder extends Seeder
                 'charity_approval_status' => $faker->randomElement(['approved', 'pending', 'rejected']),
           
                 // 'donation_id' => $faker->randomElement($donations),
-                'user_id' => 1,
+               
             ]);
         }
 }

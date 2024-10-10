@@ -19,6 +19,8 @@ class Restaurant extends Model
         'address',
         'phone',
         'email',
+        'longitude',
+        'latitude'
     ];
 
     public function foods(){
