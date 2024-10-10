@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-	return redirect('sign-in'); })->middleware('guest');
+	return redirect('sign-in');
+})->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('sign-up', [RegisterController::class, 'store'])->middleware('guest');
@@ -61,6 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/pickup/accept/{id}', [PickupRequestController::class, 'accept'])->name('pickup.accept');
 	Route::get('/pickup/reject/{id}', [PickupRequestController::class, 'reject'])->name('pickup.reject');
 	Route::get('/pickup/create', [PickupRequestController::class, 'create'])->name('pickup.create');
-	Route::post('/pickup', [PickupRequestController::class, 'store'])->name('pickup.store');
-	
+	Route::post('/pickup', action: [PickupRequestController::class, 'store'])->name('pickup.store');
+	Route::get('/pickup/edit/{id}', [PickupRequestController::class, 'edit'])->name('pickup.edit');
+	Route::put('/pickup/{id}', [PickupRequestController::class, 'update'])->name('pickup.update');
+
+
 });

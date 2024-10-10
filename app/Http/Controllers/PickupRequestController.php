@@ -14,15 +14,31 @@ class PickupRequestController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $pickupRequests = PickupRequest::with(['user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-        return view('pickups.index', compact('pickupRequests'));
+     */public function index(Request $request)
+{
+    $query = PickupRequest::with(['user'])->orderBy('created_at', 'desc');
+
+    // Apply status filter
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
 
+    // Apply search
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('id', 'like', "%{$searchTerm}%")
+              ->orWhere('pickup_address', 'like', "%{$searchTerm}%")
+              ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                  $userQuery->where('name', 'like', "%{$searchTerm}%");
+              });
+        });
+    }
+
+    $pickupRequests = $query->get();
+
+    return view('pickups.index', compact('pickupRequests'));
+}
 
     public function accept($id)
     {
@@ -47,9 +63,9 @@ class PickupRequestController extends Controller
      */
     public function create()
     {
-        $users = User::all(); 
+        $users = User::all();
         return view('pickups.create', compact('users'));
-        
+
     }
 
     /**
@@ -94,20 +110,26 @@ class PickupRequestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pickup = PickupRequest::findOrFail($id);
+        return view('pickups.edit', compact('pickup'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $pickup = PickupRequest::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'pickup_address' => 'required|string|max:255',
+            'pickup_time' => 'required|date',
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $pickup->update($validatedData);
+
+        return redirect()->route('pickup-management')->with('success', 'Pickup request updated successfully.');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
