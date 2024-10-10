@@ -8,12 +8,10 @@
 
                     </script>,
                     made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                    <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">Creative
-                        Tim</a> & <a href="https://www.updivision.com" class="font-weight-bold text-white" target="_blank">UPDIVISION</a>
-                    for a better web.
+                    <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">NetRunners                    for a better web.
                 </div>
             </div>
-            <div class="col-12 col-md-6">
+            {{-- <div class="col-12 col-md-6">
                 <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                     <li class="nav-item">
                         <a href="https://www.creative-tim.com" class="nav-link text-white" target="_blank">Creative
@@ -34,7 +32,7 @@
                             target="_blank">License</a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
     </div>
 </footer>
