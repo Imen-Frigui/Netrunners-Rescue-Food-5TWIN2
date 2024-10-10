@@ -42,7 +42,10 @@ class RestaurantController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'email'=>'required|string|max:255',
             'phone' => 'required|string|max:20',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ]);
 
         Restaurant::create($request->all());
