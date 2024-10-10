@@ -74,7 +74,7 @@
 
                                     <div class="mb-3">
                                         <label for="beneficiaries_count" class="form-label">Beneficiaries Count</label>
-                                        <input type="number" class="form-control border border-2 p-2 @error('beneficiaries_count') is-invalid @enderror" id="beneficiaries_count" name="beneficiaries_count" value="{{ old('beneficiaries_count') }}" required>
+                                        <input type="number" min="1" class="form-control border border-2 p-2 @error('beneficiaries_count') is-invalid @enderror" id="beneficiaries_count" name="beneficiaries_count" value="{{ old('beneficiaries_count') }}" required>
                                         <small class="form-text text-muted">Required, must be at least 1</small>
                                         @error('beneficiaries_count')
                                             <span class="invalid-feedback">{{ $message }}</span>
@@ -150,7 +150,7 @@
 
                             <div class="mb-3">
                                 <label for="charity_rating" class="form-label">Charity Rating</label>
-                                <input type="number" step="0.1" class="form-control border border-2 p-2 @error('charity_rating') is-invalid @enderror" id="charity_rating" name="charity_rating" value="{{ old('charity_rating') }}">
+                                <input type="number" step="0.1" min="0" max="5" class="form-control border border-2 p-2 @error('charity_rating') is-invalid @enderror" id="charity_rating" name="charity_rating" value="{{ old('charity_rating') }}">
                                 <small class="form-text text-muted">Optional, between 0 and 5</small>
                                 @error('charity_rating')
                                     <span class="invalid-feedback">{{ $message }}</span>
