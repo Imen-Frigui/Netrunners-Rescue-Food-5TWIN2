@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\PickupRequest;
 
@@ -19,19 +18,20 @@ class PickupRequestSeeder extends Seeder
         PickupRequest::create([
             'request_time' => now(),
             'status' => 'pending',
-            'pickup_time' => now()->addHours(2), 
-            'pickup_address' => "Ben Arous", 
-            "user_id"=> 16,
-            "food_id"=> 25
+            'pickup_time' => now()->addHours(2),
+            'pickup_address' => "Ben Arous",
+            'user_id'=> 1,
+            'restaurant_id'=> 1,
+            'food_id'=> 1
 
-        ]);   
+        ]);
         PickupRequest::create([
             'request_time' => now(),
             'status' => 'approved',
             'pickup_time' => now()->addHours(1),
-            'pickup_address' => "Ariana", 
-            "user_id"=> 16,
-            "food_id"=> 3
+            'pickup_address' => "Ariana",
+            'user_id'=> 1,
+            'food_id'=> 1
         ]);
      }
 }
