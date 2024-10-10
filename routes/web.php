@@ -3,11 +3,20 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\FoodController;
+use App\Exports\FoodsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharityController;
             
 
-Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
+
+
+
+Route::get('/', function () {
+	return redirect('sign-in');
+})->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('sign-up', [RegisterController::class, 'store'])->middleware('guest');
@@ -84,6 +93,23 @@ Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->nam
 
 // Update the charity in the database
 Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
+
+	Route::get('/foods/export', function () {
+		return Excel::download(new FoodsExport, 'foods.xlsx');
+	})->name('foods.export');
+	Route::resource('foods', FoodController::class);
+	
+	Route::get('pickup-management', function () {
+		return view('pickups.index');
+	})->name('pickup-management');
+	Route::get('pickup-management', [PickupRequestController::class, 'index'])->name('pickup-management');
+	Route::get('/pickup/accept/{id}', [PickupRequestController::class, 'accept'])->name('pickup.accept');
+	Route::get('/pickup/reject/{id}', [PickupRequestController::class, 'reject'])->name('pickup.reject');
+	Route::get('/pickup/create', [PickupRequestController::class, 'create'])->name('pickup.create');
+	Route::post('/pickup', action: [PickupRequestController::class, 'store'])->name('pickup.store');
+	Route::get('/pickup/edit/{id}', [PickupRequestController::class, 'edit'])->name('pickup.edit');
+	Route::put('/pickup/{id}', [PickupRequestController::class, 'update'])->name('pickup.update');
+
 
 
 });
