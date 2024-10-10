@@ -10,6 +10,7 @@ use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 
@@ -130,3 +131,14 @@ Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->nam
 
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+Route::resource('reviews', ReviewController::class);
+	Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+	Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
+Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
+Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
