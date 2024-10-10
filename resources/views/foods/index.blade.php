@@ -7,7 +7,7 @@
                     <div class="col-12">
                         <div class="card my-4">
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                <div class="bg-gradient-success shadow-success  border-radius-lg pt-4 pb-3">
                                     <h6 class="text-white mx-3">Manage Foods</h6>
                                 </div>
                             </div>
@@ -19,7 +19,7 @@
                                 </div>
                                 <!-- Buttons section -->
                                 <div>
-                                    <a class="btn bg-gradient-success mb-0 me-3" href="{{ route('foods.export') }}">
+                                    <a class="btn bg-gradient-info mb-0 me-3" href="{{ route('foods.export') }}">
                                         <i class="material-icons text-sm">file_download</i>&nbsp;&nbsp;Export to Excel
                                     </a>
                                     <a class="btn bg-gradient-dark mb-0" href="{{ route('foods.create') }}">

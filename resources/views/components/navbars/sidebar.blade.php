@@ -50,7 +50,7 @@
 
             <!-- User Profile Route -->
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user-profile' ? ' active bg-gradient-primary' : '' }} "
+                <a class="nav-link text-white {{ $activePage == 'user-profile' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('user-profile') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-user-circle ps-2 pe-2 text-center" style="font-size: 1.2rem;"></i>
@@ -58,18 +58,13 @@
                     <span class="nav-link-text ms-1">User Profile</span>
                 </a>
             </li>
-
-
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Pages</h6>
-            </li>
            
             <!-- Pages Section -->
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Management Section
                 </h6>
                 <li class="nav-item">
-                    <a class="nav-link text-white {{ $activePage == 'events' ? ' active bg-gradient-primary' : '' }} "
+                    <a class="nav-link text-white {{ $activePage == 'events' ? ' active bg-gradient-success' : '' }} "
                         href="{{ route('events.index') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">notifications</i>
@@ -81,14 +76,13 @@
                     <a class="nav-link text-white {{ $activePage == 'charities' ? ' active bg-gradient-success' : '' }} "
                         href="{{ route('charities') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i style="font-size: 1rem;"
-                                class="fas fa-solid fa-hand-holding-heart text-center"></i>
+                            <i class="fas fa-solid fa-hand-holding-heart text-center"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Charities</span>
+                        <span class="nav-link-text ms-1">Charities Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {{ $activePage == 'pickup-management' ? ' active bg-gradient-primary' : '' }} "
+                    <a class="nav-link text-white {{ $activePage == 'pickup-management' ? ' active bg-gradient-success' : '' }} "
                         href="{{ route('pickup-management') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-lg fa-list-ul text-center"></i>
@@ -97,21 +91,30 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {{ $activePage == 'restaurants' ? ' active bg-gradient-primary' : '' }}"
+                    <a class="nav-link text-white {{ $activePage == 'restaurants' ? ' active bg-gradient-success' : '' }}"
                         href="{{ route('restaurants') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
-                        <span class="nav-link-text ms-1">Restaurants Manafement</span>
+                        <span class="nav-link-text ms-1">Restaurants Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white {{ $activePage == 'food-management' ? ' active bg-gradient-primary' : '' }} "
+                    <a class="nav-link text-white {{ $activePage == 'food-management' ? ' active bg-gradient-success' : '' }} "
                         href="{{ route('foods.index') }}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fas fa-utensils"></i>
                         </div>
                         <span class="nav-link-text ms-1">Food Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-success' : '' }}  "
+                    class="nav-link" href="{{ route('reviews.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">notifications</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reviews Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -175,18 +178,6 @@
                     <span class="nav-link-text ms-1">Notifications</span>
                 </a>
             </li> --}}
-
-            <li class="nav-item">
-            <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-primary' : '' }}  "
-             class="nav-link" href="{{ route('reviews.index') }}">
-
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">notifications</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Reviews</span>
-                </a>
-            </li>
-
 
             <!-- Account Pages Section -->
             <li class="nav-item mt-3">

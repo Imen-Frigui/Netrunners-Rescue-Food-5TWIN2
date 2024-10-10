@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Event routes
 	Route::resource('events', EventController::class);
 	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
+
 // Route for listing charities (index)
 Route::get('charities', [CharityController::class, 'index'])->name('charities');
 
@@ -128,13 +129,13 @@ Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('res
 Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
-
+# events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+# review routes marwen :
 Route::resource('reviews', ReviewController::class);
-	Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
-	Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
+Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');

@@ -65,7 +65,7 @@
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit"
-                                                    class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign
+                                                    class="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0">Sign
                                                     Up</button>
                                             </div>
                                         </form>
@@ -74,7 +74,7 @@
                                         <p class="mb-2 text-sm mx-auto">
                                             Already have an account?
                                             <a href="{{ route('login') }}"
-                                                class="text-primary text-gradient font-weight-bold">Sign in</a>
+                                                class="text-info text-gradient font-weight-bold">Sign in</a>
                                         </p>
                                     </div>
                                 </div>
