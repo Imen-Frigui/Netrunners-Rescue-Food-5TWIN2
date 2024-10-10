@@ -12,8 +12,6 @@ use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharityController;
 
-
-
             
 Route::get('/', function () {
 	return redirect('sign-in');

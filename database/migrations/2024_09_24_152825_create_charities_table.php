@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('contact_info'); // Can be stored as JSON (phone, email)
             $table->enum('charity_type', ['food_bank', 'shelter', 'soup_kitchen']);
             $table->integer('beneficiaries_count')->default(0);
-            $table->string('preferred_food_types')->default('none')->change(); // Set a default value
+            $table->string('preferred_food_types')->default('none'); // Set a default value
             $table->json('request_history')->nullable(); // History of requests
             $table->json('inventory_status')->nullable(); // Current inventory
             $table->timestamp('last_received_donation')->nullable(); // Last donation date
