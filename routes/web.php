@@ -3,6 +3,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\FoodController;
+use App\Exports\FoodsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +58,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+	Route::get('/foods/export', function () {
+		return Excel::download(new FoodsExport, 'foods.xlsx');
+	})->name('foods.export');
+	Route::resource('foods', FoodController::class);
+	
 	Route::get('pickup-management', function () {
 		return view('pickups.index');
 	})->name('pickup-management');
