@@ -14,6 +14,8 @@ class Event extends Model
         'description' ,
         'location',
         'event_date',
+        'published_at',
+        'enabled',
         'max_participants',
         'restaurant_id',
         'charity_id'
@@ -21,6 +23,7 @@ class Event extends Model
 
     protected $casts = [
         'event_date' => 'datetime',
+        'published_at' => 'datetime',
     ];
 
     public function restaurant() {

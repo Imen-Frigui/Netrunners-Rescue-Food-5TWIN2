@@ -151,14 +151,14 @@
                                 <div class="form-group row align-items-center">
                                     <label for="published_at" class="col-form-label text-md-right col-md-4">Published at</label>
                                     <div class="col-md-8 col-xl-7">
-                                        <input type="datetime-local" id="published_at" name="published_at" class="form-control" value="{{ old('published_at', $event->published_at) }}">
+                                        <input type="datetime-local" id="published_at" name="published_at" class="form-control" value="{{ old('published_at', $event->published_at ? $event->published_at->format('Y-m-d\TH:i') : '') }}">
                                     </div>
                                 </div>
 
                                 <!-- Enable Event -->
                                 <div class="form-check row">
                                     <div class="ml-md-auto col-md-10">
-                                        <input id="enabled" type="checkbox" name="enabled" class="form-check-input" {{ $event->enabled ? 'checked' : '' }}>
+                                        <input id="enabled" type="checkbox" name="enabled" class="form-check-input" {{ old('enabled', $event->enabled) ? 'checked' : '' }}>
                                         <label for="enabled" class="form-check-label">Enable Event</label>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                 </div>
 
                 <!-- Submit Buttons -->
-                <button type="submit" class="btn btn-primary fixed-cta-button button-save"><i class="fa fa-save"></i> Update</button>
+                <button type="submit" class="btn btn-primary fixed-cta-button button-save btn-md"><i class="fa fa-save"></i><span style="font-size: 80%">Update</span></button>
             </form>
         </div>
     </main>

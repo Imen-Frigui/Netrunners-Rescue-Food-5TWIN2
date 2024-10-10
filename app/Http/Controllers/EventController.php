@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Restaurant;
 use App\Models\Charity;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -16,10 +17,14 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with('restaurant', 'charity')->paginate(4);
-        // return response()->json($events);
+        $query = $request->input('search');
+        $events = Event::with('restaurant', 'charity')
+            ->when($query, function ($queryBuilder) use ($query) {
+                return $queryBuilder->where('name', 'like', '%' . $query . '%');
+            })
+            ->paginate(4);
         return view('dashboard.events.index', compact('events'));
     }
 
@@ -43,8 +48,11 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        $event = Event::create($request->validated());
-        // return response()->json(['message' => 'Event created successfully', 'event' => $event]);
+
+        $event = Event::create(array_merge($request->validated(), [
+            'published_at' => $request->filled('published_at') ? $request->published_at : null,
+            'enabled' => $request->has('enabled'),
+        ]));
         return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
@@ -81,8 +89,11 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        $event->update($request->validated());
-        // return response()->json(['message' => 'Event updated successfully', 'event' => $event]);
+        // $event->update($request->validated());
+        $event->update(array_merge($request->validated(), [
+            'published_at' => $request->filled('published_at') ? $request->published_at : null,
+            'enabled' => $request->has('enabled'),
+        ]));
         return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
@@ -95,8 +106,16 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
-        // return response()->json(['message' => 'Event deleted successfully']);
         $events = Event::with('restaurant', 'charity')->paginate(4);
         return view('dashboard.events.index', compact('events'))->render();
+    }
+
+    public function publish(Event $event)
+    {
+        $event->enabled = true;
+        $event->published_at = now(); // or whatever logic you want for the timestamp
+        $event->save();
+
+        return redirect()->route('events.index')->with('success', 'Event published successfully.');
     }
 }

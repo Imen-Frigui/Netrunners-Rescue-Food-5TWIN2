@@ -22,17 +22,19 @@
                             <form>
                                 <div class="row justify-content-md-between">
                                     <div class="col col-lg-7 col-xl-5 form-group">
-                                        <div class="input-group"><input placeholder="Search" class="form-control"> <span
-                                                class="input-group-append"><button type="button"
-                                                    class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;
-                                                    Search</button></span></div>
+                                        <div class="input-group">
+                                            <input placeholder="Search" name="search" value="{{ request()->input('search') }}" class="form-control"> 
+                                            <span class="input-group-append">
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-sm-auto form-group"><select class="form-control">
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="25">25</option>
                                             <option value="100">100</option>
-                                        </select></div>
+                                    </select></div>
                                 </div>
                             </form>
                             <div class="user-detail-tooltips-list col"></div>
@@ -48,6 +50,7 @@
                                                 </label></th>
                                             <th><a><span class="fa fa-sort-amount-asc"></span> #</a></th>
                                             <th><a><span class="fa"></span> Title</a></th>
+                                            <th class="text-center"><a><span class="fa"></span> Published At</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Event Date</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Max Participants</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Restaurant</a></th>
@@ -63,11 +66,30 @@
                                                         class="form-check-input" aria-required="false" aria-invalid="false">
                                                     <label for="enabled{{ $event->id }}" class="form-check-label"></label></td>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ \Illuminate\Support\Str::limit($event->name, 20, '...') }}</td>
-                                                <td>{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>
-                                                <td>{{ $event->max_participants }}</td>
-                                                <td>{{ $event->restaurant ? $event->restaurant->name : 'No Restaurant' }}</td>
-                                                <td>{{ $event->charity ? $event->charity->name : 'No Charity' }}</td>
+                                                <td style="font-size: .875rem;">{{ \Illuminate\Support\Str::limit($event->name, 10, '...') }}</td>
+                                                <td style="font-size: .875rem;">
+                                                    <span>
+                                                        <small>Article will be published at</small><br>
+                                                        {{ $event->published_at ? $event->published_at->format('d.m.Y, H:i') : 'Not Set' }}
+                                                        <span title="Publish later" role="button" class="cursor-pointer">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </span>
+                                                    </span>
+                                                    @if (!$event->enabled) <!-- Check if the event is not enabled -->
+                                                        <div>
+                                                            <form class="d-inline" method="POST" action="{{ route('events.publish', $event->id) }}">
+                                                                @csrf
+                                                                <button type="submit" title="Publish now" class="btn btn-sm btn-success text-white">
+                                                                    <i class="fa fa-send"></i>&nbsp;&nbsp;Publish now
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endif
+                                                </td>                                                
+                                                <td style="font-size: .875rem;">{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>
+                                                <td style="font-size: .875rem;">{{ $event->max_participants }}</td>
+                                                <td style="font-size: .875rem;">{{ $event->restaurant ? $event->restaurant->name : 'No Set' }}</td>
+                                                <td style="font-size: .875rem;">{{ $event->charity ? $event->charity->name : 'No Set' }}</td>
                                                 <td>
                                                     <div class="row no-gutters">
                                                         <div class="col-auto"><a href="{{ route('events.edit', $event->id) }}"

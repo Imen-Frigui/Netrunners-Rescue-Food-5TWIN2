@@ -57,4 +57,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Event routes
 	Route::resource('events', EventController::class);
+	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
 });

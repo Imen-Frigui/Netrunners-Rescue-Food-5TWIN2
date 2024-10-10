@@ -134,11 +134,11 @@
                                             <input type="datetime-local" id="published_at" name="published_at" class="form-control" value="{{ old('published_at') }}">
                                         </div>
                                     </div>
-
+    
                                     <!-- Enable Event -->
                                     <div class="form-check row">
                                         <div class="ml-md-auto col-md-10">
-                                            <input id="enabled" type="checkbox" name="enabled" class="form-check-input">
+                                            <input id="enabled" type="checkbox" name="enabled" class="form-check-input" {{ old('enabled') ? 'checked' : '' }}>
                                             <label for="enabled" class="form-check-label">Enable Event</label>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                     </div>
 
                     <!-- Submit Buttons -->
-                    <button type="submit" class="btn btn-primary fixed-cta-button button-save"><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary fixed-cta-button button-save"><i class="fa fa-save"></i>Save</button>
                 </form>
             </div>
         </main>

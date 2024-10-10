@@ -31,6 +31,7 @@ class StoreEventRequest extends FormRequest
             'max_participants' => 'nullable|integer|min:1',
             'restaurant_id' => 'nullable|exists:restaurants,id',
             'charity_id' => 'nullable|exists:charities,id',
+            'published_at' => 'nullable|date',
         ];
     }
 
