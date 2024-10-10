@@ -1,3 +1,16 @@
+
+.text-success {
+  color: green;
+}
+
+.text-warning {
+  color: orange;
+}
+
+.text-error {
+  color: red;
+}
+
 .ct-docs-typography, [class*="ct-docs"] {
   font-family: Open Sans, sans-serif;
 }

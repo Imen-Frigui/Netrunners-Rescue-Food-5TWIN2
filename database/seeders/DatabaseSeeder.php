@@ -28,6 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EventSeeder::class);
         $this->call(ReviewSeeder::class);
         $this->call(PickupRequestSeeder::class);
-
+        $this->call(CharitySeeder::class);
     }
 }
