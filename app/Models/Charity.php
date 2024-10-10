@@ -27,7 +27,7 @@ class Charity extends Model
     ];
 
     protected $casts = [
-        'contact_info' => 'array',
+        'contact_info' => 'array',  // Ensure contact_info is cast as an array
         'preferred_food_types' => 'array',
         'request_history' => 'array',
         'inventory_status' => 'array',
