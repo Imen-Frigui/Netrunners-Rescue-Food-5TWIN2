@@ -59,3 +59,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('events', EventController::class);
 	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
 });
+Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');

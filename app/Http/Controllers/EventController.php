@@ -64,7 +64,9 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return response()->json($event->load(['restaurant', 'charity', 'volunteers']));
+        // $event = Event::findOrFail($id);
+        return view('front-office.events.show', compact('event'));
+        // return response()->json($event->load(['restaurant', 'charity', 'volunteers']));
     }
 
     /**
@@ -117,5 +119,11 @@ class EventController extends Controller
         $event->save();
 
         return redirect()->route('events.index')->with('success', 'Event published successfully.');
+    }
+
+    public function all()
+    {
+        $events = Event::where('enabled', true)->get();
+        return view('front-office.events.index', compact('events'));
     }
 }
