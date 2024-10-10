@@ -14,4 +14,18 @@ class Review extends Model
         'rating'
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+    public function restaurant(){
+        return $this->belongsTo(Restaurant::class);
+    }
+    public function charity(){
+        return $this->belongsTo(Charity::class);
+    }
+
+    public function event(){
+        return $this->belongsTo(Event::class);
+    }
+
 }

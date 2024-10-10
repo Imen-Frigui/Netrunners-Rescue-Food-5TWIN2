@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\PickupRequest;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,14 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@material.com',
-            'password' => ('secret')
-        ]);
-        $this->call([
-            ReviewSeeder::class,
-            // Add other seeders here if needed
-        ]);
+        if (!User::where('email', 'admin@material.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Admin',
+                'email' => 'admin@material.com',
+                'password' => ('secret')
+            ]);
+        }
+
+        $this->call(FoodSeeder::class);
+        $this->call(RestaurantSeeder::class);
+        $this->call(EventSeeder::class);
+        $this->call(ReviewSeeder::class);
+        $this->call(PickupRequestSeeder::class);
+        $this->call(CharitySeeder::class);
     }
 }

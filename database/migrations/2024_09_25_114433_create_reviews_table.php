@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('rating');
             $table->timestamps();
             $table->foreignId('user_id')->nullable()->onDelete('cascade');
-
+            $table->foreignId('restaurant_id')->nullable()->onDelete('cascade');
+            $table->foreignId('charity_id')->nullable()->onDelete('cascade');
+            $table->foreignId('event_id')->nullable()->onDelete('cascade');
         });
     }
 
