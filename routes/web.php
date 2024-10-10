@@ -3,17 +3,16 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\RestaurantController;
+
 use App\Http\Controllers\FoodController;
 use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CharityController;
+
             
-
-
-
-
 Route::get('/', function () {
 	return redirect('sign-in');
 })->middleware('guest');
@@ -35,6 +34,7 @@ Route::post('sign-out', [SessionsController::class, 'destroy'])->middleware('aut
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
+
 	Route::get('billing', function () {
 		return view('pages.billing');
 	})->name('billing');
@@ -112,4 +112,13 @@ Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('
 
 
 
+	
 });
+# restaurant routes rami :
+Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
+Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
+Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
+Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
+Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
+Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
+Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');

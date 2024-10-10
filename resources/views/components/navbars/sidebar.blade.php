@@ -55,19 +55,14 @@
                 </a>
             </li>
             <li class="nav-item">
-    <a class="nav-link text-white {{ $activePage == 'charities' ? 'active bg-gradient-success' : '' }} "
-        href="{{ route('charities') }}">
-        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i style="font-size: 1rem;" class="fas fa-solid fa-hand-holding-heart ps-2 pe-2 text-center"></i>
-        </div>
-        <span class="nav-link-text ms-1">Charities</span>
-    </a>
-</li>
-
-
-
-
-
+                <a class="nav-link text-white {{ $activePage == 'charities' ? ' active bg-gradient-success' : ''}} "
+                    href="{{ route('charities') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;" class="fas fa-solid fa-hand-holding-heart ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Charities</span>
+                </a>
+            </li>
                 <a class="nav-link text-white {{ $activePage == 'pickup-management' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('pickup-management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -151,6 +146,15 @@
                         <i class="material-icons opacity-10">receipt_long</i>
                     </div>
                     <span class="nav-link-text ms-1">Billing</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'restaurants' ? ' active bg-gradient-primary' : '' }}"
+                    href="{{ route('restaurants') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">receipt_long</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Restaurants</span>
                 </a>
             </li>
 

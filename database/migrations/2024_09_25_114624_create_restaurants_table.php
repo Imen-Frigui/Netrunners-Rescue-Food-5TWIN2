@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('address'); // Restaurant address
             $table->string('phone'); // Restaurant phone number
             $table->string('email')->unique(); // Restaurant email
+            $table->decimal('longitude', 10, 7)->nullable(); // Longitude with precision for coordinates
+            $table->decimal('latitude', 10, 7)->nullable(); // Latitude with precision for coordinates
             $table->timestamps();
         });
     }
