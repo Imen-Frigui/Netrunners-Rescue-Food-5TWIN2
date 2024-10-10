@@ -9369,35 +9369,35 @@ a.badge-dark:focus {
 .alert-info {
   color:#336573;
   background-color:#e0f3f8;
-  border-color:#d3eef6
+  border-color:#d3eef6!important
 }
 .alert-info hr {
-  border-top-color:#bee6f2
+  border-top-color:#bee6f2!important
 }
 .alert-info .alert-link {
-  color:#234650
+  color:#234650!important
 }
 .alert-warning {
-  color:#7f6319;
-  background-color:#fdf2d6;
-  border-color:#fcedc5
+  color:#7f6319!important;
+  background-color:#fdf2d6!important;
+  border-color:#fcedc5!important
 }
 .alert-warning hr {
-  border-top-color:#fbe5ad
+  border-top-color:#fbe5ad!important
 }
 .alert-warning .alert-link {
-  color:#544211
+  color:#544211!important
 }
 .alert-danger {
-  color:#842132;
-  background-color:#ffd9df;
-  border-color:#ffc9d3
+  color:#842132 !important;
+  background-color:#ffd9df !important;
+  border-color:#ffc9d3 !important
 }
 .alert-danger hr {
-  border-top-color:#ffb0be
+  border-top-color:#ffb0be!important
 }
 .alert-danger .alert-link {
-  color:#5b1723
+  color:#5b1723!important
 }
 .alert-light {
   color:#7d7e7f;

@@ -18,7 +18,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('restaurant', 'charity')->paginate(10);
+        $events = Event::with('restaurant', 'charity')->paginate(4);
         // return response()->json($events);
         return view('dashboard.events.index', compact('events'));
     }
@@ -95,6 +95,8 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
-        return response()->json(['message' => 'Event deleted successfully']);
+        // return response()->json(['message' => 'Event deleted successfully']);
+        $events = Event::with('restaurant', 'charity')->paginate(4);
+        return view('dashboard.events.index', compact('events'))->render();
     }
 }

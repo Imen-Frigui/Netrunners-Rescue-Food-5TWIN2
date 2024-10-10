@@ -1,27 +1,16 @@
-{{-- <x-layout bodyClass="g-sidenav-show bg-gray-200"> --}}
-    <title>@yield('title', 'Rscue Food') - List Event</title>
+<title>@yield('title', 'Rscue Food') - List Event</title>
+<x-layout bodyClass="g-sidenav-show bg-gray-200">
 
-    @extends('admin.layout.default')
     @section('styles')
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
     @endsection
     
-      {{-- <x-navbars.sidebar activePage='events'></x-navbars.sidebar> --}}
+      <x-navbars.sidebar activePage='events'></x-navbars.sidebar>
         <!-- Navbar -->
-        {{-- <x-navbars.navs.auth titlePage="Events Dashboard"></x-navbars.navs.auth> --}}
-        <!-- End Navbar -->
-        @include('admin.layout.sidebar')
-        @section('content')
-        <div class="app-body">
-            <!-- Sidebar will already be included by master layout -->
-            <div class="container-fluid" id="app" :class="{'loading': loading}">
-                <div class="modals">
-                    <v-dialog/>
-                </div>
-                <div>
-                    <notifications position="bottom right" :duration="2000" />
-                </div>
+        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <x-navbars.navs.auth titlePage="Events Dashboard"></x-navbars.navs.auth>
+            <div class="container-fluid py-4">
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -57,10 +46,8 @@
                                                 <label for="enabled" class="form-check-label">
                                                     #
                                                 </label></th>
-                                            <th><a><span class="fa fa-sort-amount-asc"></span> ID</a></th>
+                                            <th><a><span class="fa fa-sort-amount-asc"></span> #</a></th>
                                             <th><a><span class="fa"></span> Title</a></th>
-                                            <th class="text-center"><a><span class="fa"></span> Description</a></th>
-                                            <th class="text-center"><a><span class="fa"></span> Location</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Event Date</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Max Participants</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Restaurant</a></th>
@@ -70,15 +57,13 @@
                                     </thead>
                                     <tbody>
                                         @foreach($events as $event)
-                                            <tr>
+                                            <tr id="event-row-{{ $event->id }}">
                                                 <td class="bulk-checkbox"><input id="enabled{{ $event->id }}" type="checkbox"
                                                         data-vv-name="enabled{{ $event->id }}" name="enabled{{ $event->id }}_fake_element"
                                                         class="form-check-input" aria-required="false" aria-invalid="false">
                                                     <label for="enabled{{ $event->id }}" class="form-check-label"></label></td>
-                                                <td>{{ $event->id }}</td>
-                                                <td>{{ \Illuminate\Support\Str::limit($event->name, 10, '...') }}</td>
-                                                <td>{{ \Illuminate\Support\Str::limit($event->description, 20, '...') }}</td>
-                                                <td>{{ \Illuminate\Support\Str::limit($event->location, 20, '...') }}</td>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ \Illuminate\Support\Str::limit($event->name, 20, '...') }}</td>
                                                 <td>{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>
                                                 <td>{{ $event->max_participants }}</td>
                                                 <td>{{ $event->restaurant ? $event->restaurant->name : 'No Restaurant' }}</td>
@@ -87,14 +72,12 @@
                                                     <div class="row no-gutters">
                                                         <div class="col-auto"><a href="{{ route('events.edit', $event->id) }}"
                                                                 title="Edit" role="button"
-                                                                class="btn btn-sm btn-spinner btn-info"><i
+                                                                class="btn btn-md btn-spinner btn-info"><i
                                                                     class="fa fa-edit"></i></a></div>
-                                                        <form class="col" method="POST" action="{{ route('events.destroy', $event->id) }}">
+                                                        <form class="col" method="POST" action="{{ route('events.destroy', $event->id) }}" onsubmit="event.preventDefault(); deleteEvent({{ $event->id }});">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" title="Delete"
-                                                                    class="btn btn-sm btn-danger"><i
-                                                                    class="fa fa-trash-o"></i></button>
+                                                            <button type="submit" title="Delete" class="btn btn-md btn-danger"><i class="fa fa-trash-o"></i></button>
                                                         </form>
                                                     </div>
                                                 </td>
@@ -109,23 +92,62 @@
                                     Displaying items from 1 to {{ $events->count() }} of total {{ $events->total() }} items.</span>
                                 </div>
                                 <div class="col-sm-auto">
-                                    {{ $events->links() }} <!-- Laravel pagination links -->
+                                    {{ $events->links() }}
                                 </div>
-                            </div> <!---->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        @yield('body')
-</div>
-@endsection
+    </main>
+    @section('scripts')
+    <script>
+        function deleteEvent(eventId) {
+            if(confirm('Are you sure you want to delete this event?')) {
+                fetch(`/events/${eventId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById(`event-row-${eventId}`).remove();
+                        
+                        recalculateRowNumbers();
+    
+                        updatePagination();
+    
+                        alert('Event deleted successfully.');
+                    } else {
+                        alert('Failed to delete the event.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the event.');
+                });
+            }
+        }
+    
+        function recalculateRowNumbers() {
+            let rows = document.querySelectorAll('.table-listing tbody tr');
+            rows.forEach((row, index) => {
+                row.querySelector('td:nth-child(2)').innerText = index + 1;
+            });
+        }
+    
+        function updatePagination() {
+            let currentCount = document.querySelectorAll('.table-listing tbody tr').length;
+            let totalItems = parseInt(document.querySelector('.pagination-caption').innerText.match(/total (\d+)/)[1]);
+            let newTotal = totalItems - 1;
+    
+            document.querySelector('.pagination-caption').innerText = `Displaying items from 1 to ${currentCount} of total ${newTotal} items.`;
+        }
+    </script>
+    
+    @endsection
 
-@section('footer')
-@include('admin.partials.footer')
-@endsection
-
-@section('bottom-scripts')
-@parent
-@endsection
-{{-- </x-layout> --}}
+</x-layout>

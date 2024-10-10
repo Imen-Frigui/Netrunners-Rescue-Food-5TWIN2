@@ -1892,17 +1892,6 @@
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
-@font-face {
-  font-family:FontAwesome;
-  src:url(/fonts/vendor/font-awesome/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713);
-  src:url(/fonts/vendor/font-awesome/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713) format("embedded-opentype"),
-  url(/fonts/vendor/font-awesome/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e) format("woff2"),
-  url(/fonts/vendor/font-awesome/fontawesome-webfont.woff?fee66e712a8a08eef5805a46892932ad) format("woff"),
-  url(/fonts/vendor/font-awesome/fontawesome-webfont.ttf?b06871f281fee6b241d60582ae9369b9) format("truetype"),
-  url(/fonts/vendor/font-awesome/fontawesome-webfont.svg?912ec66d7572ff821749319396470bde) format("svg");
-  font-weight:400;
-  font-style:normal
-}
 .fa {
   display:inline-block;
   font:normal normal normal 14px/1 FontAwesome;
@@ -22952,13 +22941,7 @@ div.trumbowyg-dropdown-table table td.active {
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
-@font-face {
-    font-family: FontAwesome;
-    src: url(/fonts/vendor/font-awesome/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713);
-    src: url(/fonts/vendor/font-awesome/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713) format("embedded-opentype"),url(/fonts/vendor/font-awesome/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e) format("woff2"),url(/fonts/vendor/font-awesome/fontawesome-webfont.woff?fee66e712a8a08eef5805a46892932ad) format("woff"),url(/fonts/vendor/font-awesome/fontawesome-webfont.ttf?b06871f281fee6b241d60582ae9369b9) format("truetype"),url(/fonts/vendor/font-awesome/fontawesome-webfont.svg?912ec66d7572ff821749319396470bde) format("svg");
-    font-weight: 400;
-    font-style: normal
-}
+
 
 .fa {
     display: inline-block;
@@ -31410,45 +31393,45 @@ a.badge-dark.focus,a.badge-dark:focus {
 }
 
 .alert-danger {
-    color: #842132;
-    background-color: #ffd9df;
-    border-color: #ffc9d3
+    color: #842132!important;
+    background-color: #ffd9df!important;
+    border-color: #ffc9d3!important
 }
 
 .alert-danger hr {
-    border-top-color: #ffb0be
+    border-top-color: #ffb0be!important
 }
 
 .alert-danger .alert-link {
-    color: #5b1723
+    color: #5b1723!important
 }
 
 .alert-light {
-    color: #7d7e7f;
-    background-color: #fcfdfd;
-    border-color: #fbfcfc
+    color: #7d7e7f!important;
+    background-color: #fcfdfd!important;
+    border-color: #fbfcfc!important
 }
 
 .alert-light hr {
-    border-top-color: #ecf1f1
+    border-top-color: #ecf1f1!important
 }
 
 .alert-light .alert-link {
-    color: #646565
+    color: #646565!important
 }
 
 .alert-dark {
-    color: #181c1e;
-    background-color: #d5d7d8;
-    border-color: #c5c6c8
+    color: #181c1e!important;
+    background-color: #d5d7d8!important;
+    border-color: #c5c6c8!important
 }
 
 .alert-dark hr {
-    border-top-color: #b8b9bc
+    border-top-color: #b8b9bc!important
 }
 
 .alert-dark .alert-link {
-    color: #010202
+    color: #010202!important
 }
 
 @-webkit-keyframes progress-bar-stripes {
@@ -43827,4 +43810,13 @@ div.trumbowyg-dropdown-table table td.active {
     .app-header.navbar .navbar-brand {
         display:none
     }
+}
+.table th, .table td {
+  padding: 10px;
+  text-align: center;
+}
+
+.max-participants-column {
+  width: 40px !important;
+  white-space: nowrap;
 }
