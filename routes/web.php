@@ -3,11 +3,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 
-            
 
-Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
+Route::get('/', function () {
+	return redirect('sign-in'); })->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('sign-up', [RegisterController::class, 'store'])->middleware('guest');
@@ -53,4 +54,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+	Route::get('pickup-management', function () {
+		return view('pickups.index');
+	})->name('pickup-management');
+	Route::get('pickup-management', [PickupRequestController::class, 'index'])->name('pickup-management');
+	Route::get('/pickup/accept/{id}', [PickupRequestController::class, 'accept'])->name('pickup.accept');
+	Route::get('/pickup/reject/{id}', [PickupRequestController::class, 'reject'])->name('pickup.reject');
+	Route::get('/pickup/create', [PickupRequestController::class, 'create'])->name('pickup.create');
+	Route::post('/pickup', [PickupRequestController::class, 'store'])->name('pickup.store');
+	
 });
