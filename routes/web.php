@@ -10,6 +10,7 @@ use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 
             
@@ -62,6 +63,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('user-profile', function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
+
+	//Event routes
+	Route::resource('events', EventController::class);
+	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
 // Route for listing charities (index)
 Route::get('charities', [CharityController::class, 'index'])->name('charities');
 
@@ -122,3 +127,6 @@ Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('res
 Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
+
+Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');

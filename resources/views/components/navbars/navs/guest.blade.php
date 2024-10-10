@@ -45,6 +45,12 @@
                         Sign In
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('events.all') }}">
+                        <i class="fas fa-key opacity-6 text-dark me-1"></i>
+                        Events
+                    </a>
+                </li>
             </ul>
             <ul class="navbar-nav d-lg-block d-none">
                 <li class="nav-item">
