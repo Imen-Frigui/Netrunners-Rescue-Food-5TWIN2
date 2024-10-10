@@ -1,8 +1,18 @@
+@yield('additional-styles')
+@section('styles')
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+@endsection
 @section('sidebar')
 <div class="sidebar">
     <nav class="sidebar-nav ps">
         <ul class="nav">
             <li class="nav-title">Contenido</li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('events.index') }}">
+                    <i class="nav-icon icon-calendar"></i> Manage Events
+                </a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="https://demo.getcraftable.com/admin/articles"><i class="nav-icon icon-plane"></i>#1: Standard</a></li>
             <li class="nav-item"><a class="nav-link" href="https://demo.getcraftable.com/admin/posts"><i class="nav-icon icon-globe"></i> #2: With media</a></li>
             <li class="nav-item"><a class="nav-link" href="https://demo.getcraftable.com/admin/translatable-articles"><i class="nav-icon icon-ghost"></i> #3: Translatable</a></li>
@@ -21,4 +31,4 @@
     <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>
 </div>
-@endsection
+@endsection 

@@ -1,10 +1,12 @@
 {{-- <x-layout bodyClass="g-sidenav-show bg-gray-200"> --}}
+    <title>@yield('title', 'Rscue Food') - List Event</title>
+
     @extends('admin.layout.default')
     @section('styles')
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">  
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
     @endsection
+    
       {{-- <x-navbars.sidebar activePage='events'></x-navbars.sidebar> --}}
         <!-- Navbar -->
         {{-- <x-navbars.navs.auth titlePage="Events Dashboard"></x-navbars.navs.auth> --}}
@@ -63,7 +65,7 @@
                                             <th class="text-center"><a><span class="fa"></span> Max Participants</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Restaurant</a></th>
                                             <th class="text-center"><a><span class="fa"></span> Charity</a></th>
-                                            <th></th>
+                                            <th class="text-center"><a><span class="fa"></span> Actions</a></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,7 +76,7 @@
                                                         class="form-check-input" aria-required="false" aria-invalid="false">
                                                     <label for="enabled{{ $event->id }}" class="form-check-label"></label></td>
                                                 <td>{{ $event->id }}</td>
-                                                <td>{{ \Illuminate\Support\Str::limit($event->name, 20, '...') }}</td>
+                                                <td>{{ \Illuminate\Support\Str::limit($event->name, 10, '...') }}</td>
                                                 <td>{{ \Illuminate\Support\Str::limit($event->description, 20, '...') }}</td>
                                                 <td>{{ \Illuminate\Support\Str::limit($event->location, 20, '...') }}</td>
                                                 <td>{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>

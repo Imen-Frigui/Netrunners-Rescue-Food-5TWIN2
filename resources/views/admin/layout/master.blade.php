@@ -10,11 +10,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 	{{-- TODO translatable suffix --}}
-    <title>@yield('title', 'Craftable') - admin.page_title_suffix'</title>
+    <title>@yield('title', 'Rscue Food') - Dashboard</title>
 
 	@include('admin.partials.main-styles')
     @yield('additional-styles')
-
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
 </head>
 
 <body class="app header-fixed sidebar-fixed sidebar-lg-show">

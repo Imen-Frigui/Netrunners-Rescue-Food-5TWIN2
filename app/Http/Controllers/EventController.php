@@ -6,6 +6,8 @@ use App\Models\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Restaurant;
+use App\Models\Charity;
 
 class EventController extends Controller
 {
@@ -28,7 +30,9 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $restaurants = Restaurant::all();
+        $charities = Charity::all();
+        return view('dashboard.events.create', compact('restaurants', 'charities'));
     }
 
     /**
@@ -40,7 +44,8 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         $event = Event::create($request->validated());
-        return response()->json(['message' => 'Event created successfully', 'event' => $event]);
+        // return response()->json(['message' => 'Event created successfully', 'event' => $event]);
+        return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
     /**
@@ -62,7 +67,9 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //  
+        $restaurants = Restaurant::all();
+        $charities = Charity::all();
+        return view('dashboard.events.edit', compact('event','restaurants', 'charities'));
     }
 
     /**
@@ -75,7 +82,8 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
         $event->update($request->validated());
-        return response()->json(['message' => 'Event updated successfully', 'event' => $event]);
+        // return response()->json(['message' => 'Event updated successfully', 'event' => $event]);
+        return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
     /**
