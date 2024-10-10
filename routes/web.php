@@ -115,23 +115,10 @@ Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('
 	
 });
 # restaurant routes rami :
-// Index route - shows the list of restaurants
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
-
-// Create route - shows the form to create a new restaurant
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
-
-// Store route - stores a new restaurant in the database
 Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
-
-// Show route - shows details of a specific restaurant
 Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
-
-// Edit route - shows the form to edit an existing restaurant
 Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
-
-// Update route - updates a specific restaurant in the database
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
-
-// Delete route - deletes a specific restaurant from the database
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');

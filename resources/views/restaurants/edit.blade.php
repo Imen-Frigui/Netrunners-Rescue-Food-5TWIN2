@@ -1,4 +1,3 @@
-<!-- resources/views/restaurants/edit.blade.php -->
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
     <x-navbars.sidebar activePage="restaurants"></x-navbars.sidebar>
     
@@ -12,23 +11,48 @@
                 @csrf
                 @method('PUT')
 
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $restaurant->name) }}" required>
-                </div>
+                <div class="card p-3 mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="material-icons">restaurant_menu</i>
+                                </span>
+                                <input type="text" name="name" id="name" class="form-control" 
+                                       value="{{ old('name', $restaurant->name) }}" 
+                                       placeholder="Enter restaurant name" required>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $restaurant->address) }}" required>
-                </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="material-icons">location_on</i>
+                                </span>
+                                <input type="text" name="address" id="address" class="form-control" 
+                                       value="{{ old('address', $restaurant->address) }}" 
+                                       placeholder="Enter restaurant address" required>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $restaurant->phone) }}" required>
-                </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="material-icons">phone</i>
+                                </span>
+                                <input type="text" name="phone" id="phone" class="form-control" 
+                                       value="{{ old('phone', $restaurant->phone) }}" 
+                                       placeholder="Enter phone number" required>
+                            </div>
+                        </div>
 
-                <button type="submit" class="btn btn-primary">Update Restaurant</button>
-                <a href="{{ route('restaurants') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update Restaurant</button>
+                        <a href="{{ route('restaurants') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
             </form>
         </div>
 
