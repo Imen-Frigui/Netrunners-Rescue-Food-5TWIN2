@@ -16,7 +16,7 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::all(); // Fetch all reviews
-        return view('components.reviews.index', compact('reviews')); // Updated to match your file path
+        return view('reviews.index', compact('reviews')); // Updated to match your file path
     }
     
 
@@ -30,7 +30,7 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        //
+        return view('reviews.create');
     }
 
     /**
@@ -48,7 +48,8 @@ class ReviewController extends Controller
     ]);
 
     $review = Review::create($validatedData);
-    return response()->json($review, 201);
+    return redirect()->route('reviews')->with('success', 'Review created successfully.');
+
 }
 
     /**
@@ -59,12 +60,8 @@ class ReviewController extends Controller
      */
     public function show($id)
 {
-    $review = Review::find($id);
-    if ($review) {
-        return response()->json($review, 200);
-    } else {
-        return response()->json(['message' => 'Review not found'], 404);
-    }
+    $review = Review::findOrFail($id);
+        return view('reviews.show', compact('review'));
 }
 
 
@@ -76,8 +73,18 @@ class ReviewController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Find the review by ID
+        $review = Review::find($id);
+    
+        // Check if the review exists
+        if ($review) {
+            // Return the edit view with the review data
+            return view('reviews.edit', compact('review'));
+        } else {
+            return redirect()->route('reviews')->with('error', 'Review not found');
+        }
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -97,7 +104,7 @@ class ReviewController extends Controller
         $review = Review::find($id);
         if ($review) {
             $review->update($validatedData);
-            return response()->json($review, 200);
+            return redirect()->route('reviews')->with('success', 'Review updated successfully.');
         } else {
             return response()->json(['message' => 'Review not found'], 404);
         }
@@ -112,13 +119,9 @@ class ReviewController extends Controller
      */
     public function destroy($id)
     {
-        $review = Review::find($id);
-        if ($review) {
-            $review->delete();
-            return response()->json(['message' => 'Review deleted'], 200);
-        } else {
-            return response()->json(['message' => 'Review not found'], 404);
-        }
+        $review = Review::findOrFail($id);
+        $review->delete();
+return redirect()->route('reviews')->with('success', 'Review deleted successfully.');
     }
     
 }

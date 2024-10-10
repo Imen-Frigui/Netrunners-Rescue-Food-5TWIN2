@@ -33,7 +33,16 @@
                                     @foreach ($reviews as $review)
                                         <tr>
                                             <td>{{ $review->comment }}</td>
-                                            <td>{{ $review->rating }}</td>
+                                            <td>  <p> 
+                        <!-- Display stars instead of rating number -->
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $review->rating)
+                                <span class="text-warning">&#9733;</span> <!-- Filled star -->
+                            @else
+                                <span class="text-muted">&#9734;</span> <!-- Empty star -->
+                            @endif
+                        @endfor
+                    </p></td>
                                             <td>
                                                 <a href="{{ route('reviews.show', $review->id) }}" class="btn btn-info btn-sm">View</a>
                                                 <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-warning btn-sm">Edit</a>
