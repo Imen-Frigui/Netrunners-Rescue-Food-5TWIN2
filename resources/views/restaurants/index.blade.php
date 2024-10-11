@@ -6,7 +6,7 @@
         
         <div class="container-fluid py-4">
             <h1>Restaurants</h1>
-            <a href="{{ route('restaurants.create') }}" class="btn btn-primary mb-3">Add New Restaurant</a>
+            <a href="{{ route('restaurants.create') }}" class="btn btn-success mb-3">Add New Restaurant</a>
 
             @if (session('success'))
                 <div class="alert alert-success">

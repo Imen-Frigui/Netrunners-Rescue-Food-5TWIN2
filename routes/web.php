@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -14,7 +15,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 
-            
+
 Route::get('/', function () {
 	return redirect('sign-in');
 })->middleware('guest');
@@ -68,44 +69,44 @@ Route::group(['middleware' => 'auth'], function () {
 	//Event routes
 	Route::resource('events', EventController::class);
 	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
+	
+	// Route for listing charities (index)
+	Route::get('charities', [CharityController::class, 'index'])->name('charities');
 
-// Route for listing charities (index)
-Route::get('charities', [CharityController::class, 'index'])->name('charities');
+	// Route for searching charities
+	Route::get('charities/search', [CharityController::class, 'search'])->name('charities.search');
 
-// Route for searching charities
-Route::get('charities/search', [CharityController::class, 'search'])->name('charities.search');
+	// Route for showing charity details
+	Route::get('/charities/{id}/details', [CharityController::class, 'showdetails'])->name('charities.details');
 
-// Route for showing charity details
-Route::get('/charities/{id}/details', [CharityController::class, 'showdetails'])->name('charities.details');
+	// Route for showing the form to create a charity
+	Route::get('/charities/create', [CharityController::class, 'create'])->name('charities.create');
 
-// Route for showing the form to create a charity
-Route::get('/charities/create', [CharityController::class, 'create'])->name('charities.create');
+	// Route for storing a new charity
+	Route::post('/charities', [CharityController::class, 'store'])->name('charities.store');
 
-// Route for storing a new charity
-Route::post('/charities', [CharityController::class, 'store'])->name('charities.store');
+	// Route for showing a charity (optional if you have a charity show page)
+	Route::get('/charities/{charity}', [CharityController::class, 'show'])->name('charities.show');
 
-// Route for showing a charity (optional if you have a charity show page)
-Route::get('/charities/{charity}', [CharityController::class, 'show'])->name('charities.show');
+	// Route for editing a charity
+	Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
 
-// Route for editing a charity
-Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
+	// Route for updating a charity
+	Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
 
-// Route for updating a charity
-Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
+	// Route for deleting a charity
+	Route::delete('/charities/{charity}', [CharityController::class, 'destroy'])->name('charities.destroy');
+	// Show the form for editing a charity
+	Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
 
-// Route for deleting a charity
-Route::delete('/charities/{charity}', [CharityController::class, 'destroy'])->name('charities.destroy');
-// Show the form for editing a charity
-Route::get('/charities/{charity}/edit', [CharityController::class, 'edit'])->name('charities.edit');
-
-// Update the charity in the database
-Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
+	// Update the charity in the database
+	Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('charities.update');
 
 	Route::get('/foods/export', function () {
 		return Excel::download(new FoodsExport, 'foods.xlsx');
 	})->name('foods.export');
 	Route::resource('foods', FoodController::class);
-	
+
 	Route::get('pickup-management', function () {
 		return view('pickups.index');
 	})->name('pickup-management');
@@ -116,10 +117,6 @@ Route::put('/charities/{charity}', [CharityController::class, 'update'])->name('
 	Route::post('/pickup', action: [PickupRequestController::class, 'store'])->name('pickup.store');
 	Route::get('/pickup/edit/{id}', [PickupRequestController::class, 'edit'])->name('pickup.edit');
 	Route::put('/pickup/{id}', [PickupRequestController::class, 'update'])->name('pickup.update');
-
-
-
-	
 });
 # restaurant routes rami :
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
@@ -132,6 +129,9 @@ Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->nam
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+// Donations routes Hanin : 
+Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
+Route::get('/donations/{id}', [FoodController::class, 'showDonation'])->name('donations.show');
 # review routes marwen :
 Route::resource('reviews', ReviewController::class);
 
@@ -143,3 +143,20 @@ Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('review
 Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
 Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
+// About Us route
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+// Contact Us route
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+
+Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
+
+// Reviews routes
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
+
+Route::get('/charities', [CharityController::class, 'index'])->name('charities');

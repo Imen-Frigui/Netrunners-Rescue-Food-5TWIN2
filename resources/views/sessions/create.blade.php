@@ -19,8 +19,10 @@
                             <div class="card z-index-0 fadeIn3 fadeInBottom">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                     <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
-                                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
+                                        <h4 class="text-white font-weight-bolder text-center mt-1 mb-0">Sign in</h4>
                                         <div class="row mt-3">
+                                        <p class="text-white text-center text-sm margin-top:5px;">Welcome to Rescue Food ! Please sign in to continue accessing the platform and help make a difference in reducing food waste.</p>
+
                                             {{-- <h6 class='text-white text-center'>
                                                 <span class="font-weight-normal">Email:</span> admin@material.com
                                                 <br>

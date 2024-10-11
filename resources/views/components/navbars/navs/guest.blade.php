@@ -4,7 +4,7 @@
     class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
     <div class="container-fluid ps-2 pe-0">
         <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 d-flex flex-column" href="{{ route('dashboard') }}">
-            Rescue Food
+            <img src="{{ asset('assets/img/logo1.png') }}" class="navbar-brand-img" alt="logo1" style="width: 65px; margin-bottom: 20;">
         </a>
         <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
             data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
@@ -32,6 +32,8 @@
                     </a>
                 </li>
                 @endauth
+              
+
                 <li class="nav-item">
                     <a class="nav-link me-2" href="{{ route($signup) }}">
                         <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
@@ -45,12 +47,55 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('about') }}">
+                    <i class="fas fa-info opacity-6 text-dark me-1"></i>
+                        About Us
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link me-2" href="{{ route('events.all') }}">
-                        <i class="fas fa-key opacity-6 text-dark me-1"></i>
+                    <i class="fas fa-calendar-alt opacity-6 text-dark me-1"></i>
                         Events
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('donations') }}">
+                        <i class="fas fa-hand-holding-heart opacity-6 text-dark me-1"></i>
+                        Donations
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('restaurants') }}">
+                        <i class="fas fa-utensils opacity-6 text-dark me-1"></i>
+                        Restaurants
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('charities') }}">
+                        <i class="fas fa-hands-helping opacity-6 text-dark me-1"></i>
+                        Charities
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('reviews') }}">
+                        <i class="fas fa-star opacity-6 text-dark me-1"></i>
+                        Reviews
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-2" href="{{ route('contact') }}">
+                        <i class="fas fa-envelope opacity-6 text-dark me-1"></i>
+                        Contact
+                    </a>
+                </li>
+
             </ul>
+            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 d-flex flex-column" href="{{ route('dashboard') }}">
+                <img src="{{ asset('assets/img/logo1.png') }}" class="navbar-brand-img" alt="logo1" style="width: 65px; margin-bottom: 20;">
+            </a>
             {{-- <ul class="navbar-nav d-lg-block d-none">
                 <li class="nav-item">
                     <a href="https://www.creative-tim.com/product/material-dashboard-laravel"
