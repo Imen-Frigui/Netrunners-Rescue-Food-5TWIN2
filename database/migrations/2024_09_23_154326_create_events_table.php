@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('location');
             $table->dateTime('event_date');
+            $table->dateTime('published_at')->nullable();
+            $table->boolean('enabled')->default(false);
             $table->integer('max_participants')->nullable();
             $table->foreignId('restaurant_id')->nullable()->onDelete('cascade');
             $table->foreignId('charity_id')->nullable()->onDelete('cascade');

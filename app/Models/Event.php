@@ -14,9 +14,16 @@ class Event extends Model
         'description' ,
         'location',
         'event_date',
+        'published_at',
+        'enabled',
         'max_participants',
         'restaurant_id',
         'charity_id'
+    ];
+
+    protected $casts = [
+        'event_date' => 'datetime',
+        'published_at' => 'datetime',
     ];
 
     public function restaurant() {
@@ -34,6 +41,15 @@ class Event extends Model
     public function reviews() {
         return $this->hasMany(Review::class);
     }
+
+    public function scopeUpcoming($query) {
+        return $query->where('event_date', '>', now());
+    }
+    
+    public function scopeWithAvailableSpots($query) {
+        return $query->whereColumn('max_participants', '>', 'volunteers_count');
+    }
+    
 
 
 }

@@ -37,11 +37,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets') }}/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+    @yield('styles')
 </head>
 <body class="{{ $bodyClass }}">
 
 {{ $slot }}
-
+@yield('scripts')
 <script src="{{ asset('assets') }}/js/core/popper.min.js"></script>
 <script src="{{ asset('assets') }}/js/core/bootstrap.min.js"></script>
 <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
