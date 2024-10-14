@@ -6,7 +6,7 @@
             </div>
         </div>
     </div>
-    <x-navbars.Navbar activePage="events"></x-navbars.Navbar>
+    <x-navbars.Navbar activePage="showEvent"></x-navbars.Navbar>
 
 <x-navbars.navs.auth titlePage="user Interface"></x-navbars.navs.auth>
     <main class="main-content mt-0">
@@ -29,7 +29,7 @@
                                 <p><strong>Status:</strong> {{ $event->enabled ? 'Enabled' : 'Disabled' }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ route('front-office.events.index') }}" class="btn btn-secondary">Back to Events</a>
+                                <a href="{{ route('events.all') }}" class="btn btn-secondary">Back to Events</a>
                                 <!-- Optionally, you can add a button to register for the event -->
                                 {{-- <a href="{{ route('events.register', $event->id) }}" class="btn btn-primary">Register</a> --}}
                             </div>

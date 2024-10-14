@@ -44,11 +44,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
 
 		// Define the events routes here
-		Route::prefix('events')->name('events.')->group(function () {
-			Route::get('/', [FrontOfficeController::class, 'EventsList'])->name('index'); // List of events
-			Route::get('/{event}', [FrontOfficeController::class, 'showEvent'])->name('show'); // Event details
+		// Route::prefix('events')->name('events.')->group(function () {
+		// 	Route::get('/', [EventController::class, 'all'])->name('index'); // List of events
+		// 	Route::get('/{event}', [EventController::class, 'show'])->name('show'); // Event details
 
-		});
+		// });
 	});
 	Route::get('billing', function () {
 		return view('pages.billing');
@@ -151,11 +151,10 @@ Route::resource('reviews', ReviewController::class);
 Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
-Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
-Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-
+// Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
+// Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+// Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+// Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 // About Us route
 Route::get('/about', function () {
     return view('about');
@@ -173,5 +172,5 @@ Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restau
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
-#welcome page : 
+#welcome page :
 

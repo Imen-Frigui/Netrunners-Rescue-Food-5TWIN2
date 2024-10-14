@@ -2,7 +2,7 @@
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
             <div class="col-12">
-                <x-navbars.navs.guest signin='static-sign-in' signup='static-sign-up'></x-navbars.navs.guest>
+                <x-navbars.Navbar activePage="showDonations"></x-navbars.Navbar>
             </div>
         </div>
     </div>

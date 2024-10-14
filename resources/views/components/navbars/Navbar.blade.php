@@ -22,7 +22,7 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Home Route -->
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'index' ? 'active' : '' }}" 
+                    <a class="nav-link {{ $activePage == 'index' ? 'active' : '' }}"
                        href="{{ route('front-office.index') }}">
                         <i class="fas fa-home"></i>
                         <span>Home</span>
@@ -31,7 +31,7 @@
 
                 <!-- About Us -->
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'about' ? 'active' : '' }}" 
+                    <a class="nav-link {{ $activePage == 'about' ? 'active' : '' }}"
                        href="">
                         <i class="fas fa-info-circle"></i>
                         <span>About Us</span>
@@ -41,18 +41,34 @@
                 <!-- Events Section -->
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains($activePage, 'events') ? 'active' : '' }}" 
-                       href="{{ route('front-office.events.index') }}">
+                       href="{{ route('events.all') }}">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Events</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'showEvent' ? 'active' : '' }}" 
-                       href="{{ route('front-office.events.show', ['event' => 'your-event-slug']) }}">
+                       href="{{ route('events.show', ['event' => 'your-event-slug']) }}">
                         <i class="fas fa-calendar-day"></i>
                         <span>Restaurant</span>
                     </a>
                 </li>
+
+                <!-- Donations Section -->
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains($activePage, 'donations') ? 'active' : '' }}"
+                       href="{{ route('donations') }}">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Donations</span>
+                    </a>
+                </li>
+                {{-- <li class="nav-item">
+                    <a class="nav-link {{ $activePage == 'showDonations' ? 'active' : '' }}"
+                       href="{{ route('donations.show') }}">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Donations</span>
+                    </a>
+                </li> --}}
 
                 <!-- User Profile Gadget (Moved to Last) -->
                 <li class="nav-item">

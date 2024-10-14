@@ -20,9 +20,6 @@ class ReviewController extends Controller
     }
     
 
-
-    
-
     /**
      * Show the form for creating a new resource.
      *
@@ -109,7 +106,7 @@ class ReviewController extends Controller
             return response()->json(['message' => 'Review not found'], 404);
         }
     }
-    
+
 
     /**
      * Remove the specified resource from storage.

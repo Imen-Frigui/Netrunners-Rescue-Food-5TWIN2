@@ -49,7 +49,7 @@
                         <h3 class="card-title">{{ $event->title }}</h3>
                         <p class="card-text">{{ $event->description }}</p>
                         <p class="text-muted">Date: {{ $event->date }}</p>
-                        <a href="{{ route('front-office.events.show', $event->id) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

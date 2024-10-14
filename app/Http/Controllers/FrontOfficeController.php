@@ -21,37 +21,37 @@ class FrontOfficeController extends Controller
     }
 
     // Display the specific event's details
-    public function showEvent(Event $event)
+    // public function showEvent(Event $event)
+    // {
+    //     return view('front-office.events.show', compact('event'));
+    // }
+    // public function EventsList(Event $event)
+    // {
+    //     $events = Event::all(); // Fetch all events
+    //     return view('front-office.events.index', compact('events'));
+    // }
+
+
+    public function createProfile()
     {
-        return view('front-office.events.show', compact('event'));
-    }
-    public function EventsList(Event $event)
-    {
-        $events = Event::all(); // Fetch all events
-        return view('front-office.events.index', compact('events'));
+        return view('front-office.profile');
     }
 
-  
-        public function createProfile()
-        {
-            return view('front-office.profile');
-        }
-    
-        public function updateProfile(Request $request)
-        {
-            $user = $request->user();
-            $attributes = $request->validate([
-                'email' => 'required|email|unique:users,email,' . $user->id,
-                'name' => 'required',
-                'phone' => 'required|max:10',
-                'about' => 'required|max:150',
-                'location' => 'required'
-            ]);
-    
-            $user->update($attributes);
-    
-            return back()->withStatus('Profile successfully updated.');
-        }
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+        $attributes = $request->validate([
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name' => 'required',
+            'phone' => 'required|max:10',
+            'about' => 'required|max:150',
+            'location' => 'required'
+        ]);
+
+        $user->update($attributes);
+
+        return back()->withStatus('Profile successfully updated.');
+    }
 
     // Add other show methods for restaurants, foods, pickups as needed
 }

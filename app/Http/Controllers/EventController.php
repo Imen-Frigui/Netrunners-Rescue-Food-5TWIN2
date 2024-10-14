@@ -64,9 +64,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        // $event = Event::findOrFail($id);
         return view('front-office.events.show', compact('event'));
-        // return response()->json($event->load(['restaurant', 'charity', 'volunteers']));
     }
 
     /**

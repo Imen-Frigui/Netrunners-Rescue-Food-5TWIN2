@@ -22,7 +22,18 @@ class RegisterController extends Controller
 
         $user = User::create($attributes);
         auth()->login($user);
-        
-        return redirect('/dashboard');
-    } 
+       return $this->redirectBasedOnUserType($user);
+    }
+
+    private function redirectBasedOnUserType(User $user)
+    {
+        switch ($user->user_type) {
+            case 'admin':
+                return redirect()->route('dashboard');
+            case 'user':
+            default:
+                return redirect()->route('front-office.index');
+        }
+    }
 }
+
