@@ -160,3 +160,4 @@ Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restau
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
+Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
