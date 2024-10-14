@@ -6,7 +6,7 @@
             </div>
         </div>
     </div>
-    <x-navbars.frontsidebar activePage='Events'></x-navbars.sidebar>
+    <x-navbars.frontsidebar activePage="events"></x-navbars.frontsidebar>
 
 <x-navbars.navs.auth titlePage="user Interface"></x-navbars.navs.auth>
     <main class="main-content mt-0">
