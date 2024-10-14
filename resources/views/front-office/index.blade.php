@@ -1,10 +1,8 @@
 @extends('components.front-office')
 
 @section('content')
-<x-navbars.frontsidebar activePage='index'></x-navbars.sidebar>
-
-<x-navbars.navs.auth titlePage="User Interface"></x-navbars.navs.auth>
-
+ <x-navbars.Navbar activePage='index'></x-navbars.Navbar>
+  <x-navbars.navs.auth titlePage="User Interface"></x-navbars.navs.auth> 
 <div class="container mt-4">
     <h1>Welcome to the Front Office</h1>
     <p>Explore our services and features below.</p>

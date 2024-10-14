@@ -40,7 +40,9 @@ Route::group(['middleware' => 'auth'], function () {
 	
 	Route::prefix('front-office')->name('front-office.')->group(function () {
 		Route::get('/', [FrontOfficeController::class, 'index'])->name('index');
-	
+		Route::get('profile', [FrontOfficeController::class, 'createProfile'])->name('profile');
+        Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
+
 		// Define the events routes here
 		Route::prefix('events')->name('events.')->group(function () {
 			Route::get('/', [FrontOfficeController::class, 'EventsList'])->name('index'); // List of events
@@ -172,5 +174,4 @@ Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
 #welcome page : 
-
 

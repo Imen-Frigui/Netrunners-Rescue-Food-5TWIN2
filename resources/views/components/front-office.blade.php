@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Front Office</title>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets') }}/css/nucleo-icons.css" rel="stylesheet" />
@@ -17,18 +16,15 @@
     @yield('styles')
 </head>
 <body>
-
-
-
 <main class="container">
-    @yield('content') <!-- This will hold the content for each page -->
+    @yield('content')
 </main>
 
 <footer>
     <p>&copy; {{ date('Y') }} Your Company. All rights reserved.</p>
 </footer>
 
-<script src="{{ mix('js/app.js') }}"></script> <!-- Adjust path as needed -->
-@stack('scripts') <!-- For additional scripts -->
+<script src="{{ mix('js/app.js') }}"></script>
+@stack('scripts') 
 </body>
 </html>
