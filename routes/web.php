@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
-
+use App\Http\Controllers\FrontOfficeController;
 
 Route::get('/', function () {
 	return redirect('sign-in');
@@ -37,7 +37,17 @@ Route::post('sign-out', [SessionsController::class, 'destroy'])->middleware('aut
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
+	
+	Route::prefix('front-office')->name('front-office.')->group(function () {
+		Route::get('/', [FrontOfficeController::class, 'index'])->name('index');
+	
+		// Define the events routes here
+		Route::prefix('events')->name('events.')->group(function () {
+			Route::get('/', [FrontOfficeController::class, 'EventsList'])->name('index'); // List of events
+			Route::get('/{event}', [FrontOfficeController::class, 'showEvent'])->name('show'); // Event details
 
+		});
+	});
 	Route::get('billing', function () {
 		return view('pages.billing');
 	})->name('billing');
@@ -126,6 +136,7 @@ Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('res
 Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
+Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])->name('restaurants.dashboard');
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -160,3 +171,6 @@ Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restau
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
+#welcome page : 
+
+

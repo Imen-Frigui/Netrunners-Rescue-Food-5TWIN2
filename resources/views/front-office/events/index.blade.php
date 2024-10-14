@@ -1,10 +1,11 @@
 <x-layout bodyClass="bg-gray-200">
+<x-navbars.frontsidebar activePage='events'></x-navbars.sidebar>
+
+<x-navbars.navs.auth titlePage="user Interface"></x-navbars.navs.auth>
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
             <div class="col-12">
-                <!-- Navbar -->
-                <x-navbars.navs.guest signin='static-sign-in' signup='static-sign-up'></x-navbars.navs.guest>
-                <!-- End Navbar -->
+       
             </div>
         </div>
     </div>

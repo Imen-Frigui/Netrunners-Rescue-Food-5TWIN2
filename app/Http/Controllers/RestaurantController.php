@@ -112,4 +112,5 @@ class RestaurantController extends Controller
 
         return redirect()->route('restaurants')->with('success', 'Restaurant deleted successfully.');
     }
+  
 }
