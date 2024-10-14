@@ -18,20 +18,7 @@
 </head>
 <body>
 
-<header>
-    <nav>
-        <!-- Add navigation links -->
-        <ul>
-            <li><a href="{{ route('front-office.events.index') }}">Events</a></li>
-            <li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-            </li>
-        </ul>
-    </nav>
-</header>
+
 
 <main class="container">
     @yield('content') <!-- This will hold the content for each page -->
