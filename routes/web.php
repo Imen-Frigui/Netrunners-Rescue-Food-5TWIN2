@@ -161,3 +161,5 @@ Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
+Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
+

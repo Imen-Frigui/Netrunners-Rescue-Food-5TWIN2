@@ -10,9 +10,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <style>
-        /* From Uiverse.io by satyamchaudharydev */ 
+        /* Add background image for the container */
+        .container {
+            /*background-image: url('https://www.shutterstock.com/image-photo/volunteers-share-food-poor-relieve-260nw-1364989817.jpg'); path to your image */
+            background-size: cover;
+           
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px; /* Adjust padding as needed */
+            border-radius: 10px;
+        }
+
+        /* Rest of the styles */
         .card {
-            --bg: #f7f7f8;
+            --bg: rgba(247, 247, 248, 0.9); /* Slight transparency */
             --hover-bg: #77DD77;
             --hover-text: #E50087;
             max-width: 40ch;
@@ -29,6 +40,8 @@
             justify-content: center;
             align-items: center;
             gap: 1em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+
         }
 
         .card__body {
@@ -77,53 +90,55 @@
 
         /* Icon Style */
         .card .icon {
-            width: 48px; /* Adjust the width */
-            height: 48px; /* Adjust the height */
-            margin-bottom: 10px; /* Space between icon and name */
-            fill: #000; /* Icon color */
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            fill: #000;
         }
 
         /* Pagination Styles */
         .pagination {
-            justify-content: center; /* Center the pagination */
-            margin-top: 20px; /* Space above pagination */
+            justify-content: center;
+            margin-top: 20px;
         }
 
         .pagination li {
-            margin: 0 5px; /* Spacing between pagination items */
+            margin: 0 5px;
         }
 
         .pagination li a {
-            display: block; /* Make the entire area clickable */
-            padding: 8px 12px; /* Padding for links */
-            border: 1px solid #E50087; /* Border color */
-            border-radius: 5px; /* Rounded corners */
-            color: #E50087; /* Text color */
-            text-decoration: none; /* No underline */
-            transition: background 0.3s, color 0.3s; /* Smooth transition */
+            display: block;
+            padding: 8px 12px;
+            border: 1px solid #E50087;
+            border-radius: 5px;
+            color: #E50087;
+            text-decoration: none;
+            transition: background 0.3s, color 0.3s;
         }
 
         .pagination li a:hover {
-            background: #E50087; /* Background color on hover */
-            color: white; /* Change text color on hover */
+            background: #E50087;
+            color: white;
         }
 
         .pagination .active a {
-            background: #E50087; /* Active page background color */
-            color: white; /* Active page text color */
-            border: 1px solid #E50087; /* Keep the border the same */
+            background: #E50087;
+            color: white;
+            border: 1px solid #E50087;
         }
 
         .pagination .disabled a {
-            color: #ccc; /* Color for disabled links */
-            pointer-events: none; /* Disable clicking */
-            background: none; /* No background for disabled */
-            border: 1px solid transparent; /* No border */
+            color: #ccc;
+            pointer-events: none;
+            background: none;
+            border: 1px solid transparent;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
+        <h1 class="text-capitalize ps-3 pb-3">Our Charities</h1>
+        
         <div class="row">
             @foreach($charities as $charity)
                 <div class="col-md-3 mb-4"> <!-- 4 cards in a row -->
@@ -138,7 +153,7 @@
                             {{ $charity->contact_info['email'] ?? '' }}
                         </div>
                         <span>
-                            <a rel="tooltip" class="" href="{{ route('charities.details', $charity->id) }}" title="View Details">View Details</a>
+                            <a rel="tooltip" class="" href="{{ route('charities.frontdetails', $charity->id) }}" title="View Details">View Details</a>
                         </span>
                     </div>
                 </div>

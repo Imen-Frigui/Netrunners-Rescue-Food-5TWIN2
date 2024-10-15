@@ -40,6 +40,14 @@ public function frontindex()
         return view('charity.details', compact('charity'));
     }
     
+    public function frontdetails($id)
+    {
+        // Find the charity by ID
+        $charity = Charity::findOrFail($id);
+    
+        // Pass charity data to the view
+        return view('charity.frontdetails', compact('charity'));
+    }
 
    // Store a newly created charity in the database
 public function store(Request $request) {
