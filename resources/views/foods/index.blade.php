@@ -58,7 +58,7 @@
                                                     @elseif ($food->status == 'expired')
                                                     <span class="badge bg-danger">Expired</span>
                                                     @else
-                                                    <span class="badge bg-secondary">Donated</span>
+                                                    <span class="badge bg-info">Donated</span>
                                                     @endif
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -79,7 +79,7 @@
                                                                 </button>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item text-primary d-flex align-items-center details-button" href="#" data-food-id="{{ $food->id }}">
+                                                                <a class="dropdown-item text-info d-flex align-items-center details-button" href="#" data-food-id="{{ $food->id }}">
                                                                     <i class="material-icons me-2" style="font-size: 18px;">info</i> Details
                                                                 </a>
                                                             </li>

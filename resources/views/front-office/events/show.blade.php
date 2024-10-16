@@ -1,14 +1,18 @@
 <x-layout bodyClass="bg-gray-200">
+
     <div class="container position-sticky z-index-sticky top-0">
         <div class="row">
             <div class="col-12">
-                <x-navbars.navs.guest signin='static-sign-in' signup='static-sign-up'></x-navbars.navs.guest>
             </div>
         </div>
     </div>
+    <x-navbars.Navbar activePage="showEvent"></x-navbars.Navbar>
 
+<x-navbars.navs.auth titlePage="user Interface"></x-navbars.navs.auth>
     <main class="main-content mt-0">
         <div class="page-header align-items-start min-vh-100">
+                        <img src="{{ asset('assets/img/event2.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
+
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container my-auto">
                 <div class="row">

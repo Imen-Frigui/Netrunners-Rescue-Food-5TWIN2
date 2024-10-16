@@ -20,7 +20,21 @@ class FoodController extends Controller
         $foods = Food::paginate(5);
         return view('foods.index', compact('foods'));
     }
+    public function donations()
+    {
+        // Fetch food items where the expiration date is near
+        $foods = Food::where('expiration_date', '<=', now()->addDays(7))
+            ->where('status', 'available')
+            ->get();
 
+        return view('donations.index', compact('foods'));
+    }
+
+    public function showDonation($id)
+    {
+        $food = Food::findOrFail($id);
+        return view('donations.show', compact('food'));
+    }
     /**
      * Show the form for creating a new resource.
      *
