@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Food;
 use App\Models\PickupRequest;
+use App\Models\Restaurant;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -64,8 +66,10 @@ class PickupRequestController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('pickups.create', compact('users'));
-
+        $restaurants = Restaurant::all();
+        $food = Food::all();
+    
+        return view('pickups.create', compact('users', 'restaurants', 'food'));
     }
 
     /**
@@ -77,18 +81,18 @@ class PickupRequestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'restaurant_id' => 'required|exists:restaurants,id',
-            'pickup_time' => 'required|date',
-            'pickup_address' => 'required|string|max:255',
-            'status' => 'required|in:pending,approved,rejected',
-            'food_id' => 'required|exists:foods,id',
+            'user_id' => 'required|integer',  
+            'restaurant_id' => 'required|integer',  
+            'pickup_time' => 'required|date',  
+            'pickup_address' => 'required|string|max:255',  
+            'status' => 'required|in:pending,approved,rejected',  
+            'food_id' => 'required|integer', 
         ]);
 
         PickupRequest::create($request->all());
 
 
-        return redirect()->route('pickups.index')->with('success', 'Pickup request created successfully.');
+        return redirect()->route('pickup-management')->with('success', 'Pickup request created successfully.');
     }
 
     /**
