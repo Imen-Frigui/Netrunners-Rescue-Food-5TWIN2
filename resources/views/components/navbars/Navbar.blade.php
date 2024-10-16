@@ -40,17 +40,19 @@
 
                 <!-- Events Section -->
                 <li class="nav-item">
-                    <a class="nav-link {{ str_contains($activePage, 'events') ? 'active' : '' }}" 
+                    <a class="nav-link {{ $activePage == 'events' ? 'active' : '' }}"
                        href="{{ route('events.all') }}">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Events</span>
                     </a>
                 </li>
+
+                 <!-- Resturant Section -->
                 <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'showEvent' ? 'active' : '' }}" 
-                       href="{{ route('events.show', ['event' => 'your-event-slug']) }}">
+                    <a class="nav-link {{ $activePage == 'restaurants' ? 'active' : '' }}"
+                       href="{{ route('restaurants', ['restaurants' => 'your-restaurant-slug']) }}">
                         <i class="fas fa-calendar-day"></i>
-                        <span>Restaurant</span>
+                        <span>Resturant</span>
                     </a>
                 </li>
 
