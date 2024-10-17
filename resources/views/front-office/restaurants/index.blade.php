@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 <x-layout bodyClass="bg-gray-200">
     <x-navbars.Navbar activePage="restaurants"></x-navbars.Navbar>
+=======
+{{-- <x-layout bodyClass="bg-gray-200">
+    <x-navbars.Navbar activePage="events"></x-navbars.Navbar>
+>>>>>>> 54ed50e37d3390a4cd1d94fb787d68b65d7def65
 
     <x-navbars.navs.auth titlePage="User Interface"></x-navbars.navs.auth>
 
@@ -37,4 +42,4 @@
             <x-footers.guest></x-footers.guest>
         </div>
     </main>
-</x-layout>
+</x-layout> --}}

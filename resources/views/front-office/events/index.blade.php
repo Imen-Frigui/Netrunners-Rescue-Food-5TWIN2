@@ -23,6 +23,14 @@
                                             <p class="text-sm"><strong>Location:</strong> {{ $event->location }}</p>
                                             <p class="text-sm"><strong>Date:</strong> {{ $event->event_date->format('F j, Y, g:i a') }}</p>
                                             <p class="text-sm"><strong>Max Participants:</strong> {{ $event->max_participants }}</p>
+                                            <p class="text-sm"><strong>Status:</strong> 
+                                                <span class="badge 
+                                                    @if($event->status === 'Upcoming') bg-success
+                                                    @elseif($event->status === 'Ongoing') bg-warning
+                                                    @else bg-danger @endif">
+                                                    {{ $event->status }}
+                                                </span>
+                                            </p>
                                         </div>
                                         <div class="text-center">
                                             <a href="{{ route('events.show', $event->id) }}" class="btn bg-gradient-primary w-100 my-4 mb-2">View Event</a>
