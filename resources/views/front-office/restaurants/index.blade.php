@@ -1,4 +1,4 @@
-<x-layout bodyClass="bg-gray-200">
+{{-- <x-layout bodyClass="bg-gray-200">
     <x-navbars.Navbar activePage="events"></x-navbars.Navbar>
 
     <x-navbars.navs.auth titlePage="User Interface"></x-navbars.navs.auth>
@@ -39,4 +39,4 @@
             <x-footers.guest></x-footers.guest>
         </div>
     </main>
-</x-layout>
+</x-layout> --}}

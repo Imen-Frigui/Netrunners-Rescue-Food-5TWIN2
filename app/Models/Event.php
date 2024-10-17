@@ -51,5 +51,17 @@ class Event extends Model
     }
     
 
+    public function getStatusAttribute()
+    {
+        if ($this->event_date->isFuture()) {
+            return 'Upcoming';
+        } elseif ($this->event_date->isToday()) {
+            return 'Ongoing';
+        } else {
+            return 'Completed';
+        }
+    }
+
+
 
 }

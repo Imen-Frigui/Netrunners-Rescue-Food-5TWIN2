@@ -26,7 +26,14 @@
                                 <p><strong>Location:</strong> {{ $event->location }}</p>
                                 <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($event->event_date)->format('d M Y, H:i') }}</p>
                                 <p><strong>Max Participants:</strong> {{ $event->max_participants }}</p>
-                                <p><strong>Status:</strong> {{ $event->enabled ? 'Enabled' : 'Disabled' }}</p>
+                                <p><strong>Status:</strong>
+                                    <span class="badge
+                                        @if($event->status === 'Upcoming') bg-success
+                                        @elseif($event->status === 'Ongoing') bg-warning
+                                        @else bg-danger @endif">
+                                        {{ $event->status }}
+                                    </span>
+                                </p>
                             </div>
                             <div class="card-footer">
                                 <a href="{{ route('events.all') }}" class="btn btn-secondary">Back to Events</a>
