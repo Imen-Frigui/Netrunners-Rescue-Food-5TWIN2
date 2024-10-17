@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Route for storing a new charity
 	Route::post('/charities', [CharityController::class, 'store'])->name('charities.store');
-
+	
 	// Route for showing a charity (optional if you have a charity show page)
 	Route::get('/charities/{charity}', [CharityController::class, 'show'])->name('charities.show');
 
