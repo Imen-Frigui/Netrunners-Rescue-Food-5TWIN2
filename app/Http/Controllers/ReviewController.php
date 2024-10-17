@@ -40,17 +40,20 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'user_id' => 'required|integer',
-        'comment' => 'required|string',
-        'rating' => 'required|integer|between:1,5'
-    ]);
-
-    $review = Review::create($validatedData);
-    return redirect()->route('reviews')->with('success', 'Review created successfully.');
-
-}
+    {
+        $validatedData = $request->validate([
+            'comment' => 'required|string',
+            'rating' => 'required|integer|between:1,5'
+        ]);
+    
+        // Set user_id statically to 1
+        $validatedData['user_id'] = 1;
+    
+        $review = Review::create($validatedData);
+    
+        return redirect()->route('reviews')->with('success', 'Review created successfully.');
+    }
+    
 
     /**
      * Display the specified resource.
@@ -96,19 +99,22 @@ class ReviewController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'user_id' => 'integer',
             'comment' => 'string',
             'rating' => 'integer|between:1,5'
         ]);
     
         $review = Review::find($id);
         if ($review) {
+            // Ensure user_id remains 1
+            $validatedData['user_id'] = 1;
+    
             $review->update($validatedData);
             return redirect()->route('reviews')->with('success', 'Review updated successfully.');
         } else {
             return response()->json(['message' => 'Review not found'], 404);
         }
     }
+    
     
 
     /**
@@ -123,5 +129,15 @@ class ReviewController extends Controller
         $review->delete();
 return redirect()->route('reviews')->with('success', 'Review deleted successfully.');
     }
+
+
+    public function indexFront ()
+    {
+        $reviews = Review::where('user_id', auth()->id())->get();
+    return view('reviews.index', compact('reviews'));
+    }
+
+
+
     
 }

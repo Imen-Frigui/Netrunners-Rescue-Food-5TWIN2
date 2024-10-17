@@ -12,10 +12,7 @@
 
 
 
-                <div class="form-group">
-                    <label for="phone">user</label>
-                    <input type="text" name="user_id" id="user_id" class="form-control" required>
-                </div> 
+                
 
                 <div class="form-group">
                     <label for="phone">Comment</label>

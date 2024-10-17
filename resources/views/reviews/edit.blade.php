@@ -13,17 +13,7 @@
 
                 <div class="card p-3 mb-4">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="user_id">User ID</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="material-icons">person</i>
-                                </span>
-                                <input type="text" name="user_id" id="user_id" class="form-control" 
-                                       value="{{ old('user_id', $review->user_id) }}" 
-                                       placeholder="Enter user ID" required>
-                            </div>
-                        </div>
+                       
 
                         <div class="form-group">
                             <label for="comment">Comment</label>

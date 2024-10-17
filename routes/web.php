@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
 
+
 use App\Http\Controllers\FoodController;
 use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
