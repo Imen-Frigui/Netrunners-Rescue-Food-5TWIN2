@@ -115,7 +115,8 @@ class RestaurantController extends Controller
 
     public function showFront(Restaurant $restaurant)
     {
-        return view('front-office.restaurants.show', compact('restaurant'));
+        $foods = $restaurant->foods()->get();
+        return view('front-office.restaurants.show', compact('restaurant', 'foods'));
     }
 
     public function all()
