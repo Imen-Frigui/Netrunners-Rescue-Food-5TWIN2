@@ -77,7 +77,7 @@ public function frontindex()
             'beneficiaries_count.required' => 'Le nombre de bénéficiaires est requis.',
             'beneficiaries_count.integer' => 'Le nombre de bénéficiaires doit être un nombre entier.',
             'beneficiaries_count.min' => 'Le nombre de bénéficiaires doit être au moins 1.',
-            'preferred_food_types.string' => 'Les types d\'aliments préférés doivent être un tableau.',
+            'preferred_food_types.string' => 'required',
             'last_received_donation.date' => 'La date de la dernière donation reçue doit être une date valide.',
             'donation_frequency.max' => 'La fréquence de donation ne peut pas dépasser 100 caractères.',
             'assigned_drivers_volunteers.max' => 'Les chauffeurs/volontaires assignés ne peuvent pas dépasser 255 caractères.',

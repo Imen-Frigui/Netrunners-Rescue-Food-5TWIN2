@@ -84,31 +84,70 @@
                             <div class="col-md-6">
                                 <!-- Preferred Food Types -->
                                 <div class="mb-3">
-    <label for="preferred_food_types" class="form-label">Preferred Food Type</label>
-    <select class="form-control border border-2 p-2 @error('preferred_food_types') is-invalid @enderror" 
-            id="preferred_food_types" 
-            name="preferred_food_types"> <!-- Remove brackets -->
-        <option value="" disabled selected>Select a Food Type</option> <!-- Default option -->
-        <option value="vegetables" {{ old('preferred_food_types') == 'vegetables' ? 'selected' : '' }}>Vegetables</option>
-        <option value="fruits" {{ old('preferred_food_types') == 'fruits' ? 'selected' : '' }}>Fruits</option>
-        <option value="meat" {{ old('preferred_food_types') == 'meat' ? 'selected' : '' }}>Meat</option>
-        <option value="grains" {{ old('preferred_food_types') == 'grains' ? 'selected' : '' }}>Grains</option>
-    </select>
-    <small class="form-text text-muted">Optional, select one food type.</small>
-    @error('preferred_food_types') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <label for="preferred_food_types" class="form-label">Preferred Food Type</label>
+                                    <select class="form-control border border-2 p-2 @error('preferred_food_types') is-invalid @enderror" id="preferred_food_types" name="preferred_food_types">
+                                        <option value="" disabled selected>Select a Food Type</option>
+                                        <option value="vegetables" {{ old('preferred_food_types') == 'vegetables' ? 'selected' : '' }}>Vegetables</option>
+                                        <option value="fruits" {{ old('preferred_food_types') == 'fruits' ? 'selected' : '' }}>Fruits</option>
+                                        <option value="meat" {{ old('preferred_food_types') == 'meat' ? 'selected' : '' }}>Meat</option>
+                                        <option value="grains" {{ old('preferred_food_types') == 'grains' ? 'selected' : '' }}>Grains</option>
+                                    </select>
+                                    <small class="form-text text-muted">Optional, select one food type.</small>
+                                    @error('preferred_food_types') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                </div>
+
+                                <!-- Last Received Donation -->
+                                <div class="mb-3">
+                                    <label for="last_received_donation" class="form-label">Last Received Donation</label>
+                                    <input type="date" class="form-control border border-2 p-2 @error('last_received_donation') is-invalid @enderror" id="last_received_donation" name="last_received_donation" value="{{ old('last_received_donation') }}">
+                                    <small class="form-text text-muted">Optional, date of last received donation.</small>
+                                    @error('last_received_donation') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                </div>
+
+                                <!-- Donation Frequency -->
+                                <div class="mb-3">
+    <label for="donation_frequency" class="form-label">Donation Frequency (1 = Weekly, 2 = Monthly, 3 = Annually)</label>
+    <input type="number" class="form-control border border-2 p-2 @error('donation_frequency') is-invalid @enderror" id="donation_frequency" name="donation_frequency" min="1" value="{{ old('donation_frequency') }}" required>
+    <small class="form-text text-muted">Required, input frequency as 1 (weekly), 2 (monthly), or 3 (annually).</small>
+    @error('donation_frequency') <span class="invalid-feedback">{{ $message }}</span> @enderror
 </div>
 
 
-
-
-
-
-                                <!-- Optional: Other Info -->
+                                <!-- Assigned Drivers/Volunteers -->
                                 <div class="mb-3">
-                                    <label for="request_history" class="form-label">Request History</label>
-                                    <textarea class="form-control border border-2 p-2 @error('request_history') is-invalid @enderror" id="request_history" name="request_history" rows="3">{{ old('request_history') }}</textarea>
-                                    <small class="form-text text-muted">Optional, describe the request history here.</small>
-                                    @error('request_history') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <label for="assigned_drivers_volunteers" class="form-label">Assigned Drivers/Volunteers</label>
+                                    <input type="text" class="form-control border border-2 p-2 @error('assigned_drivers_volunteers') is-invalid @enderror" id="assigned_drivers_volunteers" name="assigned_drivers_volunteers" value="{{ old('assigned_drivers_volunteers') }}">
+                                    <small class="form-text text-muted">Optional, list assigned drivers/volunteers.</small>
+                                    @error('assigned_drivers_volunteers') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                </div>
+
+                                <!-- Charity Rating -->
+                                <div class="mb-3">
+                                    <label for="charity_rating" class="form-label">Charity Rating</label>
+                                    <input type="number" min="1" max="5" class="form-control border border-2 p-2 @error('charity_rating') is-invalid @enderror" id="charity_rating" name="charity_rating" value="{{ old('charity_rating') }}">
+                                    <small class="form-text text-muted">Optional, rate the charity from 1 to 5.</small>
+                                    @error('charity_rating') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                </div>
+
+                                <!-- Charity Approval Status -->
+                                <div class="mb-3">
+                                    <label for="charity_approval_status" class="form-label">Charity Approval Status</label>
+                                    <select class="form-control border border-2 p-2 @error('charity_approval_status') is-invalid @enderror" id="charity_approval_status" name="charity_approval_status">
+                                        <option value="" disabled selected>Select Approval Status</option>
+                                        <option value="approved" {{ old('charity_approval_status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="pending" {{ old('charity_approval_status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="rejected" {{ old('charity_approval_status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                    </select>
+                                    <small class="form-text text-muted">Optional, status of the charity's approval.</small>
+                                    @error('charity_approval_status') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                </div>
+
+                                <!-- Inventory Status -->
+                                <div class="mb-3">
+                                    <label for="inventory_status" class="form-label">Inventory Status</label>
+                                    <textarea class="form-control border border-2 p-2 @error('inventory_status') is-invalid @enderror" id="inventory_status" name="inventory_status" rows="3">{{ old('inventory_status') }}</textarea>
+                                    <small class="form-text text-muted">Optional, describe the inventory status here.</small>
+                                    @error('inventory_status') <span class="invalid-feedback">{{ $message }}</span> @enderror
                                 </div>
 
                                 <!-- Current Requests -->
