@@ -40,8 +40,12 @@ Route::group(['middleware' => 'auth'], function () {
 	
 	Route::prefix('front-office')->name('front-office.')->group(function () {
 		Route::get('/', [FrontOfficeController::class, 'index'])->name('index');
+		Route::get('about', [FrontOfficeController::class, 'aboutUs'])->name('about');
+
 		Route::get('profile', [FrontOfficeController::class, 'createProfile'])->name('profile');
         Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
+	// routes/web.php
+	
 
 		// Define the events routes here
 		// Route::prefix('events')->name('events.')->group(function () {
@@ -167,7 +171,8 @@ Route::get('/contact', function () {
 
 
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
-
+Route::get('/resturant-all', [RestaurantController::class, 'all'])->name('restaurants.all');
+Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showFront'])->name('restaurants.front.show');
 // Reviews routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 

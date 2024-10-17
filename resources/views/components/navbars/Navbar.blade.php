@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <!-- Navbar Brand -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('front-office.index') }}">
-            <img src="{{ asset('assets/img/logo1.png') }}" alt="logo" class="navbar-logo">
+        <img src="{{ asset('assets/img/logo1.png') }}" alt="logo" style="width: 120px; height: auto;">
             
         </a>
 
@@ -32,7 +32,8 @@
                 <!-- About Us -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'about' ? 'active' : '' }}"
-                       href="">
+                    href="{{ route('front-office.about') }}">
+
                         <i class="fas fa-info-circle"></i>
                         <span>About Us</span>
                     </a>
@@ -50,7 +51,7 @@
                  <!-- Resturant Section -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'restaurants' ? 'active' : '' }}"
-                       href="{{ route('restaurants', ['restaurants' => 'your-restaurant-slug']) }}">
+                       href="{{ route('restaurants.all') }}">
                         <i class="fas fa-calendar-day"></i>
                         <span>Resturant</span>
                     </a>
@@ -80,16 +81,17 @@
                         <span> Profile</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                                <li class="nav-item">
                     <form method="POST" action="{{ route('logout') }}" class="d-none" id="logout-form">
                         @csrf
                     </form>
                     <a href="javascript:;" class="nav-link text-body font-weight-bold px-0" 
-                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <i class="fa fa-user me-sm-1"></i>
-                        <span>Sign Out</span>
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    <i class="fa fa-user me-sm-1 text-danger"></i>
+                        <span class="text-danger">Sign Out</span> <!-- Apply text-danger class for Bootstrap -->
                     </a>
                 </li>
+
             </ul>
         </div>
     </div>
