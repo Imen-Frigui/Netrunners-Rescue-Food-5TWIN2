@@ -51,7 +51,7 @@
                  <!-- Resturant Section -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'restaurants' ? 'active' : '' }}"
-                       href="{{ route('restaurants', ['restaurants' => 'your-restaurant-slug']) }}">
+                       href="{{ route('restaurants.all') }}">
                         <i class="fas fa-calendar-day"></i>
                         <span>Resturant</span>
                     </a>
