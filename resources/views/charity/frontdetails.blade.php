@@ -6,6 +6,39 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">{{ $charity->charity_name }} Details</h6>
+                        <div>
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-LQjbQ1R/BNeX99hrzujfR72t39u56bD8gSkpX8z9HIe8IH+GPmB36Ju7B+0xDk1FfWyFr1BoQcoNUVZKHzUTsA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CDN for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    @php
+    $rating = $charity->charity_rating; // Assuming charity_rating is between 0-5
+    $fullStars = floor($rating); // Full stars
+    $halfStar = $rating - $fullStars >= 0.5 ? 1 : 0; // 1 if a half star is needed
+    $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+@endphp
+
+<div class=" ps-3">
+    <!-- Full Stars -->
+    @for ($i = 0; $i < $fullStars; $i++)
+        <i class="fas fa-star" style="color: gold;"></i>
+    @endfor
+
+    <!-- Half Star if applicable -->
+    @if ($halfStar)
+        <i class="fas fa-star-half-alt" style="color: gold;"></i>
+    @endif
+
+    <!-- Empty Stars -->
+    @for ($i = 0; $i < $emptyStars; $i++)
+        <i class="far fa-star" style="color: gold;"></i>
+    @endfor
+
+    <!-- Rating Number -->
+    <strong style="color: gold; margin-left: 10px;">{{ number_format($rating, 2) }}</strong>
+</div>
+</div>
                     </div>
                 </div>
                 <div class="card-body px-4 py-2">
@@ -39,7 +72,6 @@
                             'Assigned Drivers/Volunteers' => !empty($assignedDriversVolunteers) ? implode(', ', array_map('htmlspecialchars', $assignedDriversVolunteers)) : 'N/A',
                             'Current Requests' => !empty($currentRequests) ? 
                                 '<ul>' . implode('', array_map(fn($request) => '<li>Item: ' . htmlspecialchars($request['item'] ?? 'N/A') . ', Quantity: ' . htmlspecialchars($request['quantity'] ?? 'N/A') . '</li>', $currentRequests)) . '</ul>' : 'N/A',
-                            'Charity Rating' => htmlspecialchars($charity->charity_rating),
                             'Charity Approval Status' => function() use ($charity) {
                                 $status = ucfirst($charity->charity_approval_status);
                                 $badgeClass = match ($charity->charity_approval_status) {

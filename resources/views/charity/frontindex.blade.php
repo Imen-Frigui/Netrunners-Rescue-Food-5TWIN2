@@ -8,17 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-LQjbQ1R/BNeX99hrzujfR72t39u56bD8gSkpX8z9HIe8IH+GPmB36Ju7B+0xDk1FfWyFr1BoQcoNUVZKHzUTsA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Bootstrap CDN for styling -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-LQjbQ1R/BNeX99hrzujfR72t39u56bD8gSkpX8z9HIe8IH+GPmB36Ju7B+0xDk1FfWyFr1BoQcoNUVZKHzUTsA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         /* Add background image for the container */
         .container {
+            background-image: url("{{ asset('assets') }}/img/charityfoodimg.jpg");
+
             /*background-image: url('https://www.shutterstock.com/image-photo/volunteers-share-food-poor-relieve-260nw-1364989817.jpg'); path to your image */
             background-size: cover;
-           
             background-position: center;
             background-repeat: no-repeat;
             padding: 20px; /* Adjust padding as needed */
             border-radius: 10px;
+        }
+        .title{  
+            padding:  10px 60px 20px 10px;
+            text-align: center; /* Center the title text */
+            background-color: #f0f0f0; /* Optional: Add a background color */
+            border-radius: 5px; /* Optional: Add rounded corners */
         }
 
         /* Rest of the styles */
@@ -41,7 +50,6 @@
             align-items: center;
             gap: 1em;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-
         }
 
         .card__body {
@@ -136,9 +144,10 @@
     </style>
 </head>
 <body>
+<h1 class="title text-capitalize ">Our Charities</h1>
     <div class="container mt-5">
-        <h1 class="text-capitalize ps-3 pb-3">Our Charities</h1>
-        
+       
+    
         <div class="row">
             @foreach($charities as $charity)
                 <div class="col-md-3 mb-4"> <!-- 4 cards in a row -->
@@ -149,9 +158,47 @@
                             </svg>
                         </div>
                         <strong>{{ \Illuminate\Support\Str::limit($charity->charity_name, 7, '...') }}</strong>
+
                         <div class="card__body">
-                            {{ $charity->contact_info['email'] ?? '' }}
-                        </div>
+  <!-- Charity Rating as Stars -->
+
+@php
+    $rating = $charity->charity_rating; // Assuming charity_rating is between 0-5
+    $fullStars = floor($rating); // Full stars
+    $halfStar = $rating - $fullStars >= 0.5 ? 1 : 0; // 1 if a half star is needed
+    $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+@endphp
+
+<div style="display: flex; justify-content: center; align-items: center;">
+    <!-- Full Stars -->
+    @for ($i = 0; $i < $fullStars; $i++)
+        <i class="fas fa-star" style="color: gold;"></i>
+    @endfor
+
+    <!-- Half Star if applicable -->
+    @if ($halfStar)
+        <i class="fas fa-star-half-alt" style="color: gold;"></i>
+    @endif
+
+    <!-- Empty Stars -->
+    @for ($i = 0; $i < $emptyStars; $i++)
+        <i class="far fa-star" style="color: gold;"></i>
+    @endfor
+
+    <!-- Rating Number -->
+    <strong style="color: gold; margin-left: 10px;">{{ number_format($rating, 2) }}</strong>
+</div>
+
+
+
+
+    <!-- Other Charity Info -->
+    {{ $charity->contact_info['email'] ?? '' }}
+</div>
+
+
+
+
                         <span>
                             <a rel="tooltip" class="" href="{{ route('charities.frontdetails', $charity->id) }}" title="View Details">View Details</a>
                         </span>
