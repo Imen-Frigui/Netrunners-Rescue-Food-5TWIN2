@@ -21,8 +21,12 @@
                                 <ul class="list-group">
                                     @foreach($pickups as $pickup)
                                         <li class="list-group-item">
-                                            <h5 class="font-weight-bold">{{ $pickup->food->food_name }} from {{ $pickup->restaurant->name }}</h5>
-                                            <p class="mb-1"><strong>Pickup Time:</strong> {{ $pickup->pickup_time}}</p>
+                                                                    <h5 class="font-weight-bold">
+                                {{ $pickup->food ? $pickup->food->food_name : 'Food not available' }}
+                                from
+                                {{ $pickup->restaurant ? $pickup->restaurant->name : 'Restaurant not available' }}
+                            </h5>
+                                                                        <p class="mb-1"><strong>Pickup Time:</strong> {{ $pickup->pickup_time}}</p>
                                             <p class="mb-1"><strong>Address:</strong> {{ $pickup->pickup_address }}</p>
                                             <p class="mb-1"><strong>Status:</strong> {{ $pickup->status }}</p>
                                             <p class="text-muted">Requested on: {{ $pickup->request_time }}</p>
