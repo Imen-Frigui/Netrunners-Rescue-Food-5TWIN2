@@ -66,7 +66,7 @@ public function frontindex()
             'assigned_drivers_volunteers' => 'nullable|string|max:255',
             'current_requests' => 'nullable|string',
             'charity_rating' => 'nullable|numeric|min:0|max:5',
-            'charity_approval_status' => 'required|in:approved,pending,rejected',
+            'charity_approval_status' => 'nullable|in:approved,pending,rejected',
         ], [
             // Custom error messages
             'charity_name.required' => 'Le nom de la charité est requis.',
@@ -84,7 +84,6 @@ public function frontindex()
             'charity_rating.numeric' => 'La note de la charité doit être un nombre.',
             'charity_rating.min' => 'La note de la charité doit être au moins 0.',
             'charity_rating.max' => 'La note de la charité ne peut pas dépasser 5.',
-            'charity_approval_status.required' => 'Le statut d\'approbation de la charité est requis.',
             'charity_approval_status.in' => 'Le statut d\'approbation de la charité doit être approuvé, en attente ou rejeté.',
         ]);
     

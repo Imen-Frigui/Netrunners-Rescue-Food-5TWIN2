@@ -1,4 +1,14 @@
+
+@extends('components.front-office')
+
+@section('content')
+
+<x-navbars.Navbar activePage='charities'></x-navbars.Navbar>
+
+
 <!DOCTYPE html>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -144,7 +154,7 @@
     </style>
 </head>
 <body>
-<h1 class="title text-capitalize ">Our Charities</h1>
+<h1 class=" mt-7  title text-capitalize ">Our Charities</h1>
     <div class="container mt-5">
        
     
