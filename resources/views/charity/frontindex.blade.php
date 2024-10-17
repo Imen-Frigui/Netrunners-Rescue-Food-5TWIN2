@@ -154,7 +154,7 @@
     </style>
 </head>
 <body>
-<h1 class="title text-capitalize ">Our Charities</h1>
+<h1 class=" mt-7  title text-capitalize ">Our Charities</h1>
     <div class="container mt-5">
        
     
