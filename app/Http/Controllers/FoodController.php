@@ -23,7 +23,7 @@ class FoodController extends Controller
     public function donations()
     {
         // Fetch food items where the expiration date is near
-        $foods = Food::where('expiration_date', '<=', now()->addDays(7))
+        $foods = Food::where('expiration_date', [now(), now()->addDays(7)])
             ->where('status', 'available')
             ->get();
 

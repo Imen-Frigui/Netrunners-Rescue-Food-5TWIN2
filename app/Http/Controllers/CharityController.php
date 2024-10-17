@@ -16,6 +16,14 @@ class CharityController extends Controller
 }
 
 
+public function frontindex()
+{
+    $charities = Charity::paginate(4); // Display 4 charities per page
+    return view('charity.frontindex', compact('charities'))->with('activePage', 'frontindex');
+}
+
+
+
     // Show the form for creating a new charity
     public function create()
     {
@@ -32,6 +40,14 @@ class CharityController extends Controller
         return view('charity.details', compact('charity'));
     }
     
+    public function frontdetails($id)
+    {
+        // Find the charity by ID
+        $charity = Charity::findOrFail($id);
+    
+        // Pass charity data to the view
+        return view('charity.frontdetails', compact('charity'));
+    }
 
    // Store a newly created charity in the database
 public function store(Request $request) {
