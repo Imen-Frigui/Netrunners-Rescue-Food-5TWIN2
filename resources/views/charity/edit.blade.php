@@ -35,7 +35,7 @@
                                     <!-- Charity Name -->
                                     <div class="mb-3">
                                         <label for="charity_name" class="form-label">Charity Name</label>
-                                        <input type="text" class="form-control border-2 p-2 @error('charity_name') is-invalid @enderror" id="charity_name" name="charity_name" value="{{ old('charity_name', $charity->charity_name) }}" required>
+                                        <input type="text" class="form-control border border-2 p-2 @error('charity_name') is-invalid @enderror" id="charity_name" name="charity_name" value="{{ old('charity_name', $charity->charity_name) }}" required>
                                         @error('charity_name')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -44,7 +44,7 @@
                                     <!-- Address -->
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control border-2 p-2 @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address', $charity->address) }}" required>
+                                        <input type="text" class="form-control border border-2 p-2 @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address', $charity->address) }}" required>
                                         @error('address')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -84,7 +84,7 @@ $phone = $contactInfo['phone'] ?? 'N/A';  // Use 'N/A' as default if not set
                                     <!-- Charity Type -->
                                     <div class="mb-3">
                                         <label for="charity_type" class="form-label">Charity Type</label>
-                                        <input type="text" class="form-control border-2 p-2 @error('charity_type') is-invalid @enderror" id="charity_type" name="charity_type" value="{{ old('charity_type', $charity->charity_type) }}" required>
+                                        <input type="text" class="form-control border border-2 p-2 @error('charity_type') is-invalid @enderror" id="charity_type" name="charity_type" value="{{ old('charity_type', $charity->charity_type) }}" required>
                                         @error('charity_type')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
