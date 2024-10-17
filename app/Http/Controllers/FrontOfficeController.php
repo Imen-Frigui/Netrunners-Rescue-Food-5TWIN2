@@ -52,6 +52,11 @@ class FrontOfficeController extends Controller
 
         return back()->withStatus('Profile successfully updated.');
     }
+    
+    public function aboutUs()
+    {
+        return view('front-office.about');
+    }
 
     // Add other show methods for restaurants, foods, pickups as needed
 }

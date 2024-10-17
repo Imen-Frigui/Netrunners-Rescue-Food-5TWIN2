@@ -32,7 +32,8 @@
                 <!-- About Us -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'about' ? 'active' : '' }}"
-                       href="">
+                    href="{{ route('front-office.about') }}">
+
                         <i class="fas fa-info-circle"></i>
                         <span>About Us</span>
                     </a>
