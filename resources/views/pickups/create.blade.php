@@ -1,4 +1,4 @@
-<x-layout bodyClass="g-sidenav-show  bg-gray-200">
+<x-layout bodyClass="g-sidenav-show bg-gray-200">
     <x-navbars.sidebar activePage="pickup-management"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="Add PickUp Request"></x-navbars.navs.auth>
@@ -25,40 +25,66 @@
 
                             <form method="POST" action="{{ route('pickup.store') }}">
                                 @csrf
-                                
-                                <div class="form-group">
-                                    <label for="user_id">Customer</label>
-                                    <select name="user_id" class="form-control">
+
+                                <!-- Customer Selection -->
+                                <div class="form-group mb-3">
+                                    <label for="user_id" class="form-label">Customer</label>
+                                    <select name="user_id" class="form-select" aria-label="Select Customer">
+                                        <option selected disabled>Select Customer</option>
                                         @foreach($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
-                               
+                                <!-- Restaurant Selection -->
+                                <div class="form-group mb-3">
+                                    <label for="restaurant_id" class="form-label">Restaurant</label>
+                                    <select name="restaurant_id" class="form-select" aria-label="Select Restaurant">
+                                        <option selected disabled>Select Restaurant</option>
+                                        @foreach($restaurants as $restaurant)
+                                            <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                                <div class="form-group">
-                                    <label for="pickup_time">PickUp Time</label>
+                                <!-- Food Selection -->
+                                <div class="form-group mb-3">
+                                    <label for="food_id" class="form-label">Food</label>
+                                    <select name="food_id" class="form-select" aria-label="Select Food">
+                                        <option selected disabled>Select Food</option>
+                                        @foreach($food as $foodd)
+                                            <option value="{{ $foodd->id }}">{{ $foodd->food_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- PickUp Time -->
+                                <div class="form-group mb-3">
+                                    <label for="pickup_time" class="form-label">PickUp Time</label>
                                     <input type="datetime-local" name="pickup_time" class="form-control" value="{{ old('pickup_time') }}">
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="pickup_address">PickUp Address</label>
-                                    <input type="text" name="pickup_address" class="form-control" value="{{ old('pickup_address') }}">
+                                <!-- PickUp Address -->
+                                <div class="form-group mb-3">
+                                    <label for="pickup_address" class="form-label">PickUp Address</label>
+                                    <input type="text" name="pickup_address" class="form-control" placeholder="Enter address" value="{{ old('pickup_address') }}">
                                 </div>
 
-                                
-
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" class="form-control">
+                                <!-- Status Selection -->
+                                <div class="form-group mb-4">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select name="status" class="form-select">
                                         <option value="pending">Pending</option>
                                         <option value="approved">Approved</option>
                                         <option value="rejected">Rejected</option>
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn bg-gradient-dark mb-0">Add PickUp Request</button>
+                                <!-- Submit Button -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn bg-gradient-dark mb-0">Add PickUp Request</button>
+                                </div>
                             </form>
                         </div>
                     </div>

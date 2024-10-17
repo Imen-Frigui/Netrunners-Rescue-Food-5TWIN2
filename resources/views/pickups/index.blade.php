@@ -5,7 +5,7 @@
 
         <div class="container-fluid py-4">
             @if(session('success'))
-                <div class="alert alert-success">
+                <div class="alert alert-success" style="color: white;">
                     {{ session('success') }}
                 </div>
             @endif

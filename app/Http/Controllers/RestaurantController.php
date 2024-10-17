@@ -14,7 +14,7 @@ class RestaurantController extends Controller
     public function index()
     {
         // Fetch all restaurants
-        $restaurants = Restaurant::all(); 
+        $restaurants = Restaurant::all();
     
         // Pass the restaurants data and activePage variable to the view
         return view('restaurants.index', ['restaurants' => $restaurants, 'activePage' => 'restaurants']);
@@ -112,4 +112,16 @@ class RestaurantController extends Controller
 
         return redirect()->route('restaurants')->with('success', 'Restaurant deleted successfully.');
     }
+
+    public function showFront(Restaurant $restaurant)
+    {
+        return view('front-office.restaurants.show', compact('restaurant'));
+    }
+
+    public function all()
+    {
+        $restaurants = Restaurant::all();
+        return view('front-office.restaurants.index', compact('restaurants'));
+    }
+  
 }

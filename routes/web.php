@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
-
+use App\Http\Controllers\FrontOfficeController;
 
 Route::get('/', function () {
 	return redirect('sign-in');
@@ -37,7 +37,19 @@ Route::post('sign-out', [SessionsController::class, 'destroy'])->middleware('aut
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
+	
+	Route::prefix('front-office')->name('front-office.')->group(function () {
+		Route::get('/', [FrontOfficeController::class, 'index'])->name('index');
+		Route::get('profile', [FrontOfficeController::class, 'createProfile'])->name('profile');
+        Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
 
+		// Define the events routes here
+		// Route::prefix('events')->name('events.')->group(function () {
+		// 	Route::get('/', [EventController::class, 'all'])->name('index'); // List of events
+		// 	Route::get('/{event}', [EventController::class, 'show'])->name('show'); // Event details
+
+		// });
+	});
 	Route::get('billing', function () {
 		return view('pages.billing');
 	})->name('billing');
@@ -126,6 +138,7 @@ Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('res
 Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
+Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])->name('restaurants.dashboard');
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -138,11 +151,10 @@ Route::resource('reviews', ReviewController::class);
 Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
-Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
-Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
-Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-
+// Route::get('reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
+// Route::get('reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+// Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
+// Route::delete('reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 // About Us route
 Route::get('/about', function () {
     return view('about');
@@ -162,4 +174,6 @@ Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
+
+#welcome page :
 
