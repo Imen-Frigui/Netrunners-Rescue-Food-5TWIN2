@@ -23,7 +23,7 @@
                                             <p class="text-sm"><strong>Location:</strong> {{ $event->location }}</p>
                                             <p class="text-sm"><strong>Date:</strong> {{ $event->event_date->format('F j, Y, g:i a') }}</p>
                                             <p class="text-sm"><strong>Max Participants:</strong> {{ $event->max_participants }}</p>
-                                            <p class="text-sm"><strong>Status:</strong> 
+                                            <p class="text-sm"><strong>Status:</strong>
                                                 <span class="badge 
                                                     @if($event->status === 'Upcoming') bg-success
                                                     @elseif($event->status === 'Ongoing') bg-warning
