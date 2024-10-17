@@ -56,7 +56,7 @@
                         <h3 class="card-title text-primary">{{ $food->food_name }}</h3>
                         <p class="card-text">expiring in : {{ $food->expiration_date }}</p>
                       
-                        <a href="#" class="btn btn-outline-primary">View Details</a>
+                        <a href="{{ route('donations.show', $food->id) }}" class="btn btn-outline-primary">View Details</a>
                     </div>
                 </div>
             </div>
