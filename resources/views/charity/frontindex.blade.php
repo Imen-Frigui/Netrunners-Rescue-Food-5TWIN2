@@ -1,4 +1,14 @@
+
+@extends('components.front-office')
+
+@section('content')
+
+<x-navbars.Navbar activePage='charities'></x-navbars.Navbar>
+
+
 <!DOCTYPE html>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
