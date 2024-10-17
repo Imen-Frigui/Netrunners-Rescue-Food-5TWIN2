@@ -66,7 +66,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link me-2" href="{{ route('restaurants') }}">
+                    <a class="nav-link me-2" href="{{ route('restaurants.all') }}">
                         <i class="fas fa-utensils opacity-6 text-dark me-1"></i>
                         Restaurants
                     </a>
