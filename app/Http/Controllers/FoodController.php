@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Food;
 use Illuminate\Http\Request;
-
+use App\Models\Restaurant;
 
 
 
@@ -23,7 +23,7 @@ class FoodController extends Controller
     public function donations()
     {
         // Fetch food items where the expiration date is near
-        $foods = Food::where('expiration_date', '<=', now()->addDays(7))
+        $foods = Food::whereBetween('expiration_date', [now(),now()->addDays(7)])
             ->where('status', 'available')
             ->get();
 
@@ -42,7 +42,8 @@ class FoodController extends Controller
      */
     public function create()
     {
-        return view('foods.create');
+        $restaurants = Restaurant::all(); 
+        return view('foods.create', compact('restaurants'));
     }
 
     /**
@@ -64,7 +65,9 @@ class FoodController extends Controller
             'storage_conditions' => 'nullable|in:refrigerated,frozen,ambient,dry,humidity_controlled,vacuum_sealed,cool_dark_place',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-        $food = Food::create($request->all());
+        $food = Food::create($request->except('restaurant_id'));
+
+        $food->restaurants()->sync($request->restaurant_id);
 
         return redirect()->route('foods.index')->with('success', 'Food item created successfully.');
     }
@@ -93,8 +96,9 @@ class FoodController extends Controller
      */
     public function edit($id)
     {
+        $restaurants = Restaurant::all(); 
         $food = Food::findOrFail($id);
-        return view('foods.edit', compact('food'));
+        return view('foods.edit', compact('food', 'restaurants'));
     }
 
     /**
