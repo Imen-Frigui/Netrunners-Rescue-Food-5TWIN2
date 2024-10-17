@@ -62,7 +62,7 @@
                        href="{{ route('restaurants.all') }}">
                        <i class="fas fa-utensils"></i>
 
-                        <span>Resturant</span>
+                        <span>Restaurant</span>
                     </a>
                 </li>
 
@@ -81,14 +81,14 @@
                         <span>reviews</span>
                     </a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link {{ str_contains($activePage, 'request') ? 'active' : '' }}"
-                       href="{{ route('donations') }}">
-                       <i class="fas fa-truck"></i>
-                        <span>Pick-Up Request</span>
-                    </a>
-                </li>
+    <a class="nav-link {{ str_contains($activePage, 'pickup') ? 'active' : '' }}"
+       href="{{ route('pickup.requests') }}">
+       <i class="fas fa-truck"></i>
+        <span>Pick-Up Request</span>
+    </a>
+</li>
+
 
                 <!-- User Profile Gadget (Moved to Last) -->
                 <li class="nav-item">

@@ -113,10 +113,15 @@ class RestaurantController extends Controller
         return redirect()->route('restaurants')->with('success', 'Restaurant deleted successfully.');
     }
 
-    public function showFront(Restaurant $restaurant)
+    public function showFront($restaurant)
     {
-        return view('front-office.restaurants.show', compact('restaurant'));
+        $restaurant = Restaurant::with('foods')->findOrFail($restaurant);// Load restaurant with related foods
+        $foods = $restaurant->foods()->get();
+        return view('front-office.restaurants.show', compact('restaurant','foods')); // Pass the restaurant with foods to the view
     }
+    
+            
+    
 
     public function all()
     {
