@@ -180,5 +180,9 @@ Route::get('/charities', [CharityController::class, 'index'])->name('charities')
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
+Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
+
+Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
 #welcome page :
+
 

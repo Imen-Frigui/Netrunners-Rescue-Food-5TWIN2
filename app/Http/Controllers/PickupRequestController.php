@@ -1,15 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Food;
 use App\Models\PickupRequest;
 use App\Models\Restaurant;
 use App\Models\User;
-
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class PickupRequestController extends Controller
 {
     /**
@@ -145,4 +144,53 @@ class PickupRequestController extends Controller
     {
         //
     }
+
+    public function quickAdd($restaurant_id, $food_id)
+    {
+        try {
+            // Find the restaurant and get the address
+            $restaurant = Restaurant::findOrFail($restaurant_id);
+            $pickupAddress = $restaurant->address;
+            $pickupTime = Carbon::now()->addDays(3);
+            $requestTime = Carbon::now();
+    
+            // Check if the user has already made a request for this food item
+            $existingRequest = PickupRequest::where('user_id', Auth::id())
+                ->where('restaurant_id', $restaurant_id)
+                ->where('food_id', $food_id)
+                ->first();
+    
+            if ($existingRequest) {
+                // If a request already exists, show an error message
+                return redirect()->back()->with('error', 'You have already requested a pickup for this food item.');
+            }
+    
+            // Create the new pickup request
+            $pickup = PickupRequest::create([
+                'user_id' => Auth::id(),
+                'restaurant_id' => $restaurant_id,
+                'food_id' => $food_id,
+                'pickup_time' => $pickupTime,
+                'pickup_address' => $pickupAddress,
+                'status' => 'pending',
+                'request_time' => $requestTime,
+            ]);
+    
+            // Redirect back with a success message including the pickup time
+            return redirect()->back()->with('success', 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'));
+        } catch (\Exception $e) {
+            // In case of any failure, show an error message
+            return redirect()->back()->with('error', 'Failed to create pickup request.');
+        }
+    }
+    
+// PickupRequestController.php
+public function indexfront()
+{
+   
+    $pickups = PickupRequest::where('user_id', Auth::id())->get();
+
+  
+    return view('front-office.pickups', compact('pickups'));
+}
 }

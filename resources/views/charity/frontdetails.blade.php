@@ -1,5 +1,8 @@
+<x-navbars.Navbar activePage='charities'></x-navbars.Navbar>
+
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+
+    <main class="main-content position-relative mt-7 max-height-vh-100 h-100 border-radius-lg">
      
         <div class="container-fluid py-4">
             <div class="card my-4">
