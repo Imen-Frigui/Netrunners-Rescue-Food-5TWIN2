@@ -27,8 +27,12 @@ class PickupRequest extends Model
         return $this->belongsTo(User::class);
     }
 
-    // public function restaurant()
-    // {
-    //     return $this->belongsTo(Restaurant::class);
-    // }
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
+    public function food()
+    {
+        return $this->belongsTo(Food::class);
+    }
 }

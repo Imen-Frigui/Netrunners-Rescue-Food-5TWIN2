@@ -39,15 +39,18 @@
         </div>
 
         <!-- Expiration Date Input -->
-        <div class="input-group input-group-outline mt-3">
-            <label class="form-label">Expiration Date</label>
-            <input type="date" class="form-control @error('expiration_date') is-invalid @enderror" name="expiration_date" value="{{ old('expiration_date', $food->expiration_date ?? '') }}" required>
-            @error('expiration_date')
-            <div class='invalid-feedback'>
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
+        <div class="mb-3">
+    <label for="expiration_date" class="form-label">Expiration Date</label>
+    <input type="date" 
+           class="form-control border border-2 p-2 @error('expiration_date') is-invalid @enderror" 
+           id="expiration_date" 
+           name="expiration_date" 
+           value="{{ old('expiration_date', $food->expiration_date ?? '') }}" 
+           required>
+    @error('expiration_date')
+        <span class="invalid-feedback">{{ $message }}</span>
+    @enderror
+</div>
 
         <!-- Category Input -->
         <div class="input-group input-group-outline mt-3">
@@ -118,15 +121,40 @@
         </div>
 
         <!-- Donation Date Input -->
-        <div class="input-group input-group-outline mt-3">
-            <label class="form-label">Donation Date</label>
-            <input type="date" class="form-control @error('donation_date') is-invalid @enderror" name="donation_date" value="{{ old('donation_date', $food->donation_date ?? '') }}">
-            @error('donation_date')
-            <div class='invalid-feedback'>
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
+        <div class="mb-3">
+    <label for="donation_date" class="form-label">Donation Date</label>
+    <input type="date" 
+           class="form-control border border-2 p-2 @error('donation_date') is-invalid @enderror" 
+           id="donation_date" 
+           name="donation_date" 
+           value="{{ old('donation_date', $food->donation_date ?? '') }}" 
+           required>
+    @error('donation_date')
+        <span class="invalid-feedback">{{ $message }}</span>
+    @enderror
+</div>
+        <!-- Select Restaurants Input -->
+
+<div class="mb-3">
+    <label for="restaurant_id" class="form-label">Select Restaurant</label>
+    <select
+        name="restaurant_id[]"
+        class="form-control border border-2 p-2 @error('restaurant_id') is-invalid @enderror"
+        id="restaurant_id"
+        multiple
+        style="height: 150px;">
+        @foreach ($restaurants as $restaurant)
+        <option value="{{ $restaurant->id }}">
+            {{ $restaurant->name }}
+        </option>
+        @endforeach
+    </select>
+    @error('restaurant_id')
+    <div class="invalid-feedback">
+        {{ $message }}
+    </div>
+    @enderror
+</div>
     </div>
 </div>
 <script>

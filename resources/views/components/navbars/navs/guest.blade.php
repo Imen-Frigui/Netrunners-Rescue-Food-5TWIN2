@@ -61,12 +61,12 @@
                 <li class="nav-item">
                     <a class="nav-link me-2" href="{{ route('donations') }}">
                         <i class="fas fa-hand-holding-heart opacity-6 text-dark me-1"></i>
-                        Donations
+                        Donations 
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link me-2" href="{{ route('restaurants') }}">
+                    <a class="nav-link me-2" href="{{ route('restaurants.all') }}">
                         <i class="fas fa-utensils opacity-6 text-dark me-1"></i>
                         Restaurants
                     </a>

@@ -25,7 +25,8 @@ class User extends Authenticatable
         'location',
         'phone',
         'about',
-        'password_confirmation'
+        'password_confirmation',
+        'user_type'
     ];
 
     /**
@@ -55,4 +56,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Charity::class);
     }
+
+
+
+
 }

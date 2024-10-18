@@ -15,13 +15,16 @@
                     <h5>Charity Information</h5>
 
                     @php
-                        // Decode JSON fields only if they are strings
-                        $contactInfo = is_string($charity->contact_info) ? json_decode($charity->contact_info, true) : $charity->contact_info;
-                        $preferredFoodTypes = is_string($charity->preferred_food_types) ? json_decode($charity->preferred_food_types) : (is_array($charity->preferred_food_types) ? $charity->preferred_food_types : []);
-                        $requestHistory = is_string($charity->request_history) ? json_decode($charity->request_history, true) : (is_array($charity->request_history) ? $charity->request_history : []);
-                        $inventoryStatus = is_string($charity->inventory_status) ? json_decode($charity->inventory_status, true) : (is_array($charity->inventory_status) ? $charity->inventory_status : []);
-                        $assignedDriversVolunteers = is_string($charity->assigned_drivers_volunteers) ? json_decode($charity->assigned_drivers_volunteers) : (is_array($charity->assigned_drivers_volunteers) ? $charity->assigned_drivers_volunteers : []);
-                        $currentRequests = is_string($charity->current_requests) ? json_decode($charity->current_requests, true) : (is_array($charity->current_requests) ? $charity->current_requests : []);
+                        // Contact info is already cast to array in the model
+                        $email = $charity->contact_info['email'] ?? 'N/A';
+                        $phone = $charity->contact_info['phone'] ?? 'N/A';
+
+                        // Other fields (preferred_food_types, request_history, inventory_status, etc.)
+                        $preferredFoodTypes = $charity->preferred_food_types;  // String or array of strings
+                        $requestHistory = $charity->request_history;  // String or array
+                        $inventoryStatus = $charity->inventory_status;  // String or array
+                        $assignedDriversVolunteers = $charity->assigned_drivers_volunteers;  // String or array
+                        $currentRequests = $charity->current_requests;  // String or array
                     @endphp
 
                     @php
@@ -29,19 +32,16 @@
                         $attributes = [
                             'Charity Name' => htmlspecialchars($charity->charity_name),
                             'Address' => htmlspecialchars($charity->address),
-                            'Contact Info' => 'Email: ' . htmlspecialchars($contactInfo['email'] ?? 'N/A') . ' | Phone: ' . htmlspecialchars($contactInfo['phone'] ?? 'N/A'),
+                            'Contact Info' => 'Email: ' . htmlspecialchars($email) . '<br>Phone: ' . htmlspecialchars($phone),
                             'Charity Type' => ucfirst(htmlspecialchars($charity->charity_type)),
                             'Beneficiaries Count' => htmlspecialchars($charity->beneficiaries_count),
-                            'Preferred Food Types' => !empty($preferredFoodTypes) ? implode(', ', array_map('trim', $preferredFoodTypes)) : 'N/A',
+                            'Preferred Food Types' => !empty($preferredFoodTypes) ? htmlspecialchars(is_array($preferredFoodTypes) ? implode(', ', $preferredFoodTypes) : $preferredFoodTypes) : 'N/A',
                             'Last Received Donation' => $charity->last_received_donation ? $charity->last_received_donation->format('d/m/Y') : 'N/A',
                             'Donation Frequency' => htmlspecialchars($charity->donation_frequency),
-                            'Request History' => !empty($requestHistory) ? 
-                                '<ul>' . implode('', array_map(fn($request) => '<li>Item: ' . htmlspecialchars($request['item'] ?? 'N/A') . ', Quantity: ' . htmlspecialchars($request['quantity'] ?? 'N/A') . '</li>', $requestHistory)) . '</ul>' : 'N/A',
-                            'Inventory Status' => !empty($inventoryStatus) ? 
-                                '<ul>' . implode('', array_map(fn($inventory) => '<li>Item: ' . htmlspecialchars($inventory['item'] ?? 'N/A') . ', Quantity: ' . htmlspecialchars($inventory['quantity'] ?? 'N/A') . '</li>', $inventoryStatus)) . '</ul>' : 'N/A',
-                            'Assigned Drivers/Volunteers' => !empty($assignedDriversVolunteers) ? implode(', ', array_map('htmlspecialchars', $assignedDriversVolunteers)) : 'N/A',
-                            'Current Requests' => !empty($currentRequests) ? 
-                                '<ul>' . implode('', array_map(fn($request) => '<li>Item: ' . htmlspecialchars($request['item'] ?? 'N/A') . ', Quantity: ' . htmlspecialchars($request['quantity'] ?? 'N/A') . '</li>', $currentRequests)) . '</ul>' : 'N/A',
+                            'Request History' => !empty($requestHistory) ? nl2br(htmlspecialchars($requestHistory)) : 'N/A',
+                            'Inventory Status' => !empty($inventoryStatus) ? nl2br(htmlspecialchars($inventoryStatus)) : 'N/A',
+                            'Assigned Drivers/Volunteers' => !empty($assignedDriversVolunteers) ? htmlspecialchars(is_array($assignedDriversVolunteers) ? implode(', ', $assignedDriversVolunteers) : $assignedDriversVolunteers) : 'N/A',
+                            'Current Requests' => !empty($currentRequests) ? nl2br(htmlspecialchars($currentRequests)) : 'N/A',
                             'Charity Rating' => htmlspecialchars($charity->charity_rating),
                             'Charity Approval Status' => function() use ($charity) {
                                 $status = ucfirst($charity->charity_approval_status);
@@ -52,15 +52,15 @@
                                     default => 'bg-gradient-secondary',
                                 };
                                 return '<span class="badge badge-sm ' . $badgeClass . '">' . htmlspecialchars($status) . '</span>';
-                            }                     
+                            }
                         ];
                     @endphp
 
                     @foreach($attributes as $label => $value)
                         <div class="py-2 {{ $loop->index % 2 == 0 ? 'bg-light' : 'bg-white' }}">
                             <p>
-                                <strong>{{ $label }}:</strong> 
-                                {!! is_callable($value) ? $value() : $value !!} <!-- Check if callable and call -->
+                                <strong>{{ $label }}:</strong>
+                                {!! is_callable($value) ? $value() : $value !!}
                             </p>
                         </div>
                     @endforeach

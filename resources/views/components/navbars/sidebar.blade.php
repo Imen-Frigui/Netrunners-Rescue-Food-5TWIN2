@@ -112,7 +112,7 @@
 
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-success' : '' }}  "
-                    class="nav-link" href="{{ route('reviews.index') }}">
+                    class="nav-link" href="{{ route('reviews') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-star"></i>
                     </div>

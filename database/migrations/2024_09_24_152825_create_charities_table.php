@@ -17,16 +17,16 @@ return new class extends Migration
             $table->id();
             $table->string('charity_name');
             $table->string('address');
-            $table->json('contact_info'); // Can be stored as JSON (phone, email)
+            $table->json('contact_info')->nullable(); // JSON column for contact information
             $table->enum('charity_type', ['food_bank', 'shelter', 'soup_kitchen']);
             $table->integer('beneficiaries_count')->default(0);
-            $table->string('preferred_food_types')->default('none'); // Set a default value
-            $table->json('request_history')->nullable(); // History of requests
-            $table->json('inventory_status')->nullable(); // Current inventory
+            $table->string('preferred_food_types')->nullable(); // Set a default value
+            $table->string('request_history')->nullable(); // History of requests
+            $table->string('inventory_status')->nullable(); // Current inventory
             $table->timestamp('last_received_donation')->nullable(); // Last donation date
             $table->integer('donation_frequency')->default(0); // Frequency of donations
-            $table->json('assigned_drivers_volunteers')->nullable(); // Assigned personnel
-            $table->json('current_requests')->nullable(); // Pending food requests
+            $table->string('assigned_drivers_volunteers')->nullable(); // Assigned personnel
+            $table->string('current_requests')->nullable(); // Pending food requests
             $table->decimal('charity_rating', 3, 2)->default(0); // Rating out of 5.00
             $table->enum('charity_approval_status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
