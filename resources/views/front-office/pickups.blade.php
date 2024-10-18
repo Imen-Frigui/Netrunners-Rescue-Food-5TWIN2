@@ -4,6 +4,7 @@
 <x-navbars.Navbar activePage='index'></x-navbars.Navbar>
 <x-navbars.navs.auth titlePage="User Interface"></x-navbars.navs.auth>
     <main class="main-content mt-0">
+        <img src="{{ asset('assets/img/donation1.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
         <div class="container mt-4">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10 col-12 mt-8 mb-4">

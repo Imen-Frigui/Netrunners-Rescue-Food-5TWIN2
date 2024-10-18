@@ -4,7 +4,9 @@
 <x-navbars.Navbar activePage='reviews'></x-navbars.Navbar>
 
 <div class="container mt-10">
-    <h1 class="text-center mb-4">Leave a Review :</h1>
+    <img src="{{ asset('assets/img/donation1.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
+
+    <h1 class="text-center mb-4 text-white">Leave a Review :</h1>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
