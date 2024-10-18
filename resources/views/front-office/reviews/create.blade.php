@@ -4,7 +4,7 @@
 <x-navbars.Navbar activePage='reviews'></x-navbars.Navbar>
 
 <div class="container mt-10">
-    <h1 class="text-center mb-4">Leave a Review</h1>
+    <h1 class="text-center mb-4">Leave a Review :</h1>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
