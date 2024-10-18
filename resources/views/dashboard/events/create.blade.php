@@ -112,7 +112,7 @@
                                                 <option value="" disabled {{ old('charity_id') ? '' : 'selected' }}>Select a Charity</option>
                                                 @foreach($charities as $charity)
                                                     <option value="{{ $charity->id }}" {{ old('charity_id') == $charity->id ? 'selected' : '' }}>
-                                                        {{ $charity->name }}
+                                                        {{ $charity->charity_name }}
                                                     </option>
                                                 @endforeach
                                             </select>

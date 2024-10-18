@@ -17,7 +17,8 @@
                         <div class="row">
                             <div
                                 class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
-                                <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
+                                <div class="position-relative bg-gradient-primary h-90 border-radius-lg d-flex flex-column justify-content-center">
+                                    <img src="{{ asset('assets') }}/img/image2.jpg" class="h-90 border-radius-lg d-flex flex-column" style="background-size: cover;" alt="signup" >
                                     {{-- style="background-image: url('../assets/img/illustrations/illustration-signup.jpg'); background-size: cover;">> --}}
                                 </div>
                             </div>
@@ -64,7 +65,7 @@
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit"
-                                                    class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign
+                                                    class="btn btn-lg bg-gradient-success btn-lg w-100 mt-4 mb-0">Sign
                                                     Up</button>
                                             </div>
                                         </form>
@@ -73,7 +74,7 @@
                                         <p class="mb-2 text-sm mx-auto">
                                             Already have an account?
                                             <a href="{{ route('login') }}"
-                                                class="text-primary text-gradient font-weight-bold">Sign in</a>
+                                                class="text-info text-gradient font-weight-bold">Sign in</a>
                                         </p>
                                     </div>
                                 </div>

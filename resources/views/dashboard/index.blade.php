@@ -11,10 +11,10 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">weekend</i>
+                                <i class="fas fa-hand-holding-usd"></i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Today's Money</p>
+                                <p class="text-sm mb-0 text-capitalize">Total Donations</p>
                                 <h4 class="mb-0">$53k</h4>
                             </div>
                         </div>
@@ -30,10 +30,10 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">person</i>
+                                <i class="fas fa-users"></i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Today's Users</p>
+                                <p class="text-sm mb-0 text-capitalize">Total Volunteers</p>
                                 <h4 class="mb-0">2,300</h4>
                             </div>
                         </div>
@@ -49,10 +49,10 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">person</i>
+                                <i class="fas fa-utensils"></i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">New Clients</p>
+                                <p class="text-sm mb-0 text-capitalize">Total Food Rescued</p>
                                 <h4 class="mb-0">3,462</h4>
                             </div>
                         </div>
@@ -68,11 +68,11 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="material-icons opacity-10">weekend</i>
+                                <i class="fas fa-truck"></i>
                             </div>
                             <div class="text-end pt-1">
-                                <p class="text-sm mb-0 text-capitalize">Sales</p>
-                                <h4 class="mb-0">$103,430</h4>
+                                <p class="text-sm mb-0 text-capitalize">Total Deliveries</p>
+                                <h4 class="mb-0">130</h4>
                             </div>
                         </div>
                         <hr class="dark horizontal my-0">
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 ">Website Views</h6>
+                            <h6 class="mb-0 ">Donation Views</h6>
                             <p class="text-sm ">Last Campaign Performance</p>
                             <hr class="dark horizontal">
                             <div class="d-flex ">
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 "> Daily Sales </h6>
+                            <h6 class="mb-0 "> Rescued Food</h6>
                             <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today
                                 sales. </p>
                             <hr class="dark horizontal">
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <h6 class="mb-0 ">Completed Tasks</h6>
+                            <h6 class="mb-0 ">Completed Deliveries</h6>
                             <p class="text-sm ">Last Campaign Performance</p>
                             <hr class="dark horizontal">
                             <div class="d-flex ">
