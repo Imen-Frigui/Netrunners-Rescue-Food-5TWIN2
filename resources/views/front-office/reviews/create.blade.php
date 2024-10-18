@@ -1,7 +1,7 @@
 @extends('components.front-office')
 
 @section('content')
-<x-navbars.Navbar activePage='about'></x-navbars.Navbar>
+<x-navbars.Navbar activePage='reviews'></x-navbars.Navbar>
 
 <div class="container mt-10">
     <h1 class="text-center mb-4">Leave a Review</h1>

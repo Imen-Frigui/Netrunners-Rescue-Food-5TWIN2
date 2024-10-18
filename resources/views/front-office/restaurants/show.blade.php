@@ -15,6 +15,29 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                            <div class="text-start mt-4 text" >
+                            Add a Review    <a href="{{ route('myreviewcreate') }}" 
+   class="btn-icon position-relative" 
+   style="display: inline-flex; align-items: center; justify-content: center; 
+          width: 50px; height: 50px; border-radius: 50%; background-color: #f39c12; 
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s ease-in-out;">
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         fill="currentColor" 
+         viewBox="0 0 24 24" 
+         width="24" height="24" 
+         style="color: #fff;">
+        <path d="M12 17.27L18.18 21 16.54 14.97 22 10.24 15.81 9.63 12 3.8 8.19 9.63 2 10.24 7.46 14.97 5.82 21z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+    </svg>
+</a>
+
+<style>
+    .btn-icon:hover {
+        transform: scale(1.1);
+        background-color: #e67e22;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    }
+</style>
     <h5 class="text-primary">Restaurant Information</h5>
     <p><strong>Address:</strong> {{ $restaurant->address }}</p>
     <p><strong>Phone:</strong> {{ $restaurant->phone }}</p>
@@ -65,14 +88,70 @@
                                 <!-- Map Container -->
                                 <div id="map" style="height: 400px; margin-top: 20px;"></div>
 
-                                <div class="text-center mt-4">
                                     <a href="{{ route('restaurants.all') }}" class="btn bg-gradient-primary w-100 mb-2">Back to All Restaurants</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
+
+<!-- Reviews Section -->
+<div class="container mt-4">
+    <h5 class="text-center text-primary mb-4">Reviews</h5>
+
+    @if($reviews->isEmpty())
+        <p>No reviews available for this restaurant.</p>
+    @else
+        <div class="review-container overflow-auto">
+            <ul class="list-group d-flex flex-nowrap">
+                @foreach($reviews as $review)
+                    <li class="list-group-item flex-shrink-0 mx-2" style="min-width: 250px;">
+                        <h6 class="font-weight-bold">{{ $review->user->name }}</h6>
+                        <p>{{ $review->comment }}</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rating">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <span class="star {{ $i <= $review->rating ? 'filled' : '' }}">★</span>
+                                @endfor
+                            </div>
+                            <p class="text-muted ml-2 mb-0">Reviewed on: {{ $review->created_at->format('d M Y') }}</p>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+
+<style>
+    .star {
+        color: #ccc; /* Default star color */
+        font-size: 1.25rem; /* Adjust star size */
+    }
+    .star.filled {
+        color: #FFD700; /* Gold color for filled stars */
+    }
+    .rating {
+        display: flex;
+        align-items: center; /* Center stars vertically */
+    }
+    .review-container {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        white-space: nowrap; /* Prevent line breaks */
+        padding: 1rem 0; /* Add padding for aesthetics */
+    }
+    .list-group-item {
+        border: 1px solid #e0e0e0; /* Add border for better visibility */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #f8f9fa; /* Light background for contrast */
+    }
+    .list-group {
+        padding: 0; /* Remove default padding */
+    }
+</style>
+
 
             <x-footers.guest></x-footers.guest>
         </div>
