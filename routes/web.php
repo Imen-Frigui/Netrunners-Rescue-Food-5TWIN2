@@ -177,6 +177,14 @@ Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'sho
 // Reviews routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
+Route::get('/myreviews', [ReviewController::class, 'indexFront'])->name('myreviews');
+Route::get('/myreviewedit/{id}', [ReviewController::class, 'editFront'])->name('myreviewedit');
+
+Route::post('/updatemyreviews/{id}', [ReviewController::class, 'updateFront'])->name('updatemyreviews');
+Route::get('myreviews/create', [ReviewController::class, 'createFront'])->name('myreviewcreate');
+Route::post('myreviews', [ReviewController::class, 'storeFront'])->name('myreviewstore');
+
+
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
