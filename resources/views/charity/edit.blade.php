@@ -1,4 +1,4 @@
-<x-layout bodyClass="g-sidenav-show bg-gray-200">
+<x-layout bodyClass="g-sidenav-show bg-gray-200"> 
     <x-navbars.sidebar activePage="tables"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <!-- Navbar -->
@@ -28,7 +28,7 @@
                         <!-- Update form -->
                         <form id="charity-update-form" action="{{ route('charities.update', $charity->id) }}" method="POST">
                             @csrf
-                            @method('PUT') <!-- Use PUT method for updating -->
+                            @method('PUT')
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -51,22 +51,35 @@
                                     </div>
 
                                     <!-- Email -->
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control border border-2 p-2 @error('contact_info.email') is-invalid @enderror" id="email" name="contact_info[email]" value="{{ old('contact_info.email', $charity->contact_info['email']) }}" required>
-                                        @error('contact_info.email')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                           <!-- Email -->
+                           @php
+// Assuming contact_info is already an array due to casting
+$contactInfo = $charity->contact_info ?? [];  // Fetch the contact_info array
+$email = $contactInfo['email'] ?? 'N/A';  // Use 'N/A' as default if not set
+$phone = $contactInfo['phone'] ?? 'N/A';  // Use 'N/A' as default if not set
+@endphp
 
-                                    <!-- Phone -->
-                                    <div class="mb-3">
-                                        <label for="phone" class="form-label">Phone</label>
-                                        <input type="text" class="form-control border border-2 p-2 @error('contact_info.phone') is-invalid @enderror" id="phone" name="contact_info[phone]" value="{{ old('contact_info.phone', $charity->contact_info['phone']) }}" required>
-                                        @error('contact_info.phone')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+<!-- Email -->
+<div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control border border-2 p-2 @error('contact_info.email') is-invalid @enderror" id="email" name="contact_info[email]" 
+        value="{{ old('contact_info.email', $email) }}" required>
+    @error('contact_info.email')
+        <span class="invalid-feedback">{{ $message }}</span>
+    @enderror
+</div>
+
+<!-- Phone -->
+<div class="mb-3">
+    <label for="phone" class="form-label">Phone</label>
+    <input type="text" class="form-control border border-2 p-2 @error('contact_info.phone') is-invalid @enderror" id="phone" name="contact_info[phone]" 
+        value="{{ old('contact_info.phone', $phone) }}" required>
+    @error('contact_info.phone')
+        <span class="invalid-feedback">{{ $message }}</span>
+    @enderror
+</div>
+
+
 
                                     <!-- Charity Type -->
                                     <div class="mb-3">
@@ -99,8 +112,8 @@
 
                                     <!-- Request History -->
                                     <div class="mb-3">
-                                        <label for="request_history" class="form-label">Request History (JSON)</label>
-                                        <textarea class="form-control border border-2 p-2 @error('request_history') is-invalid @enderror" id="request_history" name="request_history" rows="3">{{ old('request_history', $charity->request_history) }}</textarea>
+                                        <label for="request_history" class="form-label">Request History</label>
+                                        <textarea class="form-control border border-2 p-2 @error('request_history') is-invalid @enderror" id="request_history" name="request_history" rows="3">{{ old('request_history', is_array($charity->request_history) ? implode(", ", $charity->request_history) : $charity->request_history) }}</textarea>
                                         @error('request_history')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -108,15 +121,15 @@
 
                                     <!-- Inventory Status -->
                                     <div class="mb-3">
-                                        <label for="inventory_status" class="form-label">Inventory Status (JSON)</label>
-                                        <textarea class="form-control border border-2 p-2 @error('inventory_status') is-invalid @enderror" id="inventory_status" name="inventory_status" rows="3">{{ old('inventory_status', $charity->inventory_status) }}</textarea>
+                                        <label for="inventory_status" class="form-label">Inventory Status</label>
+                                        <textarea class="form-control border border-2 p-2 @error('inventory_status') is-invalid @enderror" id="inventory_status" name="inventory_status" rows="3">{{ old('inventory_status', is_array($charity->inventory_status) ? implode(", ", $charity->inventory_status) : $charity->inventory_status) }}</textarea>
                                         @error('inventory_status')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
 
-                                  <!-- Last Received Donation -->
-                                  <div class="mb-3">
+                                    <!-- Last Received Donation -->
+                                    <div class="mb-3">
                                         <label for="last_received_donation" class="form-label">Last Received Donation</label>
                                         <input type="datetime-local" class="form-control border border-2 p-2 @error('last_received_donation') is-invalid @enderror" id="last_received_donation" name="last_received_donation" value="{{ old('last_received_donation', $charity->last_received_donation ? date('Y-m-d\TH:i:s', strtotime($charity->last_received_donation)) : null) }}">
                                         @error('last_received_donation')
@@ -146,20 +159,20 @@
 
                             <!-- Charity Approval Status -->
                             <div class="mb-3">
-    <label for="charity_approval_status" class="form-label">Charity Approval Status</label>
-    <select class="form-control border border-2 p-2 @error('charity_approval_status') is-invalid @enderror" id="charity_approval_status" name="charity_approval_status">
-        <option value="approved" {{ old('charity_approval_status', $charity->charity_approval_status) === 'approved' ? 'selected' : '' }}>Approved</option>
-        <option value="pending" {{ old('charity_approval_status', $charity->charity_approval_status) === 'pending' ? 'selected' : '' }}>Pending</option>
-        <option value="rejected" {{ old('charity_approval_status', $charity->charity_approval_status) === 'rejected' ? 'selected' : '' }}>Rejected</option>
-    </select>
-    @error('charity_approval_status')
-        <span class="invalid-feedback">{{ $message }}</span>
-    @enderror
-</div>
+                                <label for="charity_approval_status" class="form-label">Charity Approval Status</label>
+                                <select class="form-control border border-2 p-2 @error('charity_approval_status') is-invalid @enderror" id="charity_approval_status" name="charity_approval_status">
+                                    <option value="approved" {{ old('charity_approval_status', $charity->charity_approval_status) === 'approved' ? 'selected' : '' }}>Approved</option>
+                                    <option value="pending" {{ old('charity_approval_status', $charity->charity_approval_status) === 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="rejected" {{ old('charity_approval_status', $charity->charity_approval_status) === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                </select>
+                                @error('charity_approval_status')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
 
                             <!-- Submit Button -->
                             <button type="button" class="btn bg-gradient-dark" onclick="confirmUpdate()">Update</button>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -167,6 +180,7 @@
     </main>
     <x-plugins></x-plugins>
 </x-layout>
+
 <script>
     function confirmUpdate() {
         if (confirm('Are you sure you want to update the charity?')) {

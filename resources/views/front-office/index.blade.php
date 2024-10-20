@@ -85,7 +85,7 @@
         </div>
     @endforeach
 </div>
-<button class="btn btn-outline-primary mt-3" id="show-more-charities">Show More</button>
+<button class="btn btn-outline-info mt-3" id="show-more-charities">Show More</button>
 
 <!-- Image between sections -->
 

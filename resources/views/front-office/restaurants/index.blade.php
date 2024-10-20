@@ -5,6 +5,7 @@
 
     <main class="main-content mt-0">
         <div class="page-header align-items-start min-vh-100">
+            <img src="{{ asset('assets/img/donation1.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
             <div class="container mt-4"> <!-- Added mt-4 for top margin -->
                 <div class="row justify-content-center">
                     @foreach($restaurants as $restaurant)
@@ -32,7 +33,7 @@
                 </div>
             </div>
 
-            <x-footers.guest></x-footers.guest>
+           
         </div>
     </main>
 </x-layout>

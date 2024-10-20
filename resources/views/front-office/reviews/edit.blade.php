@@ -1,5 +1,9 @@
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
-    <x-navbars.sidebar activePage="reviews"></x-navbars.sidebar>
+
+@extends('components.front-office')
+
+@section('content')
+<x-navbars.Navbar activePage='reviews'></x-navbars.Navbar>
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="Edit Review"></x-navbars.navs.auth>
@@ -7,9 +11,9 @@
         <div class="container-fluid py-4">
             <h1>Edit Review</h1>
 
-            <form action="{{ route('reviews.update', $review->id) }}" method="POST">
+            <form action="{{ route('updatemyreviews', $review->id) }}" method="POST">
                 @csrf
-                @method('PUT')
+                @method('POST')
 
                 <div class="card p-3 mb-4">
                     <div class="card-body">
@@ -38,7 +42,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Update Review</button>
-                        <a href="{{ route('reviews') }}" class="btn btn-secondary">Cancel</a>
+                        <a href="{{ route('myreviews') }}" class="btn btn-secondary">Cancel</a>
                     </div>
                 </div>
             </form>

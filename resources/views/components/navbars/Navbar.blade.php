@@ -38,6 +38,14 @@
                         <span>About Us</span>
                     </a>
                 </li>
+                     <!-- Events Section -->
+                     <li class="nav-item">
+                    <a class="nav-link {{ $activePage == 'charities' ? 'active' : '' }}"
+                       href="{{ route('frontcharities') }}">
+                       <i class="fas fa-hand-holding-heart"></i> 
+                        <span>charities</span>
+                    </a>
+                </li>
 
                 <!-- Events Section -->
                 <li class="nav-item">
@@ -52,8 +60,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'restaurants' ? 'active' : '' }}"
                        href="{{ route('restaurants.all') }}">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>Resturant</span>
+                       <i class="fas fa-utensils"></i>
+
+                        <span>Restaurant</span>
                     </a>
                 </li>
 
@@ -61,17 +70,25 @@
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains($activePage, 'donations') ? 'active' : '' }}"
                        href="{{ route('donations') }}">
-                        <i class="fas fa-calendar-alt"></i>
+                       <i class="fas fa-donate"></i>
                         <span>Donations</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'showDonations' ? 'active' : '' }}"
-                       href="{{ route('donations.show') }}">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>Donations</span>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains($activePage, 'reviews') ? 'active' : '' }}"
+                       href="{{ route('myreviews') }}">
+                       <i class="fas fa-star"></i>
+                        <span>reviews</span>
                     </a>
-                </li> --}}
+                </li>
+                <li class="nav-item">
+    <a class="nav-link {{ str_contains($activePage, 'pickup') ? 'active' : '' }}"
+       href="{{ route('pickup.requests') }}">
+       <i class="fas fa-truck"></i>
+        <span>Pick-Up Request</span>
+    </a>
+</li>
+
 
                 <!-- User Profile Gadget (Moved to Last) -->
                 <li class="nav-item">
