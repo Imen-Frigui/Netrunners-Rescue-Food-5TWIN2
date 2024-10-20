@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PickupRequest extends Model
 {
@@ -14,6 +15,7 @@ class PickupRequest extends Model
     protected $fillable = [
         'user_id',
         'restaurant_id',
+        'driver_id', 
         'food_id',
         'pickup_time',
         'pickup_address',
@@ -34,5 +36,9 @@ class PickupRequest extends Model
     public function food()
     {
         return $this->belongsTo(Food::class);
+    }
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(Driver::class);
     }
 }
