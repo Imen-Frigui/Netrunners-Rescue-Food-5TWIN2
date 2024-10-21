@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Restaurant;
+use App\Http\Controllers\ReviewController;
+use App\Models\Review;
+
 class RestaurantController extends Controller
 {
     /**
@@ -113,10 +116,18 @@ class RestaurantController extends Controller
         return redirect()->route('restaurants')->with('success', 'Restaurant deleted successfully.');
     }
 
-    public function showFront(Restaurant $restaurant)
+    public function showFront($restaurant)
     {
-        return view('front-office.restaurants.show', compact('restaurant'));
+        $restaurant = Restaurant::with('foods')->findOrFail($restaurant); // Load the restaurant with related foods
+        $foods = $restaurant->foods()->get();
+        
+        // Get all reviews that belong to this restaurant
+        $reviews = Review::where('restaurant_id', $restaurant->id)->get();
+    
+        return view('front-office.restaurants.show', compact('restaurant', 'foods', 'reviews')); // Pass the restaurant, foods, and reviews to the view
     }
+    
+    
 
     public function all()
     {

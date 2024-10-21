@@ -125,7 +125,7 @@
                                         <select id="charity" name="charity_id" class="form-control @error('charity_id') is-invalid @enderror" required>
                                             @foreach($charities as $charity)
                                                 <option value="{{ $charity->id }}" {{ old('charity_id', $event->charity_id) == $charity->id ? 'selected' : '' }}>
-                                                    {{ $charity->name }}
+                                                    {{ $charity->charity_name }}
                                                 </option>
                                             @endforeach
                                         </select>

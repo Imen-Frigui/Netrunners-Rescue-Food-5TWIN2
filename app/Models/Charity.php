@@ -28,13 +28,14 @@ class Charity extends Model
 
     protected $casts = [
         'contact_info' => 'array',  // Ensure contact_info is cast as an array
-        'preferred_food_types' => 'array',
+        'preferred_food_types' => 'string', // Change this if you plan to store multiple types
         'request_history' => 'array',
         'inventory_status' => 'array',
         'assigned_drivers_volunteers' => 'array',
         'current_requests' => 'array',
         'last_received_donation' => 'datetime',
     ];
+ 
     public function users()
     {
         return $this->hasMany(User::class);

@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <!-- Navbar Brand -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('front-office.index') }}">
-            <img src="{{ asset('assets/img/logo1.png') }}" alt="logo" class="navbar-logo">
+        <img src="{{ asset('assets/img/logo1.png') }}" alt="logo" style="width: 120px; height: auto;">
             
         </a>
 
@@ -32,9 +32,18 @@
                 <!-- About Us -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'about' ? 'active' : '' }}"
-                       href="">
+                    href="{{ route('front-office.about') }}">
+
                         <i class="fas fa-info-circle"></i>
                         <span>About Us</span>
+                    </a>
+                </li>
+                     <!-- Events Section -->
+                     <li class="nav-item">
+                    <a class="nav-link {{ $activePage == 'charities' ? 'active' : '' }}"
+                       href="{{ route('frontcharities') }}">
+                       <i class="fas fa-hand-holding-heart"></i> 
+                        <span>charities</span>
                     </a>
                 </li>
 
@@ -50,9 +59,10 @@
                  <!-- Resturant Section -->
                 <li class="nav-item">
                     <a class="nav-link {{ $activePage == 'restaurants' ? 'active' : '' }}"
-                       href="{{ route('restaurants', ['restaurants' => 'your-restaurant-slug']) }}">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>Resturant</span>
+                       href="{{ route('restaurants.all') }}">
+                       <i class="fas fa-utensils"></i>
+
+                        <span>Restaurant</span>
                     </a>
                 </li>
 
@@ -60,17 +70,25 @@
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains($activePage, 'donations') ? 'active' : '' }}"
                        href="{{ route('donations') }}">
-                        <i class="fas fa-calendar-alt"></i>
+                       <i class="fas fa-donate"></i>
                         <span>Donations</span>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link {{ $activePage == 'showDonations' ? 'active' : '' }}"
-                       href="{{ route('donations.show') }}">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>Donations</span>
+                <li class="nav-item">
+                    <a class="nav-link {{ str_contains($activePage, 'reviews') ? 'active' : '' }}"
+                       href="{{ route('myreviews') }}">
+                       <i class="fas fa-star"></i>
+                        <span>reviews</span>
                     </a>
-                </li> --}}
+                </li>
+                <li class="nav-item">
+    <a class="nav-link {{ str_contains($activePage, 'pickup') ? 'active' : '' }}"
+       href="{{ route('pickup.requests') }}">
+       <i class="fas fa-truck"></i>
+        <span>Pick-Up Request</span>
+    </a>
+</li>
+
 
                 <!-- User Profile Gadget (Moved to Last) -->
                 <li class="nav-item">
@@ -80,16 +98,17 @@
                         <span> Profile</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                                <li class="nav-item">
                     <form method="POST" action="{{ route('logout') }}" class="d-none" id="logout-form">
                         @csrf
                     </form>
                     <a href="javascript:;" class="nav-link text-body font-weight-bold px-0" 
-                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <i class="fa fa-user me-sm-1"></i>
-                        <span>Sign Out</span>
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    <i class="fa fa-user me-sm-1 text-danger"></i>
+                        <span class="text-danger">Sign Out</span> <!-- Apply text-danger class for Bootstrap -->
                     </a>
                 </li>
+
             </ul>
         </div>
     </div>

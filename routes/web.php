@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
 
+
 use App\Http\Controllers\FoodController;
 use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,8 +41,12 @@ Route::group(['middleware' => 'auth'], function () {
 	
 	Route::prefix('front-office')->name('front-office.')->group(function () {
 		Route::get('/', [FrontOfficeController::class, 'index'])->name('index');
+		Route::get('about', [FrontOfficeController::class, 'aboutUs'])->name('about');
+
 		Route::get('profile', [FrontOfficeController::class, 'createProfile'])->name('profile');
         Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
+	// routes/web.php
+	
 
 		// Define the events routes here
 		// Route::prefix('events')->name('events.')->group(function () {
@@ -96,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// Route for storing a new charity
 	Route::post('/charities', [CharityController::class, 'store'])->name('charities.store');
-
+	
 	// Route for showing a charity (optional if you have a charity show page)
 	Route::get('/charities/{charity}', [CharityController::class, 'show'])->name('charities.show');
 
@@ -167,13 +172,26 @@ Route::get('/contact', function () {
 
 
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
-
+Route::get('/resturant-all', [RestaurantController::class, 'all'])->name('restaurants.all');
+Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showFront'])->name('restaurants.front.show');
 // Reviews routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
+
+Route::get('/myreviews', [ReviewController::class, 'indexFront'])->name('myreviews');
+Route::get('/myreviewedit/{id}', [ReviewController::class, 'editFront'])->name('myreviewedit');
+
+Route::post('/updatemyreviews/{id}', [ReviewController::class, 'updateFront'])->name('updatemyreviews');
+Route::get('myreviews/create', [ReviewController::class, 'createFront'])->name('myreviewcreate');
+Route::post('myreviews', [ReviewController::class, 'storeFront'])->name('myreviewstore');
+
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
+Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
+
+Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
 #welcome page :
+
 

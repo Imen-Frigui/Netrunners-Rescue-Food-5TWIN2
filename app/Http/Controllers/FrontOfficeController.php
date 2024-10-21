@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Restaurant;
 use App\Models\Food;
 use App\Models\Pickup;
+use App\Models\Charity;
 use Illuminate\Http\Request;
 
 class FrontOfficeController extends Controller
@@ -16,8 +17,8 @@ class FrontOfficeController extends Controller
         $events = Event::all(); // Fetch all events
         $restaurants = Restaurant::all(); // Fetch all restaurants
         $foods = Food::all(); // Fetch all foods
-
-        return view('front-office.index', compact('events', 'restaurants', 'foods'));
+        $charities = Charity::all(); // Fetch all charities
+        return view('front-office.index', compact('events', 'restaurants', 'foods', 'charities'));
     }
 
     // Display the specific event's details
@@ -51,6 +52,11 @@ class FrontOfficeController extends Controller
         $user->update($attributes);
 
         return back()->withStatus('Profile successfully updated.');
+    }
+    
+    public function aboutUs()
+    {
+        return view('front-office.about');
     }
 
     // Add other show methods for restaurants, foods, pickups as needed
