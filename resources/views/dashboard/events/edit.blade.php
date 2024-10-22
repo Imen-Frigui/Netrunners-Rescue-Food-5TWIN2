@@ -138,6 +138,27 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Sponsors -->
+                                <div class="form-group row align-items-center">
+                                    <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
+                                    <div class="col-md-9 col-xl-8">
+                                        <select id="sponsors" name="sponsor_id[]" class="form-control @error('sponsor_id') is-invalid @enderror" multiple>
+                                            @foreach($sponsors as $sponsor)
+                                                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsor_id', $event->sponsors->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                                    {{ $sponsor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('sponsor_id'))
+                                                {{ $errors->first('sponsor_id') }}
+                                            @else
+                                                Please select at least one sponsor
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

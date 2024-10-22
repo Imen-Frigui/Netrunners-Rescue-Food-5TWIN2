@@ -118,6 +118,25 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <!-- Sponsor Selection -->
+                                    <div class="form-group row align-items-center">
+                                        <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
+                                        <div class="col-md-8 col-xl-7">
+                                            <select id="sponsors" name="sponsor_ids[]" class="form-control @error('sponsor_ids') is-invalid @enderror" multiple>
+                                                @foreach($sponsors as $sponsor)
+                                                    <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsor_ids', [])) ? 'selected' : '' }}>
+                                                        {{ $sponsor->name }} ({{ $sponsor->company ?? 'No company' }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('sponsor_ids')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

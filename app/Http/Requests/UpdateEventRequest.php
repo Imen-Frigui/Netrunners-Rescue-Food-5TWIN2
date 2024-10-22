@@ -31,6 +31,8 @@ class UpdateEventRequest extends FormRequest
             'max_participants' => 'required|integer|min:1',
             'restaurant_id' => 'exists:restaurants,id',
             'charity_id' => 'exists:charities,id',
+            'sponsor_id' => 'array',
+            'sponsor_id.*' => 'exists:sponsors,id',
         ];
     }
 
@@ -52,6 +54,8 @@ class UpdateEventRequest extends FormRequest
             'max_participants.integer' => 'The number of participants must be a valid integer.',
             'restaurant_id.exists' => 'The selected restaurant is invalid.',
             'charity_id.exists' => 'The selected charity is invalid.',
+            'sponsor_id.exists' => 'The selected sponsor is invalid.',
+            'sponsor_id.array' => 'The selected sponsor array is invalid.',
         ];
     }
 

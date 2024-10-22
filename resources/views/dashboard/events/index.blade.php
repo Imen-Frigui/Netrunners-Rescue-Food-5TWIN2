@@ -89,7 +89,7 @@
                                                 <td style="font-size: .875rem;">{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>
                                                 <td style="font-size: .875rem;">{{ $event->max_participants }}</td>
                                                 <td style="font-size: .875rem;">{{ $event->restaurant ? $event->restaurant->name : 'No Set' }}</td>
-                                                <td style="font-size: .875rem;">{{ $event->charity ? $event->charity->name : 'No Set' }}</td>
+                                                <td style="font-size: .875rem;">{{ $event->charity ? $event->charity->charity_name : 'No Set' }}</td>
                                                 <td>
                                                     <div class="row no-gutters">
                                                         <div class="col-auto"><a href="{{ route('events.edit', $event->id) }}"

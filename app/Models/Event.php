@@ -34,9 +34,6 @@ class Event extends Model
         return $this->belongsTo(Charity::class);
     }
 
-    public function volunteers() {
-        return $this->belongsToMany(User::class, 'event_volunteers')->withTimestamps();
-    }
 
     public function reviews() {
         return $this->hasMany(Review::class);
@@ -61,6 +58,12 @@ class Event extends Model
             return 'Completed';
         }
     }
+
+    public function sponsors()
+    {
+        return $this->belongsToMany(Sponsor::class, 'event_sponsors');
+    }
+
 
 
 

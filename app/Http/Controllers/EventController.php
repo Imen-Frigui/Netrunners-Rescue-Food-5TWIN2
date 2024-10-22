@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEventRequest;
 use App\Models\Restaurant;
 use App\Models\Charity;
 use Illuminate\Http\Request;
+use App\Models\Sponsor;
 
 class EventController extends Controller
 {
@@ -37,7 +38,9 @@ class EventController extends Controller
     {
         $restaurants = Restaurant::all();
         $charities = Charity::all();
-        return view('dashboard.events.create', compact('restaurants', 'charities'));
+        $sponsors = Sponsor::all();
+
+        return view('dashboard.events.create', compact('restaurants', 'charities', 'sponsors'));
     }
 
     /**
@@ -53,6 +56,11 @@ class EventController extends Controller
             'published_at' => $request->filled('published_at') ? $request->published_at : null,
             'enabled' => $request->has('enabled'),
         ]));
+
+        if ($request->has('sponsor_ids')) {
+            $event->sponsors()->attach($request->sponsor_ids);
+        }
+
         return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
@@ -77,7 +85,9 @@ class EventController extends Controller
     {
         $restaurants = Restaurant::all();
         $charities = Charity::all();
-        return view('dashboard.events.edit', compact('event','restaurants', 'charities'));
+        $sponsors = Sponsor::all();
+
+        return view('dashboard.events.edit', compact('event','restaurants', 'charities', 'sponsors'));
     }
 
     /**
@@ -89,11 +99,11 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        // $event->update($request->validated());
         $event->update(array_merge($request->validated(), [
             'published_at' => $request->filled('published_at') ? $request->published_at : null,
             'enabled' => $request->has('enabled'),
         ]));
+        $event->sponsors()->sync($request->input('sponsor_id'));
         return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
 
@@ -113,7 +123,7 @@ class EventController extends Controller
     public function publish(Event $event)
     {
         $event->enabled = true;
-        $event->published_at = now(); // or whatever logic you want for the timestamp
+        $event->published_at = now();
         $event->save();
 
         return redirect()->route('events.index')->with('success', 'Event published successfully.');
