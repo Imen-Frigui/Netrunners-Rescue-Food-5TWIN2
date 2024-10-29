@@ -35,6 +35,12 @@ class Charity extends Model
         'current_requests' => 'array',
         'last_received_donation' => 'datetime',
     ];
+
+    public function reports()
+{
+    return $this->hasMany(Report::class);
+}
+
  
     public function users()
     {

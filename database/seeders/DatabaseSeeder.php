@@ -29,5 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReviewSeeder::class);
         $this->call(PickupRequestSeeder::class);
         $this->call(CharitySeeder::class);
+        $this->call(ReportSeeder::class);
+
     }
 }

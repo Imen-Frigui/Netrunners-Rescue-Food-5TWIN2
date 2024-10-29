@@ -11,7 +11,7 @@ class CharityController extends Controller
 
     public function index()
 {
-    $charities = Charity::all();
+    $charities = Charity::paginate(4);
     return view('charity.index', compact('charities'))->with('activePage', 'charities');
 }
 

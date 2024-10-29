@@ -15,6 +15,8 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
+use App\Http\Controllers\ReportController;
+
 
 Route::get('/', function () {
 	return redirect('sign-in');
@@ -183,6 +185,14 @@ Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetail
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
+
+//Reports routes
+Route::resource('/reports', ReportController::class);
+Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('reports.delete');
+
+
+
 #welcome page :
 
 
