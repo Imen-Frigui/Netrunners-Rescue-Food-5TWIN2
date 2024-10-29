@@ -11,6 +11,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">All Reports</h6>
+                          
                             </div>
                              <!-- Back Button -->
          <a href="{{ route('charities') }}" class="btn bg-gradient-dark mt-4">Back to Charities</a>
@@ -89,28 +90,31 @@
         </form>
         
 
-
-
-
-    <div class="row">
-        @foreach($reports as $report)
-            <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
-                <div class="">
-                    <a class="card1" href="{{ route('reports.show', $report->id) }}">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="ms-2">
-                                <p class="h6 mb-1">{{ \Illuminate\Support\Str::limit($report->charity->charity_name, 20, '...') }}</p>
-                                <p class="small">{{ ucfirst($report->report_type) }}</p>
-                            </div>
+<ul>
+    <li style="color:red;"><p style="color:red;">Total Reports: <strong style="color:red;">{{ $totalReportsCount }}</strong></p>
+    </li>
+</ul>
+        
+<div class="row">
+    @foreach($reports as $report)
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <div class="">
+                <a class="card1" href="{{ route('reports.show', $report->id) }}">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="ms-2">
+                            <p class="h6 mb-1">{{ \Illuminate\Support\Str::limit($report->charity->charity_name, 20, '...') }}</p>
+                            <p class="small">{{ ucfirst($report->report_type) }}</p>
                         </div>
-                        <div class="go-corner">
-                            <div class="go-arrow">→</div>
-                        </div>
-                    </a>
-                </div>
+                    </div>
+                    <div class="go-corner">
+                        <div class="go-arrow">→</div>
+                    </div>
+                </a>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
+</div>
+
 
    <!-- Pagination Links -->
   

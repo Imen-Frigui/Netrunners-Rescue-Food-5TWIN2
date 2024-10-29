@@ -190,7 +190,9 @@ Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->
 Route::resource('/reports', ReportController::class);
 Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('reports.delete');
-
+Route::get('/charities/{charity}/reports/create', [ReportController::class, 'create'])->name('charities.reports.create');
+Route::post('/reports/{id}/solve', [ReportController::class, 'markAsSolved'])->name('reports.solve');
+Route::patch('/reports/{id}/reject', [ReportController::class, 'markAsRejected'])->name('reports.reject');
 
 
 #welcome page :

@@ -4,15 +4,38 @@
         <!-- Navbar -->
         <x-navbars.navs.auth titlePage="Charity Details"></x-navbars.navs.auth>
         <!-- End Navbar -->
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-4 ">
             <div class="card my-4">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <div class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">{{ $charity->charity_name }} Details</h6>
-                    </div>
-                </div>
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    <div class="d-flex justify-content-between align-items-center bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
+        <h6 class="text-white text-capitalize ps-3 mb-0">{{ $charity->charity_name }} Details</h6>
+        
+        <div class="py-2 mr-5">
+            <p class="position-relative d-inline-block mb-0  ">
+            <button class="btn {{ $charity->reports_count > 0 ? 'btn-danger' : 'btn-info' }} position-relative">
+            {{ $charity->reports_count }} Reports
+                    <!-- Notification badge -->
+                    <span class="position-absolute top-0 start-100 translate-middle ">
+                        <span class="visually-hidden">Reports</span>
+                    </span>
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+<style>
+    .btn{
+        margin-right:15px;
+    }
+</style>
                 <div class="card-body px-4 py-2">
                     <h5>Charity Information</h5>
+
+
+
+
+
+
 
                     @php
                         // Contact info is already cast to array in the model
@@ -68,8 +91,10 @@
                     <!-- Back Button -->
                     <a href="{{ route('charities') }}" class="btn bg-gradient-dark">Back to Charities</a>
                 </div>
+  
             </div>
         </div>
     </main>
     <x-plugins></x-plugins>
 </x-layout>
+

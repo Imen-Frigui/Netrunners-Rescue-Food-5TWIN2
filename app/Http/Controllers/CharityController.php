@@ -34,7 +34,7 @@ public function frontindex()
     public function showdetails($id)
     {
         // Find the charity by ID
-        $charity = Charity::findOrFail($id);
+        $charity = Charity::withCount('reports')->findOrFail($id);
     
         // Pass charity data to the view
         return view('charity.details', compact('charity'));
@@ -164,4 +164,20 @@ public function destroy($id)
 
         return view('charities.index', compact('charities'));
     }
+
+    public function charityStats()
+    {
+        // Fetch and count charities by type
+        $charityTypeCounts = Charity::select('charity_type', \DB::raw('count(*) as count'))
+                                    ->groupBy('charity_type')
+                                    ->get();
+    
+        // Prepare data for the chart
+        $charityTypes = $charityTypeCounts->pluck('charity_type');
+        $charityCounts = $charityTypeCounts->pluck('count');
+    
+        return view('dashboard.index', compact('charityTypes', 'charityCounts'));
+    }
+    
+
 }

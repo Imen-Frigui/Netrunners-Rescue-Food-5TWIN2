@@ -47,6 +47,7 @@
                 <div class="card-body px-4 py-2">
                 <h5>Charity Information</h5>
 
+                <a href="{{ route('charities.reports.create', $charity->id) }}" class="btn btn-primary">Add Report for this Charity</a>
 
 @php
     // Contact info is already cast to array in the model

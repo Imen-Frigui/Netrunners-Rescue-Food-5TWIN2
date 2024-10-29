@@ -13,6 +13,7 @@ class Report extends Model
         'charity_id',
         'report_type',
         'content',
+        'status',
         'report_date',
     ];
 

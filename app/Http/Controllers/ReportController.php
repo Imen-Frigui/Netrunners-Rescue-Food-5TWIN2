@@ -8,48 +8,77 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-     // Display a listing of the reports
-     public function index(Request $request)
-     {
-         // Get the search term from the request
-         $searchTerm = $request->input('search');
-     
-         // Use paginate() with a search condition
-         $reports = Report::with('charity')
-             ->when($searchTerm, function ($query, $searchTerm) {
-                 // Assuming you want to search in the title and description fields
-                 return $query->where('report_type', 'like', "%{$searchTerm}%")
-                              ->orWhere('content', 'like', "%{$searchTerm}%")
-                              ->orWhereHas('charity', function ($query) use ($searchTerm) {
-                                  $query->where('charity_name', 'like', "%{$searchTerm}%");
-                              });
-             })
-             ->paginate(6); // Retrieve 6 reports per page
-     
-         return view('reports.index', compact('reports', 'searchTerm'));
-     }
-     
+    public function index(Request $request)
+    {
+        // Get the search term from the request
+        $searchTerm = $request->input('search');
+    
+        // Start the query on the Report model
+        $reportsQuery = Report::with('charity')->where('status', 'pending');
+    
+        // Apply the search condition if a search term is provided
+        if ($searchTerm) {
+            $reportsQuery->where(function ($query) use ($searchTerm) {
+                // Assuming you want to search in the report_type and content fields
+                $query->where('report_type', 'like', "%{$searchTerm}%")
+                      ->orWhere('content', 'like', "%{$searchTerm}%")
+                      ->orWhereHas('charity', function ($query) use ($searchTerm) {
+                          $query->where('charity_name', 'like', "%{$searchTerm}%");
+                      });
+            });
+        }
+    
+        // Order reports by created_at in descending order and paginate
+        $reports = $reportsQuery->orderBy('created_at', 'desc')->paginate(6);
+    
+        // Count all reports (for statistics or display purposes)
+        $totalReportsCount = Report::where('status', 'pending')->count();
+    
+        // Pass the reports and other variables to the view
+        return view('reports.index', compact('reports', 'searchTerm', 'totalReportsCount'));
+    }
+    
      // Show the form for creating a new report
-     public function create()
+     public function create($charityId)
      {
-         return view('reports.create');
+         $charity = Charity::findOrFail($charityId); // Get the specific charity
+         return view('reports.create', [
+             'charity' => $charity, // Pass the charity to the view
+             'charities' => Charity::all() // Pass all charities if needed for selection
+         ]);
      }
+     
+     
  
      // Store a newly created report in storage
-     public function store(Request $request)
+     
+     
+     public function store(Request $request) 
      {
-         $request->validate([
-             'title' => 'required|string|max:255',
-             'description' => 'required|string',
+         // Validate the incoming request data
+         $validated = $request->validate([
+             'content' => 'required|string',
+             'report_type' => 'required|in:financial,performance,event summary,Volunteer Report', // Validate report type
              'charity_id' => 'required|exists:charities,id',
-             // Add more validation rules as needed
          ]);
- 
-         Report::create($request->all());
- 
-         return redirect()->route('reports.index')->with('success', 'Report created successfully.');
+     
+         // Check for bad words in the content
+         if ($this->containsBadWords($validated['content'])) {
+             return redirect()->back()->withErrors(['content' => 'The content contains inappropriate language.']);
+         }
+     
+         // Create a new report
+         $report = Report::create([
+             'content' => $validated['content'],
+             'report_type' => $validated['report_type'], // Use the validated report type
+             'charity_id' => $validated['charity_id'],
+             'report_date' => now()->toDateString(), // Set report_date to the current date
+         ]);
+     
+         // Redirect to the charity details page or another route
+         return redirect()->route('frontcharities')->with('success', 'Report created successfully.');
      }
- 
+     
      // Display the specified report
      public function show($id)
      {
@@ -85,4 +114,44 @@ class ReportController extends Controller
  
          return redirect()->route('reports.index')->with('success', 'Report deleted successfully.');
      }
+
+
+     public function containsBadWords($content)
+{
+    $badWords = ['badword1', 'badword2', 'badword3']; // Add prohibited words here
+    
+    foreach ($badWords as $badWord) {
+        if (stripos($content, $badWord) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+public function markAsSolved($id)
+{
+    // Find the report by ID
+    $report = Report::findOrFail($id);
+    
+    // Update the report status to 'solved'
+    $report->status = 'solved';
+    $report->save();
+
+    // Redirect back to reports index with success message
+    return redirect()->route('reports.index')->with('success', 'Report marked as solved successfully.');
+}
+
+// New function to mark report as rejected
+public function markAsRejected($id)
+{
+    // Find the report by ID
+    $report = Report::findOrFail($id);
+    
+    // Update the report status to 'rejected'
+    $report->status = 'rejected';
+    $report->save();
+
+    // Redirect back to reports index with success message
+    return redirect()->route('reports.index')->with('success', 'Report marked as rejected successfully.');
+}
 }
