@@ -16,6 +16,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
+use App\Http\Controllers\DriverController;
 
 Route::get('/', function () {
 	return redirect('sign-in');
@@ -135,6 +136,25 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/pickup/edit/{id}', [PickupRequestController::class, 'edit'])->name('pickup.edit');
 	Route::put('/pickup/{id}', [PickupRequestController::class, 'update'])->name('pickup.update');
 });
+
+Route::get('driver-management', function () {
+	return view('drivers.index');
+})->name('driver-management');
+
+Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
+Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
+Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
+Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
+
+Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
+Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
+Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
+    ->name('pickup.assign-driver');
+	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+
 # restaurant routes rami :
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
@@ -189,6 +209,11 @@ Route::get('/charities', [CharityController::class, 'index'])->name('charities')
 Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('frontcharities');
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
+
+// Route::resource('drivers', DriverController::class);
+// Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
+// Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
+// Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');

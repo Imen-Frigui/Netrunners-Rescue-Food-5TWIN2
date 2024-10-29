@@ -1,0 +1,130 @@
+<x-layout bodyClass="g-sidenav-show bg-gray-200">
+    <x-navbars.sidebar activePage="driver-management"></x-navbars.sidebar>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <x-navbars.navs.auth titlePage="Drivers Management"></x-navbars.navs.auth>
+
+        <div class="container-fluid py-4">
+            @if(session('success'))
+                <div class="alert alert-success" style="color: white;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div class="card my-4">
+                <div class="card-header bg-gradient-success text-white d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0"><strong>Manage Drivers</strong></h6>
+                    <a href="{{ route('drivers.create') }}" class="btn btn-light btn-sm text-success">
+                        <i class="material-icons">add</i> New Driver
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <!-- Filter Section -->
+                    <form action="{{ route('driver-management') }}" method="GET" class="row g-2 mb-4">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-white">
+                                    <i class="material-icons">search</i>
+                                </span>
+                                <input type="text" name="search" class="form-control" placeholder="Search drivers..." value="{{ request('search') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select">
+                                <option value="">All Statuses</option>
+                                <option value="available" {{ request('status') === 'available' ? 'selected' : '' }}>Available</option>
+                                <option value="busy" {{ request('status') === 'busy' ? 'selected' : '' }}>Busy</option>
+                                <option value="offline" {{ request('status') === 'offline' ? 'selected' : '' }}>Offline</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="material-icons">filter_list</i> Filter
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Driver List Table -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Driver</th>
+                                    <th>Phone</th>
+                                    <th>Vehicle</th>
+                                    <th>Status</th>
+                                    <th>Pickup Requests</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($drivers as $driver)
+                                    <tr class="align-middle">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ $driver->profile_image }}" alt="Driver Image" class="avatar me-3">
+                                                <div>
+                                                    <p class="mb-0 fw-bold">{{ $driver->user->name }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ $driver->phone_number }}</td>
+                                        <td>{{ $driver->vehicle_type }}</td>
+                                        <td>
+                                            <span class="badge 
+                                                {{ $driver->availability_status == 'available' ? 'bg-success' : ($driver->availability_status == 'busy' ? 'bg-warning' : 'bg-danger') }}">
+                                                {{ ucfirst($driver->availability_status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if($driver->pickupRequests->isEmpty())
+                                                <span class="text-muted">None</span>
+                                            @else
+                                                <ul class="list-unstyled mb-0">
+                                                    @foreach($driver->pickupRequests as $request)
+                                                        <li>{{ $request->food->name ?? 'Not specified' }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ route('drivers.edit', $driver->id) }}" class="btn btn-outline-warning btn-sm" title="Edit">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                            <a href="#" class="btn btn-outline-danger btn-sm" title="Delete" onclick="confirmDelete({{ $driver->id }})">
+                                                <i class="material-icons">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .table th, .table td {
+                vertical-align: middle;
+            }
+
+            .badge {
+                font-size: 0.75rem;
+                padding: 0.4em 0.6em;
+            }
+
+            .btn-sm {
+                font-size: 0.85rem;
+                padding: 0.25rem 0.5rem;
+            }
+        </style>
+    </main>
+</x-layout>

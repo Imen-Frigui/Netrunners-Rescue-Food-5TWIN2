@@ -58,6 +58,16 @@ class User extends Authenticatable
     }
 
 
+    public function isAdmin()
+    {
+        return $this->user_type === 'admin';
+    }
+
+    public function isDriver()
+    {
+        return $this->user_type === 'driver';
+    }
+
 
 
 }
