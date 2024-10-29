@@ -144,4 +144,18 @@ class DriverController extends Controller
     {
         //
     }
+
+    public function myPickups(Request $request)
+    {
+        $user = auth()->user();
+        $driver = Driver::where('user_id', $user->id)->first();
+        
+        if (!$driver) {
+            return redirect()->route('driver-management')->with('error', 'Driver not found.');
+        }
+
+        $pickupRequests = $driver->pickupRequests()->with('food')->get();
+
+        return view('drivers.mypickupsAssigned', compact('pickupRequests'));
+    }
 }

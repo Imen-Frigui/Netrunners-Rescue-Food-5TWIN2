@@ -186,28 +186,54 @@ class PickupRequestController extends Controller
             ], 500);
         }
     }
+    public function removeDriver(PickupRequest $pickupRequest)
+{
+    try {
+        $driverId = $pickupRequest->driver_id;
+        
+        $pickupRequest->update([
+            'driver_id' => null
+        ]);
+        
+        if ($driverId) {
+            Driver::where('id', $driverId)
+                ->update(['availability_status' => 'available']);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Driver removed successfully'
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Failed to remove driver: ' . $e->getMessage(), [
+            'exception' => $e,
+            'pickupRequest' => $pickupRequest->id
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to remove driver'
+        ], 500);
+    }
+}
+
 
     public function quickAdd($restaurant_id, $food_id)
     {
         try {
-            // Find the restaurant and get the address
             $restaurant = Restaurant::findOrFail($restaurant_id);
             $pickupAddress = $restaurant->address;
             $pickupTime = Carbon::now()->addDays(3);
             $requestTime = Carbon::now();
     
-            // Check if the user has already made a request for this food item
             $existingRequest = PickupRequest::where('user_id', Auth::id())
                 ->where('restaurant_id', $restaurant_id)
                 ->where('food_id', $food_id)
                 ->first();
     
             if ($existingRequest) {
-                // If a request already exists, show an error message
                 return redirect()->back()->with('error', 'You have already requested a pickup for this food item.');
             }
     
-            // Create the new pickup request
             $pickup = PickupRequest::create([
                 'user_id' => Auth::id(),
                 'restaurant_id' => $restaurant_id,
@@ -218,10 +244,8 @@ class PickupRequestController extends Controller
                 'request_time' => $requestTime,
             ]);
     
-            // Redirect back with a success message including the pickup time
             return redirect()->back()->with('success', 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'));
         } catch (\Exception $e) {
-            // In case of any failure, show an error message
             return redirect()->back()->with('error', 'Failed to create pickup request.');
         }
     }

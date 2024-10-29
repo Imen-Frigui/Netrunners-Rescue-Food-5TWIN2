@@ -145,11 +145,16 @@ Route::get('driver-management', [DriverController::class, 'index'])->name('drive
 Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
 Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
 Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
 
 Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
+	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+
 # restaurant routes rami :
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
