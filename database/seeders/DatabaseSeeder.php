@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\PickupRequest;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -30,5 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PickupRequestSeeder::class);
         $this->call(CharitySeeder::class);
         $this->call(DriverSeeder::class); 
+        $this->call(DonationSeeder::class); 
+
     }
 }
