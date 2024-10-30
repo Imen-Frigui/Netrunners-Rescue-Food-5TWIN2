@@ -25,20 +25,14 @@ class Food extends Model
     }
 
     
-
-    // public function charity() {
-    //     return $this->belongsTo(Charity::class);
-    // }
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 
     public function pickupRequest() {
         return $this->belongsToMany(PickupRequest::class);
     }
 
-    // public function event() {
-    //     return $this->belongsTo(Event::class);
-    // }
-
-    // public function reviews() {
-    //     return $this->hasMany(Review::class);
-    // }
+ 
 }
