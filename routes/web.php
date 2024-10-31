@@ -173,7 +173,8 @@ Route::get('/events/{event}', [EventController::class, 'show'])->name('events.sh
 // Donations routes Hanin : 
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
 Route::get('/donations/{id}', [FoodController::class, 'showDonation'])->name('donations.show');
-
+Route::get('/donate', [DonationController::class, 'frontendCreate'])->name('donations.create');
+Route::post('/donate', [DonationController::class, 'frontendStore'])->name('donations.store');
 // New Donation CRUD routes with unique names
 Route::prefix('donation-management')->name('donation-management.')->middleware('auth')->group(function () {
     Route::get('/donations', [DonationController::class, 'index'])->name('index');
