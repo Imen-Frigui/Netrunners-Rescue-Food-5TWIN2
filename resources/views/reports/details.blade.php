@@ -25,12 +25,12 @@
                          <form action="{{ route('reports.solve', $report->id) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" class="green-btn  " onclick="return confirm('Are you sure you want to mark this report as solved?');">
-                                           Mark as Solved
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg> Mark as Solved
                                         </button>
                                     </form>
 <form id="reject-report-{{ $report->id }}" action="{{ route('reports.reject', $report->id) }}" method="POST" style="display: inline;">
     @csrf
-    <button type="submit" class="red-btn " href="{{ route('reports.reject', $report->id) }}" onclick="event.preventDefault(); document.getElementById('reject-report-{{ $report->id }}').submit();"><i class="material-icons text-sm me-2">close</i>Reject</button>
+    <button type="submit" class="red-btn " href="{{ route('reports.reject', $report->id) }}" onclick="event.preventDefault(); document.getElementById('reject-report-{{ $report->id }}').submit();"><i class="material-icons text-sm me-2">close</i>Mark as Rejected</button>
 
     @method('PATCH') <!-- Or use DELETE if you prefer -->
 </form>

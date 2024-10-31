@@ -129,7 +129,6 @@
 }
 
 .custom-navbar .navbar-title {
-    font-size: 1.5rem; /* Reduce title font size */
     font-weight: bold;
     color: #11998e; /* Change title color to match the button color */
     margin-left: 10px; /* Maintain spacing */
@@ -137,8 +136,6 @@
 
 .custom-navbar .navbar-nav .nav-item .nav-link {
     color: #11998e; /* Change text color for links */
-    font-size: 1rem; /* Reduce font size */
-    font-weight: 500;
     padding: 0.5rem 1rem; /* Adjust padding for smaller touch targets */
     border-radius: 0.25rem;
     transition: all 0.3s ease;
@@ -146,7 +143,6 @@
 
 /* Icon and Text Spacing */
 .custom-navbar .navbar-nav .nav-item .nav-link i {
-    margin-right: 8px;
 }
 
 /* Hover Effects */

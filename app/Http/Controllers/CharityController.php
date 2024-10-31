@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Charity;
+use App\Models\Report;
+
 use Illuminate\Http\Request;
 
 class CharityController extends Controller
@@ -18,9 +20,12 @@ class CharityController extends Controller
 
 public function frontindex()
 {
-    $charities = Charity::paginate(4); // Display 4 charities per page
+    // Eager load reports with each charity to avoid missing data
+    $charities = Charity::with('reports')->paginate(8);
     return view('charity.frontindex', compact('charities'))->with('activePage', 'frontindex');
 }
+
+
 
 
 
@@ -178,6 +183,11 @@ public function destroy($id)
     
         return view('dashboard.index', compact('charityTypes', 'charityCounts'));
     }
-    
+    public function showAllReports()
+{
+    $reports = Report::all(); // Or however you get the list of reports
+    return view('reports.all', compact('reports'));
+}
+
 
 }

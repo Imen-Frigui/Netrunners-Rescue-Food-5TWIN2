@@ -2,7 +2,8 @@
 
 @section('content')
 
-<x-navbars.Navbar activePage='charities'></x-navbars.Navbar>
+    <x-navbars.Navbar activePage="charities"></x-navbars.Navbar>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +12,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity List</title>
+<!-- Bootstrap JavaScript and jQuery (needed for modal functionality) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Font Awesome CDN (latest version) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-LQjbQ1R/BNeX99hrzujfR72t39u56bD8gSkpX8z9HIe8IH+GPmB36Ju7B+0xDk1FfWyFr1BoQcoNUVZKHzUTsA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,7 +26,6 @@
     <style>
         /* Container styles */
         .container {
-            background-color: #77DD77;
             background-size: cover;
             width: 100%;
             background-position: center;
@@ -52,7 +56,7 @@
 
         .img {
             height: 30%;
-            background: linear-gradient(#e66465, #9198e5);
+            background: #4CAF50;
             display: flex;
             align-items: flex-start;
             justify-content: flex-end;
@@ -167,15 +171,126 @@
             background: none;
             border: 1px solid transparent;
         }
+        h1 {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
+
+h1 span {
+  display: block;
+  font-size: 0.5em;
+  line-height: 1.3;
+}
+h1 em {
+  font-style: normal;
+  font-weight: 600;
+}
+.two h1 {
+  text-transform: capitalize;
+}
+.two h1:before {
+ margin-top:20px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 2px;
+  content: "";
+  background-color: #4CAF50;
+}
+
+.two h1 span {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  line-height: 3em;
+  padding-left: 0.25em;
+  color: rgba(0, 0, 0, 0.4);
+  padding-bottom: 10px;
+  margin-top:100px;
+}
+.alt-two h1 {
+  text-align:center;
+}
+.alt-two h1:before {
+  left:50%; margin-left:-30px;
+}
+
+
+/* Slide-in Transition Effect */
+.page-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.page-slide {
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.page-slide.active {
+    transform: translateX(0);
+}
+/* Floating Circle Button on Bottom Right */
+.floating-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #4CAF50; /* Button color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.floating-button:hover {
+    transform: scale(1.1); /* Slight grow effect on hover */
+}
+
+.btn-light {
+    color: #66BB6A;
+    background-color: white;
+    border: 1px solid #66BB6A;
+}
+
+.btn-light:hover {
+    background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);;
+    color: white;
+}
+.current {
+    background-color: #66BB6A; /* Primary color */
+    color: white; /* Text color */
+    border: 1px solid #66BB6A; /* Border matching the button */
+}
+
     </style>
 </head>
 
 <body>
-    <h1 class="mt-7 title text-capitalize">Our Charities</h1>
-    <div class=" mt-5">
+    <div class="two">
+        <h1><span>Our Charities</span></h1>
+    </div>
+
+    <div class="mt-5">
         <div class="row">
             @foreach($charities as $charity)
-            <div class="col-md-3 mb-4"> <!-- 4 cards in a row -->
+            <div class="col-md-3 mb-4">
                 <div class="cardcharity">
                     <div class="img">
                         <div class="save">
@@ -187,63 +302,73 @@
                         <p class="h3">{{ \Illuminate\Support\Str::limit($charity->charity_name, 20, '...') }}</p>
                         <div class="rating">
                             @php
-                                $rating = $charity->charity_rating; // Assuming charity_rating is between 0-5
-                                $fullStars = floor($rating); // Full stars
-                                $halfStar = $rating - $fullStars >= 0.5 ? 1 : 0; // 1 if a half star is needed
-                                $emptyStars = 5 - ($fullStars + $halfStar); // Remaining empty stars
+                                $rating = $charity->charity_rating;
+                                $fullStars = floor($rating);
+                                $halfStar = $rating - $fullStars >= 0.5 ? 1 : 0;
+                                $emptyStars = 5 - ($fullStars + $halfStar);
                             @endphp
-
-                            <!-- Full Stars -->
                             @for ($i = 0; $i < $fullStars; $i++)
                             <i class="fas fa-star" style="color: gold;"></i>
                             @endfor
-
-                            <!-- Half Star if applicable -->
                             @if ($halfStar)
                             <i class="fas fa-star-half-alt" style="color: gold;"></i>
                             @endif
-
-                            <!-- Empty Stars -->
                             @for ($i = 0; $i < $emptyStars; $i++)
                             <i class="far fa-star" style="color: gold;"></i>
                             @endfor
-
-                            <!-- Rating Number -->
                             <strong style="color: gold;">{{ number_format($rating, 2) }}</strong>
                         </div>
 
-                        <div class="icon-box">
-                            <p class="span">
-                                <a rel="tooltip" href="{{ route('charities.frontdetails', $charity->id) }}" title="View Details">View Details</a>
-                            </p>
-                        </div>
+                        <a class="btn bg-gradient-dark mb-0 mt-3 w-100" style="text-transform: none;" href="{{ route('charities.frontdetails', $charity->id) }}">
+    <i class="fas fa-circle-info"></i> View Details
+</a>
+                     
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
 
-        <!-- Custom Pagination Links -->
-        <div class="d-flex justify-content-center mt-4">
-            @if ($charities->onFirstPage())
-            <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                <button class="btn btn-light" disabled>Previous</button>
-            </span>
-            @else
-            <a href="{{ $charities->previousPageUrl() }}" rel="prev" class="btn btn-light">Previous</a>
-            @endif
+      
 
-            @if ($charities->hasMorePages())
-            <a href="{{ $charities->nextPageUrl() }}" rel="next" class="btn btn-light">Next</a>
-            @else
-            <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                <button class="btn btn-light" disabled>Next</button>
-            </span>
-            @endif
-        </div>
-    </div>
-</body>
+<!-- Pagination Links -->
+  
+<div class="d-flex justify-content-center ">
+    <!-- Previous Page Link -->
+    @if ($charities->onFirstPage())
+        <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
+            <button class="btn btn-light" disabled>Previous</button>
+        </span>
+    @else
+        <a href="{{ $charities->previousPageUrl() }}" rel="prev" class="btn btn-light">Previous</a>
+    @endif
 
-</html>
+    <!-- Page Number Links -->
+    @for ($i = 1; $i <= $charities->lastPage(); $i++)
+        @if ($i == $charities->currentPage())
+            <span class="current btn btn-primary mx-1">{{ $i }}</span> <!-- Current page style -->
+        @else
+            <a href="{{ $charities->url($i) }}" class="btn btn-light mx-1">{{ $i }}</a>
+        @endif
+    @endfor
+
+    <!-- Ellipsis for pages in the middle -->
+    @if ($charities->currentPage() < $charities->lastPage() - 1)
+        <span class="disabled mx-1">...</span>
+        <a href="{{ $charities->url($charities->lastPage()) }}" class="btn btn-light mx-1">{{ $charities->lastPage() }}</a>
+    @endif
+
+    <!-- Next Page Link -->
+    @if ($charities->hasMorePages())
+        <a href="{{ $charities->nextPageUrl() }}" rel="next" class="btn btn-light">Next</a>
+    @else
+        <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
+            <button class="btn btn-light" disabled>Next</button>
+        </span>
+    @endif
+</div>
+
+
+
 
 @endsection
