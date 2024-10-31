@@ -7,12 +7,18 @@
             </div>
         </div>
     </div>
+
+    <div class="position-fixed start-0 translate-middle-y ms-5 z-index-3" style="top: 60%;">
+    <a href="{{ route('donations.create') }}" class="btn bg-gradient-danger text-white font-weight-bolder pulse-button d-flex align-items-center">
+        <i class="fas fa-heart me-2"></i> Donate Now
+    </a>
+</div>
     <main class="main-content mt-0">
         <div class="page-header align-items-start min-vh-100">
             <img src="{{ asset('assets/img/donation1.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container my-auto">
-                <!-- Add your message here -->
+                <!-- Page Title and Description -->
                 <div class="row text-center mb-5">
                     <div class="col-12">
                         <h2 class="text-white font-weight-bold">Donated Food Items Near Expiration</h2>
@@ -20,7 +26,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- Loop through the food items -->
                     @foreach($foods as $food)
                     <div class="col-lg-4 col-md-6 col-12 mx-auto">
                         <div class="card z-index-0 fadeIn3 fadeInBottom">
@@ -51,25 +56,20 @@
 
 <style>
     @keyframes bounce {
-
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-            transform: translateY(0);
-        }
-
-        40% {
-            transform: translateY(-20px);
-        }
-
-        60% {
-            transform: translateY(-10px);
-        }
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        60% { transform: translateY(-10px); }
     }
-
     .bounce-title {
         animation: bounce 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    .pulse-button {
+        animation: pulse 1.5s infinite;
     }
 </style>

@@ -144,5 +144,40 @@ class DonationController extends Controller
 
         return redirect()->route('donation-management.index')->with('success', 'Donation deleted successfully.');
     }
+
+
+    public function frontendCreate()
+    {
+        $foods = Food::all(); 
+        return view('donations.create', compact('foods'));
+    }
+
+    /**
+     * Store a newly created donation from the frontend.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function frontendStore(Request $request)
+    {
+        // Validation rules
+        $request->validate([
+            'food_id' => 'required',
+            'donor_type' => 'required|in:Restaurant,Individual,Charity',
+            'quantity' => 'required|integer|min:1|max:2000',
+            'remarks' => 'nullable|string',
+        ]);
+
+        Donation::create([
+            'food_id' => $request->input('food_id'),
+            'donor_type' => $request->input('donor_type'),
+            'quantity' => $request->input('quantity'),
+            'remarks' => $request->input('remarks'),
+            'status' => 'Pending', 
+            'donation_date' => now(),
+        ]);
+
+        return redirect()->route('donations.create')->with('success', 'Thank you! Your donation has been submitted.');
+    }
     
 }
