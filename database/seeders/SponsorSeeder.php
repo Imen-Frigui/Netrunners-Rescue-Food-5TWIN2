@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Sponsor;
 use App\Models\Event;
@@ -23,11 +22,18 @@ class SponsorSeeder extends Seeder
             ['name' => 'Food For All', 'email' => 'info@foodforall.com', 'phone' => '456-789-1234', 'company' => 'Food For All Initiative'],
         ];
 
+        $sponsorshipLevels = ['Platinum', 'Gold', 'Silver'];
+
         foreach ($sponsors as $sponsor) {
             $createdSponsor = Sponsor::create($sponsor);
 
+            // Attach the sponsor to a random set of events with random sponsorship levels
             $events = Event::inRandomOrder()->take(rand(1, 3))->pluck('id');
-            $createdSponsor->events()->attach($events);
+            foreach ($events as $eventId) {
+                $createdSponsor->events()->attach($eventId, [
+                    'sponsorship_level' => $sponsorshipLevels[array_rand($sponsorshipLevels)],
+                ]);
+            }
         }
     }
 }

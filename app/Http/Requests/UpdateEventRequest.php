@@ -33,6 +33,8 @@ class UpdateEventRequest extends FormRequest
             'charity_id' => 'exists:charities,id',
             'sponsor_id' => 'array',
             'sponsor_id.*' => 'exists:sponsors,id',
+            'sponsorship_amounts' => 'array',
+            'sponsorship_amounts.*' => 'nullable|numeric|min:0',
         ];
     }
 

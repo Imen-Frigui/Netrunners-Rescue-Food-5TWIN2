@@ -120,7 +120,7 @@
                                     </div>
 
                                     <!-- Sponsor Selection -->
-                                    <div class="form-group row align-items-center">
+                                    {{-- <div class="form-group row align-items-center">
                                         <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
                                         <div class="col-md-8 col-xl-7">
                                             <select id="sponsors" name="sponsor_ids[]" class="form-control @error('sponsor_ids') is-invalid @enderror" multiple>
@@ -136,7 +136,32 @@
                                                 </div>
                                             @enderror
                                         </div>
+                                    </div> --}}
+                                    <!-- Sponsor Selection with Levels -->
+                                    <div class="form-group row align-items-center">
+                                        <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
+                                        <div class="col-md-8 col-xl-7">
+                                            @foreach($sponsors as $sponsor)
+                                                <div class="mb-2">
+                                                    <input type="checkbox" name="sponsor_ids[]" value="{{ $sponsor->id }}" id="sponsor-{{ $sponsor->id }}" 
+                                                        {{ in_array($sponsor->id, old('sponsor_ids', [])) ? 'checked' : '' }}>
+                                                    <label for="sponsor-{{ $sponsor->id }}">{{ $sponsor->name }} ({{ $sponsor->company ?? 'No company' }})</label>
+                                                    <!-- Sponsorship Amount -->
+                                                    <input type="number" name="sponsorship_amounts[{{ $sponsor->id }}]" class="form-control mt-1"
+                                                    placeholder="Sponsorship Amount" step="0.50" {{ in_array($sponsor->id, old('sponsor_ids', [])) ? '' : 'disabled' }}>
+
+                                                    <!-- Sponsorship Level Selection for Each Sponsor -->
+                                                    <select name="sponsorship_levels[{{ $sponsor->id }}]" class="form-control mt-1" {{ !in_array($sponsor->id, old('sponsor_ids', [])) ? 'disabled' : '' }}>
+                                                        <option value="" disabled selected>Select Sponsorship Level</option>
+                                                        <option value="Platinum" {{ old('sponsorship_levels.'.$sponsor->id) === 'Platinum' ? 'selected' : '' }}>Platinum</option>
+                                                        <option value="Gold" {{ old('sponsorship_levels.'.$sponsor->id) === 'Gold' ? 'selected' : '' }}>Gold</option>
+                                                        <option value="Silver" {{ old('sponsorship_levels.'.$sponsor->id) === 'Silver' ? 'selected' : '' }}>Silver</option>
+                                                    </select>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -171,7 +196,18 @@
                 </form>
             </div>
         </main>
-    @section('scripts')
+    @section('scripts')    
+        <script>
+            document.querySelectorAll('input[name="sponsor_ids[]"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const sponsorId = this.value;
+                    const sponsorshipLevelSelect = document.querySelector(`select[name="sponsorship_levels[${sponsorId}]"]`);
+                    sponsorshipLevelSelect.disabled = !this.checked;
+                    const sponsorshipAmountInput = document.querySelector(`input[name="sponsorship_amounts[${sponsorId}]"]`);
+                    sponsorshipAmountInput.disabled = !this.checked;
+                });
+            });
+        </script>
         <script>
             (function () {
                 'use strict';

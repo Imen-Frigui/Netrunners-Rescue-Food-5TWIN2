@@ -31,6 +31,7 @@
                                                     {{ $event->status }}
                                                 </span>
                                             </p>
+                                            <p><strong>Total Sponsorship Amount:</strong> ${{ $event->sponsors->sum('pivot.sponsorship_amount') }}</p>
                                         </div>
                                         <div class="text-center">
                                             <a href="{{ route('events.show', $event->id) }}" class="btn bg-gradient-primary w-100 my-4 mb-2">View Event</a>

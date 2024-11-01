@@ -16,6 +16,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
+use App\Http\Controllers\SponsorController;
 
 Route::get('/', function () {
 	return redirect('sign-in');
@@ -83,9 +84,15 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('pages.laravel-examples.user-profile');
 	})->name('user-profile');
 
-	//Event routes
+	// Event routes
 	Route::resource('events', EventController::class);
 	Route::post('/events/{event}/publish', [EventController::class, 'publish'])->name('events.publish');
+
+	# Sponsor  routes imen :
+	Route::resource('sponsors', SponsorController::class);
+	Route::get('sponsors/{sponsor}/export/pdf', [SponsorController::class, 'exportPdf'])->name('sponsors.export.pdf');
+	Route::get('sponsors/{sponsor}/export/csv', [SponsorController::class, 'exportCsv'])->name('sponsors.export.csv');
+
 	
 	// Route for listing charities (index)
 	Route::get('charities', [CharityController::class, 'index'])->name('charities');
@@ -147,7 +154,10 @@ Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])-
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
-// Donations routes Hanin : 
+# sponsors routes imen :
+Route::get('/sponsors/{sponsor}', [SponsorController::class, 'show'])->name('sponsors.show');
+
+// Donations routes Hanin :
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
 Route::get('/donations/{id}', [FoodController::class, 'showDonation'])->name('donations.show');
 # review routes marwen :

@@ -21,13 +21,26 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('search');
+        $eventDate = $request->input('event_date');
+        $restaurantId = $request->input('restaurant_id');
+
         $events = Event::with('restaurant', 'charity')
             ->when($query, function ($queryBuilder) use ($query) {
                 return $queryBuilder->where('name', 'like', '%' . $query . '%');
             })
+            ->when($eventDate, function ($queryBuilder) use ($eventDate) {
+                return $queryBuilder->whereDate('event_date', $eventDate);
+            })
+            ->when($restaurantId, function ($queryBuilder) use ($restaurantId) {
+                return $queryBuilder->where('restaurant_id', $restaurantId);
+            })
             ->paginate(4);
-        return view('dashboard.events.index', compact('events'));
+
+        $restaurants = Restaurant::all(); // For restaurant filter dropdown
+
+        return view('dashboard.events.index', compact('events', 'query', 'eventDate', 'restaurantId', 'restaurants'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -51,18 +64,29 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-
         $event = Event::create(array_merge($request->validated(), [
             'published_at' => $request->filled('published_at') ? $request->published_at : null,
             'enabled' => $request->has('enabled'),
         ]));
 
         if ($request->has('sponsor_ids')) {
-            $event->sponsors()->attach($request->sponsor_ids);
+            $sponsors = [];
+            
+            // Loop through each selected sponsor
+            foreach ($request->input('sponsor_ids') as $sponsorId) {
+                $sponsors[$sponsorId] = [
+                    'sponsorship_level' => $request->input("sponsorship_levels.$sponsorId"),
+                    'sponsorship_amount' => $request->input("sponsorship_amounts.$sponsorId"),
+                ];
+            }
+
+            // Attach sponsors with sponsorship levels
+            $event->sponsors()->attach($sponsors);
         }
 
         return redirect()->route('events.index')->with('success', 'Event created successfully!');
     }
+
 
     /**
      * Display the specified resource.
@@ -72,8 +96,10 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $event->load('sponsors');  // Load sponsors with pivot data
         return view('front-office.events.show', compact('event'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -103,9 +129,25 @@ class EventController extends Controller
             'published_at' => $request->filled('published_at') ? $request->published_at : null,
             'enabled' => $request->has('enabled'),
         ]));
-        $event->sponsors()->sync($request->input('sponsor_id'));
-        return redirect()->route('events.index')->with('success', 'Event created successfully!');
+
+        // Prepare sponsors with sponsorship levels for sync
+        $sponsors = [];
+        if ($request->has('sponsor_ids')) {
+            foreach ($request->input('sponsor_ids') as $sponsorId) {
+                $sponsors[$sponsorId] = [
+                    'sponsorship_level' => $request->input("sponsorship_levels.$sponsorId"),
+                    'sponsorship_amount' => $request->input("sponsorship_amounts.$sponsorId"),
+                ];
+            }
+        }
+
+        // Sync sponsors with sponsorship levels
+        $event->sponsors()->sync($sponsors);
+
+        return redirect()->route('events.index')->with('success', 'Event updated successfully!');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

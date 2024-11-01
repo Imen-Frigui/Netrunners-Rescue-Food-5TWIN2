@@ -18,6 +18,7 @@ class Sponsor extends Model
 
     public function events()
     {
-        return $this->belongsToMany(Event::class, 'event_sponsors');
+        return $this->belongsToMany(Event::class, 'event_sponsors')->withPivot('sponsorship_level', 'sponsorship_amount');
     }
+
 }

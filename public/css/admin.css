@@ -20433,4 +20433,7 @@ div.trumbowyg-dropdown-table table td.active {
     display:none
   }
 }
-
+.table-bordered tbody tr td,
+.table-bordered thead tr th {
+    border: 1px solid #dee2e6;
+}

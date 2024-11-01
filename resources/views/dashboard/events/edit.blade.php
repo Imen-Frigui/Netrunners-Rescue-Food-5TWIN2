@@ -140,25 +140,44 @@
                                 </div>
 
                                 <!-- Sponsors -->
-                                <div class="form-group row align-items-center">
-                                    <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
-                                    <div class="col-md-9 col-xl-8">
-                                        <select id="sponsors" name="sponsor_id[]" class="form-control @error('sponsor_id') is-invalid @enderror" multiple>
-                                            @foreach($sponsors as $sponsor)
-                                                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsor_id', $event->sponsors->pluck('id')->toArray())) ? 'selected' : '' }}>
-                                                    {{ $sponsor->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('sponsor_id'))
-                                                {{ $errors->first('sponsor_id') }}
-                                            @else
-                                                Please select at least one sponsor
-                                            @endif
+                               <!-- Sponsors Section in Edit Form -->
+                               <div class="form-group row align-items-center">
+                                <label for="sponsors" class="col-form-label text-md-right col-md-3">Sponsors</label>
+                                <div class="col-md-9 col-xl-8">
+                                    @foreach($sponsors as $sponsor)
+                                        <div class="mb-2">
+                                            <input type="checkbox" name="sponsor_ids[]" value="{{ $sponsor->id }}" id="sponsor-{{ $sponsor->id }}"
+                                                {{ in_array($sponsor->id, $event->sponsors->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                            <label for="sponsor-{{ $sponsor->id }}">{{ $sponsor->name }} ({{ $sponsor->company ?? 'No company' }})</label>
+                                            
+                                            <input type="number" name="sponsorship_amounts[{{ $sponsor->id }}]" class="form-control mt-1"
+                                                placeholder="Sponsorship Amount" step="0.50"
+                                                value="{{ old('sponsorship_amounts.' . $sponsor->id, $event->sponsors->find($sponsor->id)->pivot->sponsorship_amount ?? '') }}"
+                                                {{ in_array($sponsor->id, $event->sponsors->pluck('id')->toArray()) ? '' : 'disabled' }}>
+
+                            
+                                            <!-- Sponsorship Level Selection for Each Sponsor -->
+                                            <select name="sponsorship_levels[{{ $sponsor->id }}]" class="form-control mt-1"
+                                                {{ in_array($sponsor->id, $event->sponsors->pluck('id')->toArray()) ? '' : 'disabled' }}>
+                                                <option value="" disabled>Select Sponsorship Level</option>
+                            
+                                                @php
+                                                    $sponsorPivot = $event->sponsors->find($sponsor->id)?->pivot;
+                                                    $sponsorshipLevel = $sponsorPivot ? $sponsorPivot->sponsorship_level : null;
+                                                @endphp
+                            
+                                                <option value="Platinum" {{ $sponsorshipLevel === 'Platinum' ? 'selected' : '' }}>Platinum</option>
+                                                <option value="Gold" {{ $sponsorshipLevel === 'Gold' ? 'selected' : '' }}>Gold</option>
+                                                <option value="Silver" {{ $sponsorshipLevel === 'Silver' ? 'selected' : '' }}>Silver</option>
+                                            </select>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
+                            </div>
+                            
+                            
+
+
                             </div>
                         </div>
                     </div>
@@ -193,4 +212,17 @@
             </form>
         </div>
     </main>
+    @section('scripts')
+    <script>
+        document.querySelectorAll('input[name="sponsor_ids[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const sponsorId = this.value;
+                const sponsorshipLevelSelect = document.querySelector(`select[name="sponsorship_levels[${sponsorId}]"]`);
+                sponsorshipLevelSelect.disabled = !this.checked;
+                const sponsorshipAmountInput = document.querySelector(`input[name="sponsorship_amounts[${sponsorId}]"]`);
+                sponsorshipAmountInput.disabled = !this.checked;
+            });
+        });
+    </script>
+    @endsection
 </x-layout>
