@@ -150,11 +150,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
 });
 
+
 Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
 	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
 
 # restaurant routes rami :
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');

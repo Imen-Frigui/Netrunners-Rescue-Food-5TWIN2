@@ -101,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Driver Assignment Modal -->
         <div class="modal fade" id="assignDriverModal" tabindex="-1" aria-labelledby="assignDriverModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -111,7 +110,6 @@
                     </div>
                     <div class="modal-body">
                         <div class="row g-3" id="driversList">
-                            <!-- List drivers dynamically here -->
                         </div>
                     </div>
                 </div>
@@ -174,6 +172,7 @@
                 fetch(`/api/available-drivers`)
                     .then(response => response.json())
                     .then(drivers => {
+                        console.log(drivers)
                         const driversHtml = drivers.map(driver => `
                  <div class="row mb-3">
                     <div class="col-12">
@@ -190,7 +189,7 @@
                                     </span>
                                 </div>
                                 <p class="card-text text-secondary mt-2 mb-0">
-                                    <i class="material-icons">phone</i> ${driver.phone_number}
+                                    <i class="material-icons">phone</i> ${driver.user.phone}
                                 </p>
                                 <p class="card-text text-secondary mb-0">
                                     <i class="material-icons">directions_car</i> ${driver.vehicle_type}

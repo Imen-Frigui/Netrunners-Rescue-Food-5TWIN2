@@ -23,7 +23,6 @@ class DriverSeeder extends Seeder
             'availability_status' => 'available',
             'current_location' => json_encode(['lat' => 36.8065, 'lng' => 10.1815]),  
             'max_delivery_capacity' => 5,
-            'phone_number' => '52327720',  
         ]);
 
         // Driver::create([
@@ -34,7 +33,6 @@ class DriverSeeder extends Seeder
         //     'availability_status' => 'busy',
         //     'current_location' => json_encode(['lat' => 34.737, 'lng' => 10.208]),
         //     'max_delivery_capacity' => 3,
-        //     'phone_number' => '987-654-3210',
         // ]);
 
         // Driver::create([
@@ -45,7 +43,6 @@ class DriverSeeder extends Seeder
         //     'availability_status' => 'offline',
         //     'current_location' => json_encode(['lat' => 35.676, 'lng' => 9.1816]),
         //     'max_delivery_capacity' => 10,
-        //     'phone_number' => '555-123-4567',
         // ]);
         }
 }
