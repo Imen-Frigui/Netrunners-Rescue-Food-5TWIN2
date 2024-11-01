@@ -79,22 +79,44 @@ class PickupRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|integer',  
-            'restaurant_id' => 'required|integer',  
-            'pickup_time' => 'required|date',  
-            'pickup_address' => 'required|string|max:255',  
-            'status' => 'required|in:pending,approved,rejected',  
-            'food_id' => 'required|integer', 
-        ]);
+ public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'restaurant_id' => 'required|exists:restaurants,id',
+        'food_id' => 'required|exists:foods,id',
+        'pickup_time' => [
+            'required',
+            'date',
+            'after:now',  // Ensures pickup time is in the future
+        ],
+        'pickup_address' => 'required|string|max:255',
+        'status' => 'required|in:pending,approved,rejected',
+    ], [
+        'user_id.required' => 'Please select a customer',
+        'user_id.exists' => 'Selected customer is invalid',
+        'restaurant_id.required' => 'Please select a restaurant',
+        'restaurant_id.exists' => 'Selected restaurant is invalid',
+        'food_id.required' => 'Please select a food item',
+        'food_id.exists' => 'Selected food item is invalid',
+        'pickup_time.required' => 'Please specify a pickup time',
+        'pickup_time.after' => 'Pickup time must be in the future',
+        'pickup_address.required' => 'Please enter a pickup address',
+        'status.required' => 'Please select a status',
+        'status.in' => 'Selected status is invalid',
+    ]);
 
-        PickupRequest::create($request->all());
-
-
-        return redirect()->route('pickup-management')->with('success', 'Pickup request created successfully.');
+    try {
+        $pickup = PickupRequest::create($validatedData);
+        return redirect()
+            ->route('pickup-management')
+            ->with('success', 'PickUp request created successfully');
+    } catch (\Exception $e) {
+        return back()
+            ->withInput()
+            ->withErrors(['error' => 'Failed to create pickup request. Please try again.']);
     }
+}
 
     /**
      * Display the specified resource.
@@ -186,28 +208,54 @@ class PickupRequestController extends Controller
             ], 500);
         }
     }
+    public function removeDriver(PickupRequest $pickupRequest)
+{
+    try {
+        $driverId = $pickupRequest->driver_id;
+        
+        $pickupRequest->update([
+            'driver_id' => null
+        ]);
+        
+        if ($driverId) {
+            Driver::where('id', $driverId)
+                ->update(['availability_status' => 'available']);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Driver removed successfully'
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Failed to remove driver: ' . $e->getMessage(), [
+            'exception' => $e,
+            'pickupRequest' => $pickupRequest->id
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to remove driver'
+        ], 500);
+    }
+}
+
 
     public function quickAdd($restaurant_id, $food_id)
     {
         try {
-            // Find the restaurant and get the address
             $restaurant = Restaurant::findOrFail($restaurant_id);
             $pickupAddress = $restaurant->address;
             $pickupTime = Carbon::now()->addDays(3);
             $requestTime = Carbon::now();
     
-            // Check if the user has already made a request for this food item
             $existingRequest = PickupRequest::where('user_id', Auth::id())
                 ->where('restaurant_id', $restaurant_id)
                 ->where('food_id', $food_id)
                 ->first();
     
             if ($existingRequest) {
-                // If a request already exists, show an error message
                 return redirect()->back()->with('error', 'You have already requested a pickup for this food item.');
             }
     
-            // Create the new pickup request
             $pickup = PickupRequest::create([
                 'user_id' => Auth::id(),
                 'restaurant_id' => $restaurant_id,
@@ -218,10 +266,8 @@ class PickupRequestController extends Controller
                 'request_time' => $requestTime,
             ]);
     
-            // Redirect back with a success message including the pickup time
             return redirect()->back()->with('success', 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'));
         } catch (\Exception $e) {
-            // In case of any failure, show an error message
             return redirect()->back()->with('error', 'Failed to create pickup request.');
         }
     }
@@ -235,4 +281,24 @@ public function indexfront()
   
     return view('front-office.pickups', compact('pickups'));
 }
+
+public function getLocations($id)
+{
+    $pickup = PickupRequest::findOrFail($id);
+    
+
+    
+    return response()->json([
+        'pickup_latitude' => $pickup->pickup_latitude ?? 36.7062,
+        'pickup_longitude' => $pickup->pickup_longitude ?? 10.2166,
+        'driver_latitude' => $pickup->driver_latitude ?? 36.7362, 
+        'driver_longitude' => $pickup->driver_longitude ?? 10.2082, 
+        'location' => $pickup->location ?? "Mourouj",
+        'status' => $pickup->status,
+        'food_items' => $pickup->food->name,
+        'driver_name' => $pickup->driver->user->name ?? 'Not Assigned',
+        'driver_phone' => $pickup->driver->user->phone ?? 'N/A',
+    ]);
+}
+
 }

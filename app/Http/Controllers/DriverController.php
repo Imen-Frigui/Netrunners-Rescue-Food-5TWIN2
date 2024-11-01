@@ -56,7 +56,7 @@ class DriverController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone_number' => 'required|string|max:15',
+            'phone' => 'required|string|max:15',
             'vehicle_type' => 'required|string|max:255',
             'vehicle_plate_number' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
@@ -66,7 +66,7 @@ class DriverController extends Controller
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'phone_number' => $validatedData['phone_number'],
+            'phone' => $validatedData['phone'],
             'password' => 'secret', 
             "user_type"=>"driver"
         ]);
@@ -79,7 +79,6 @@ class DriverController extends Controller
             'availability_status' => $validatedData['availability_status'],
             // 'current_location' => $validatedData['current_location'], 
             // 'max_delivery_capacity' => $validatedData['max_delivery_capacity'], 
-            'phone_number' => $validatedData['phone_number'],
         ]);
 
         return redirect()->route('driver-management')->with('success', 'Driver created successfully.');
@@ -143,5 +142,19 @@ class DriverController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function myPickups(Request $request)
+    {
+        $user = auth()->user();
+        $driver = Driver::where('user_id', $user->id)->first();
+        
+        if (!$driver) {
+            return redirect()->route('driver-management')->with('error', 'Driver not found.');
+        }
+
+        $pickupRequests = $driver->pickupRequests()->with('food')->get();
+
+        return view('drivers.mypickupsAssigned', compact('pickupRequests'));
     }
 }

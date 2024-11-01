@@ -22,7 +22,6 @@ return new class extends Migration
             $table->enum('availability_status', ['available', 'busy', 'offline']);
             $table->json('current_location')->nullable();
             $table->integer('max_delivery_capacity')->default(5);
-            $table->string('phone_number');
             $table->timestamps();
         });
     }

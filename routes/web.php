@@ -8,6 +8,7 @@ use App\Http\Controllers\RestaurantController;
 
 
 use App\Http\Controllers\FoodController;
+use App\Http\Controllers\DonationController;
 use App\Exports\FoodsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
@@ -145,11 +146,18 @@ Route::get('driver-management', [DriverController::class, 'index'])->name('drive
 Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
 Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
 Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
+
 
 Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
+	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
+
 # restaurant routes rami :
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
@@ -162,9 +170,25 @@ Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])-
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+
+
 // Donations routes Hanin : 
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
 Route::get('/donations/{id}', [FoodController::class, 'showDonation'])->name('donations.show');
+Route::get('/donate', [DonationController::class, 'frontendCreate'])->name('donations.create');
+Route::post('/donate', [DonationController::class, 'frontendStore'])->name('donations.store');
+// New Donation CRUD routes with unique names
+Route::prefix('donation-management')->name('donation-management.')->middleware('auth')->group(function () {
+    Route::get('/donations', [DonationController::class, 'index'])->name('index');
+    Route::get('/donations/create', [DonationController::class, 'create'])->name('create');
+    Route::post('/donations', [DonationController::class, 'store'])->name('store');
+    Route::get('/donations/{id}', [DonationController::class, 'show'])->name('show');
+    Route::get('/donations/{id}/edit', [DonationController::class, 'edit'])->name('edit');
+    Route::put('/donations/{id}', [DonationController::class, 'update'])->name('update');
+    Route::delete('/donations/{id}', [DonationController::class, 'destroy'])->name('destroy');
+});
+
+
 # review routes marwen :
 Route::resource('reviews', ReviewController::class);
 
