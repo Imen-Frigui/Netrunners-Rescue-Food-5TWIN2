@@ -45,11 +45,11 @@ class ReviewController extends Controller
     {
         $validatedData = $request->validate([
             'comment' => 'required|string',
+            
             'rating' => 'required|integer|between:1,5'
         ]);
     
-        // Set user_id statically to 1
-        $validatedData['user_id'] = 1;
+        $validatedData['user_id'] = Auth::id();
     
         $review = Review::create($validatedData);
     
@@ -64,10 +64,12 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-{
-    $review = Review::findOrFail($id);
+    {
+        $review = Review::with('comments.user')->findOrFail($id);
+    
         return view('reviews.show', compact('review'));
-}
+    }
+    
 
 
     /**
@@ -108,7 +110,7 @@ class ReviewController extends Controller
         $review = Review::find($id);
         if ($review) {
             // Ensure user_id remains 1
-            $validatedData['user_id'] = 1;
+            $validatedData['user_id'] = Auth::id();
     
             $review->update($validatedData);
             return redirect()->route('reviews')->with('success', 'Review updated successfully.');
@@ -149,7 +151,7 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
         $review = Review::find($id);
         if ($review) {
             // Ensure user_id remains 1
-            $validatedData['user_id'] = 1;
+            $validatedData['user_id'] =Auth::id();
     
             $review->update($validatedData);
             return redirect()->route('myreviews')->with('success', 'Review updated successfully.');
