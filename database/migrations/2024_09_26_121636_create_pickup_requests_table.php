@@ -18,14 +18,17 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('food_id');
             $table->string('pickup_address');
-            $table->enum('status', ['pending', 'approved', 'completed', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'in_progress', 'completed', 'cancelled', 'rejected'])->default('pending');
             $table->timestamp('request_time')->useCurrent();
             $table->timestamp('pickup_time')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('food_id')->references('id')->on('food')->onDelete('cascade');
+            $table->foreign(columns: 'food_id')->references('id')->on('food')->onDelete('cascade');
+            // $table->foreign(columns: 'driver_id')->references('id')->on('drivers')->onDelete('set null');
+            $table->foreignId('driver_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('restaurant_id')->nullable()->onDelete('cascade');
             $table->foreignId('charity_id')->nullable()->onDelete('cascade');
+
             });
     }
 
