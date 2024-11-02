@@ -146,9 +146,9 @@
                 <a class="nav-link text-white {{ $activePage == 'inventories' ? ' active bg-gradient-success' : '' }}  "
                     href="{{ route('inventories.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-star"></i>
+                    <i class="fa-solid fa-truck-ramp-box"></i>
                     </div>
-                    <span class="nav-link-text ms-1">inventories</span>
+                    <span class="nav-link-text ms-1">Inventory Managment</span>
                 </a>
             </li>
             <li class="nav-item">

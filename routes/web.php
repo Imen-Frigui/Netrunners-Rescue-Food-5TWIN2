@@ -159,6 +159,8 @@ Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::c
 Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
 
 # restaurant routes rami :
+Route::resource('restaurants', RestaurantController::class);
+
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
 Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');

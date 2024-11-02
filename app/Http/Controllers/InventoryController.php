@@ -15,14 +15,28 @@ class InventoryController extends Controller
  
     public function index(Request $request)
     {
+        $searchTerm = $request->input('search'); // Get the search term from the request
+    
         if ($request->query('low_stock') == 'true') {
-            $inventories = Inventory::whereColumn('quantity_on_hand', '<=', 'minimum_quantity')->get();
+            $inventories = Inventory::whereColumn('quantity_on_hand', '<=', 'minimum_quantity');
         } else {
-            $inventories = Inventory::all();
+            $inventories = Inventory::query();
         }
-
-        return view('inventories.index', compact('inventories'));
+    
+        // If there is a search term, filter the inventories
+        if ($searchTerm) {
+            $inventories->whereHas('food', function($query) use ($searchTerm) {
+                $query->where('food_name', 'like', "%{$searchTerm}%");
+            })->orWhereHas('restaurant', function($query) use ($searchTerm) {
+                $query->where('name', 'like', "%{$searchTerm}%");
+            });
+        }
+    
+        $inventories = $inventories->get(); // Get the results after filtering
+    
+        return view('inventories.index', compact('inventories', 'searchTerm'));
     }
+    
 
   
     public function create()

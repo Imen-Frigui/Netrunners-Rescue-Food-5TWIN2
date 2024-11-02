@@ -22,7 +22,6 @@
             <a href="{{ route('restaurants') }}" class="btn btn-secondary mt-3">Back to Restaurants</a>
             
             <!-- Button to View Inventory -->
-            <a href="{{ route('inventories.indexResto', ['restaurant' => $restaurant->id]) }}" class="btn btn-primary mt-3">View Inventory</a>
         </div>
 
         <x-footers.auth></x-footers.auth>
