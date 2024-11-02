@@ -64,7 +64,7 @@
     <script>
         Pusher.logToConsole = true;
 
-        const pusher = new Pusher('210177bd803d422ab0e8', {
+        const pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {
             cluster: 'eu',
             encrypted: true
         });
