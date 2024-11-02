@@ -18,7 +18,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
 use App\Http\Controllers\DriverController;
-
+use App\Http\Controllers\InventoryController;
 Route::get('/', function () {
 	return redirect('sign-in');
 })->middleware('guest');
@@ -229,13 +229,27 @@ Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('f
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
 
-// Route::resource('drivers', DriverController::class);
-// Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
-// Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-// Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
+Route::resource('drivers', DriverController::class); 
+Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
+Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
+Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
-#welcome page :
 
+Route::resource('inventories', InventoryController::class);
 
+// Additional routes for custom functionalities
+Route::get('api/inventories/low-stock', [InventoryController::class, 'lowStock'])->name('api.inventories.lowStock');
+
+Route::get('/inventories/reorder-suggestions', [InventoryController::class, 'reorderSuggestions'])->name('inventories.reorderSuggestions');
+
+Route::get('restaurants/{restaurant}/inventories', [InventoryController::class, 'indexResto'])->name('inventories.indexResto');
+Route::get('restaurants/{restaurant}/inventories/create', [InventoryController::class, 'createResto'])->name('inventories.createResto');
+Route::post('restaurants/{restaurant}/inventories', [InventoryController::class, 'storeResto'])->name('inventories.storeResto');
+Route::delete('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'destroyResto'])->name('inventories.destroyResto');
+Route::get('restaurants/{restaurant}/inventories/{inventory}/edit', [InventoryController::class, 'editResto'])
+    ->name('inventories.editResto');
+// Route to handle the update of an inventory item
+Route::put('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'updateResto'])
+    ->name('inventories.updateResto');
