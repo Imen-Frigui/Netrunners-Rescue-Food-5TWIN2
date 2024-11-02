@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\Food;
+use App\Models\User;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use App\Events\LowStockNotification; // Ensure this line is present
 
 class InventoryController extends Controller
 {
@@ -96,8 +99,8 @@ class InventoryController extends Controller
         
         return response()->json($lowStockItems);
     }
-    
 
+ 
   
     public function reorderSuggestions()
     {
@@ -180,7 +183,6 @@ class InventoryController extends Controller
         $inventory = Inventory::findOrFail($id);
         $foods = Food::all();
         $restaurant = Restaurant::findOrFail($restaurantId);
-    
         return view('inventories.editResto', compact('inventory', 'foods', 'restaurant'));
     }
     
@@ -193,15 +195,34 @@ class InventoryController extends Controller
             'storage_location' => 'nullable|string|max:255',
         ]);
     
+        // Update the inventory item
         $inventory->update([
             'food_id' => $request->food_id,
             'quantity_on_hand' => $request->quantity_on_hand,
             'minimum_quantity' => $request->minimum_quantity,
             'storage_location' => $request->storage_location,
         ]);
-            return redirect()->route('inventories.indexResto', ['restaurant' => $restaurant->id])
+
+        \Log::info('Inventory item updated.', ['inventory' => $inventory]);
+
+        $lowStockResponse = $this->checkLowStock();
+        
+        // Log the response from checkLowStock
+        \Log::info('Low stock check response:', ['response' => $lowStockResponse]);
+        session()->flash('success', 'Inventory item updated successfully and low stock notification sent.');
+        return redirect()->route('inventories.indexResto', ['restaurant' => $restaurant->id])
                          ->with('success', 'Inventory item updated successfully.');
     }
+    public function checkLowStock()
+    {
+        $lowStockItems = Inventory::with(['food', 'restaurant'])
+            ->whereColumn('quantity_on_hand', '<=', 'minimum_quantity')
+            ->get();
     
+        // Trigger event with low stock items
+        event(new LowStockNotification($lowStockItems));
+    
+        return response()->json(['status' => 'Notification sent', 'low_stock_items' => $lowStockItems]);
+    }
 
 }
