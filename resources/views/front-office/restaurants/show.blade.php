@@ -44,45 +44,45 @@
     <p><strong>Phone:</strong> {{ $restaurant->phone }}</p>
     <p><strong>Email:</strong> {{ $restaurant->email }}</p>
 
-    <h5 class="text-primary mt-4">Available Foods</h5>
-    @if($restaurant->foods->isEmpty())
-        <p>No foods available at this restaurant.</p>
-    @else
-        <ul class="list-group">
-            @foreach($restaurant->foods as $food)
-                <li class="list-group-item">
-                    <h5 class="font-weight-bold">{{ $food->food_name }}</h5>
-                    <p class="mb-1">{{ $food->description }}</p>
-                    <p class="text-muted">Status: {{$food->status}}</p>
-                    <p class="text-muted">Expiring in: {{$food->expiration_date}}</p>
+    <h5 class="text-primary mt-4">Available Foods from Inventory</h5>
+@if($foods->isEmpty())
+    <p>No foods available in the inventory.</p>
+@else
+    <ul class="list-group">
+    @foreach($foods as $food)
+    <li class="list-group-item">
+        <h5 class="font-weight-bold">{{ $food->food_name }}</h5>
+        <p class="mb-1">{{ $food->description }}</p>
+        <p class="text-muted">Status: {{$food->status}}</p>
+        <p class="text-muted">Expiring in: {{$food->expiration_date}}</p>
 
-                    <form action="{{ route('pickup.quick-add', ['restaurant_id' => $restaurant->id, 'food_id' => $food->id]) }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="btn bg-gradient-success w-30 mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Pick up Request
-                        </button>
-                                                @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
+        <form action="{{ route('pickup.quick-add', ['restaurant_id' => $restaurant->id, 'food_id' => $food->id]) }}" method="POST" class="inline">
+            @csrf
+            <button type="submit" class="btn bg-gradient-success w-30 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Pick up Request
+            </button>
+        </form>
 
-                        @if(session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-                    </form>
-                </li>
-            @endforeach
-        </ul>
-    @endif
+        @if(session('success') && session('success')['food_id'] == $food->id)
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success')['message'] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
+        @if(session('error') && session('error')['food_id'] == $food->id)
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error')['message'] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </li>
+@endforeach
+    </ul>
+@endif
     <!-- Rest of your code -->
 </div>
 

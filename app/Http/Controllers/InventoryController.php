@@ -219,10 +219,19 @@ class InventoryController extends Controller
             ->whereColumn('quantity_on_hand', '<=', 'minimum_quantity')
             ->get();
     
-        // Trigger event with low stock items
-        event(new LowStockNotification($lowStockItems));
+        if ($lowStockItems->isNotEmpty()) {
+            event(new LowStockNotification($lowStockItems));
+            return response()->json([
+                'status' => 'Notification sent',
+                'low_stock_items' => $lowStockItems
+            ]);
+        }
     
-        return response()->json(['status' => 'Notification sent', 'low_stock_items' => $lowStockItems]);
+        return response()->json([
+            'status' => 'No low stock items found',
+            'low_stock_items' => []
+        ]);
     }
+    
 
 }

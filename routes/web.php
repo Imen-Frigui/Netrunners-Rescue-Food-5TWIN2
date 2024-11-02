@@ -212,7 +212,7 @@ Route::get('/contact', function () {
 
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/resturant-all', [RestaurantController::class, 'all'])->name('restaurants.all');
-Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showFront'])->name('restaurants.front.show');
+Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showInventory'])->name('restaurants.front.show');
 // Reviews routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 

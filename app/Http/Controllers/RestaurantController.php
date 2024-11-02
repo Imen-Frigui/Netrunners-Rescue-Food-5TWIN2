@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Restaurant;
 use App\Http\Controllers\ReviewController;
 use App\Models\Review;
-
+use App\Models\Inventory;
+use App\Models\Food;
 class RestaurantController extends Controller
 {
     /**
@@ -116,17 +117,25 @@ class RestaurantController extends Controller
         return redirect()->route('restaurants')->with('success', 'Restaurant deleted successfully.');
     }
 
-    public function showFront($restaurant)
+    public function showInventory($restaurantId)
     {
-        $restaurant = Restaurant::with('foods')->findOrFail($restaurant); // Load the restaurant with related foods
-        $foods = $restaurant->foods()->get();
-        
-        // Get all reviews that belong to this restaurant
+        $restaurant = Restaurant::findOrFail($restaurantId); // Load the restaurant
+    
+        // Get all inventory items for the restaurant where quantity_on_hand is greater than or equal to minimum_quantity
+        $inventories = Inventory::where('restaurant_id', $restaurant->id)
+            ->whereColumn('quantity_on_hand', '>=', 'minimum_quantity')
+            ->get(); 
+    
+        $foodIds = $inventories->pluck('food_id'); // Get a collection of food IDs
+    
+        $foods = Food::whereIn('id', $foodIds)->get(); // Get foods that exist in the inventory
+    
+       
+    
         $reviews = Review::where('restaurant_id', $restaurant->id)->get();
     
-        return view('front-office.restaurants.show', compact('restaurant', 'foods', 'reviews')); // Pass the restaurant, foods, and reviews to the view
+        return view('front-office.restaurants.show', compact('restaurant', 'foods','inventories', 'reviews')); // Pass the restaurant, inventories, and reviews to the view
     }
-    
     
 
     public function all()

@@ -8,7 +8,8 @@ use App\Models\PickupRequest;
 use App\Models\Restaurant;
 use App\Models\User;
 use App\Models\Driver;
-
+use App\Http\Controllers\InventoryController;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class PickupRequestController extends Controller
@@ -48,7 +49,7 @@ class PickupRequestController extends Controller
         $request = PickupRequest::findOrFail($id);
         $request->status = 'approved';
         $request->save();
-
+       
         return redirect()->back()->with('success', 'Pickup request accepted successfully.');
     }
     public function reject($id)
@@ -238,40 +239,53 @@ class PickupRequestController extends Controller
     }
 }
 
+public function quickAdd($restaurant_id, $food_id, InventoryController $inventoryController)
+{
+    try {
+        $restaurant = Restaurant::findOrFail($restaurant_id);
+        $pickupAddress = $restaurant->address;
+        $pickupTime = Carbon::now()->addDays(3);
+        $requestTime = Carbon::now();
+        $inventoryController->checkLowStock();
+        // Find the inventory item for the given restaurant and food
+        $inventory = Inventory::where('restaurant_id', $restaurant_id)
+            ->where('food_id', $food_id)
+            ->first();
 
-    public function quickAdd($restaurant_id, $food_id)
-    {
-        try {
-            $restaurant = Restaurant::findOrFail($restaurant_id);
-            $pickupAddress = $restaurant->address;
-            $pickupTime = Carbon::now()->addDays(3);
-            $requestTime = Carbon::now();
-    
-            $existingRequest = PickupRequest::where('user_id', Auth::id())
-                ->where('restaurant_id', $restaurant_id)
-                ->where('food_id', $food_id)
-                ->first();
-    
-            if ($existingRequest) {
-                return redirect()->back()->with('error', 'You have already requested a pickup for this food item.');
-            }
-    
-            $pickup = PickupRequest::create([
-                'user_id' => Auth::id(),
-                'restaurant_id' => $restaurant_id,
-                'food_id' => $food_id,
-                'pickup_time' => $pickupTime,
-                'pickup_address' => $pickupAddress,
-                'status' => 'pending',
-                'request_time' => $requestTime,
-            ]);
-    
-            return redirect()->back()->with('success', 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create pickup request.');
+        // Check if the inventory exists and has enough stock
+        if (!$inventory || $inventory->quantity_on_hand <= 0) {
+            return redirect()->back()->with('error', ['message' => 'Cannot create pickup request. No stock available for this food item.', 'food_id' => $food_id]);
         }
+
+        $existingRequest = PickupRequest::where('user_id', Auth::id())
+            ->where('restaurant_id', $restaurant_id)
+            ->where('food_id', $food_id)
+            ->first();
+
+        if ($existingRequest) {
+            return redirect()->back()->with('error', ['message' => 'You have already requested a pickup for this food item.', 'food_id' => $food_id]);
+        }
+
+        // Create the pickup request
+        $pickup = PickupRequest::create([
+            'user_id' => Auth::id(),
+            'restaurant_id' => $restaurant_id,
+            'food_id' => $food_id,
+            'pickup_time' => $pickupTime,
+            'pickup_address' => $pickupAddress,
+            'status' => 'pending',
+            'request_time' => $requestTime,
+        ]);
+
+        // Decrease the quantity on hand in the inventory
+        $inventory->decrement('quantity_on_hand');
+
+        return redirect()->back()->with('success', ['message' => 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'), 'food_id' => $food_id]);
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to create pickup request: ' . $e->getMessage());
     }
-    
+}
+
 // PickupRequestController.php
 public function indexfront()
 {
@@ -301,4 +315,13 @@ public function getLocations($id)
     ]);
 }
 
+
+# dependecny injecticon of checklow stock notifacition service when approved it updates : 
+    public function notifyLowStock()
+    {
+        $inventoryController = new InventoryController();
+        $response = $inventoryController->checkLowStock();
+
+        return $response; // Return the response or handle it as needed
+    }
 }
