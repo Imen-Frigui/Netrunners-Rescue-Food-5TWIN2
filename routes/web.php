@@ -6,7 +6,10 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
 use Illuminate\Http\Request;
-
+use App\Events\LowStockNotification; 
+use App\Models\Inventory;
+use App\Models\Food;
+use App\Models\Restaurant;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\DonationController;
 use App\Exports\FoodsExport;
@@ -14,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
@@ -256,25 +260,6 @@ Route::get('restaurants/{restaurant}/inventories/{inventory}/edit', [InventoryCo
 Route::put('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'updateResto'])
     ->name('inventories.updateResto');
 
-
-use App\Events\LowStockNotification; // Ensure this line is present
-use App\Models\Inventory;
-use App\Models\Food;
-use App\Models\Restaurant;
-Route::get('api/test', function() {
-    // Retrieve low stock items
-    $lowStockItems = Inventory::with(['food', 'restaurant'])
-        ->whereColumn('quantity_on_hand', '<=', 'minimum_quantity')
-        ->get();
-
-    // Trigger event with low stock items
-    event(new LowStockNotification($lowStockItems));
-
-    return response()->json(['status' => 'Notification sent', 'low_stock_items' => $lowStockItems]);
-});
-
-
-
 Route::get('api/get-details', function (Request $request) {
     $food = Food::find($request->input('food_id'));
     $restaurant = Restaurant::find($request->input('restaurant_id'));
@@ -284,3 +269,12 @@ Route::get('api/get-details', function (Request $request) {
         'restaurant_name' => $restaurant ? $restaurant->name : 'Unknown',
     ]);
 });
+#welcome page :
+
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+
