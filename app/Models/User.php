@@ -47,7 +47,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
@@ -68,6 +68,8 @@ class User extends Authenticatable
         return $this->user_type === 'driver';
     }
 
-
-
+    public function beneficiaries()
+    {
+        return $this->hasMany(Beneficiary::class, 'managed_by');
+    }
 }

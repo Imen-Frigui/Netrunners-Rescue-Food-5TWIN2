@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
-
+use App\Http\Controllers\BeneficiaryController;
 
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\DonationController;
@@ -187,6 +187,16 @@ Route::prefix('donation-management')->name('donation-management.')->middleware('
     Route::put('/donations/{id}', [DonationController::class, 'update'])->name('update');
     Route::delete('/donations/{id}', [DonationController::class, 'destroy'])->name('destroy');
 });
+
+
+// Beneficiary CRUD routes Hanin
+Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
+Route::get('beneficiaries/create', [BeneficiaryController::class, 'create'])->name('beneficiaries.create');
+Route::post('beneficiaries', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');
+Route::get('beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
+Route::get('beneficiaries/{id}/edit', [BeneficiaryController::class, 'edit'])->name('beneficiaries.edit');
+Route::put('beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
+Route::delete('beneficiaries/{id}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
 
 
 # review routes marwen :

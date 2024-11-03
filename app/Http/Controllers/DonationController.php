@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donation;
 use App\Models\Food;
 use Illuminate\Http\Request;
-use ConsoleTVs\Charts\Facades\Charts;
+use App\Models\Beneficiary;
 
 class DonationController extends Controller
 {
@@ -25,11 +25,14 @@ class DonationController extends Controller
             $query->where('donor_type', 'LIKE', "%$search%")
                 ->orWhereHas('food', function ($q) use ($search) {
                     $q->where('food_name', 'LIKE', "%$search%");
+                })
+                ->orWhereHas('beneficiary', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%$search%");
                 });
         }
 
         // Pagination
-        $donations = $query->with('food')->paginate(5);
+        $donations = $query->with('food', 'beneficiary')->paginate(5);
 
         return view('donation2.index', compact('donations'));
     }
@@ -41,8 +44,10 @@ class DonationController extends Controller
      */
     public function create()
     {
-        $foods = Food::all(); // Retrieve all available food items
-        return view('donation2.create', compact('foods'));
+        $foods = Food::all(); 
+        $beneficiaries = Beneficiary::all();
+        // Retrieve all available food items
+        return view('donation2.create', compact('foods', 'beneficiaries'));
     }
 
     /**
@@ -55,7 +60,8 @@ class DonationController extends Controller
     {
         // Validation rules
         $request->validate([
-            'food_id' => 'required',
+            'food_id' => 'required|exists:food,id',
+            'beneficiary_id' => 'required|exists:beneficiaries,id', 
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'donation_date' => 'required|date',
             'quantity' => 'required|integer|min:1|max:2000',
@@ -87,6 +93,8 @@ class DonationController extends Controller
                 'status' => $donation->status,
                 'donation_date' => $donation->donation_date,
                 'remarks' => $donation->remarks,
+                'beneficiary_name' => optional($donation->beneficiary)->name 
+
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Donation not found'], 404);
@@ -103,7 +111,8 @@ class DonationController extends Controller
     {
         $donation = Donation::findOrFail($id);
         $foods = Food::all();
-        return view('donation2.edit', compact('donation', 'foods'));
+        $beneficiaries = Beneficiary::all();
+        return view('donation2.edit', compact('donation', 'foods', 'beneficiaries'));
     }
 
     /**
@@ -117,7 +126,8 @@ class DonationController extends Controller
     {
         // Validation rules
         $request->validate([
-            'food_id' => 'required',
+            'food_id' => 'required|exists:food,id', 
+            'beneficiary_id' => 'required|exists:beneficiaries,id',             
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'donation_date' => 'required|date',
             'quantity' => 'required|integer|min:1',
@@ -170,6 +180,7 @@ class DonationController extends Controller
 
         Donation::create([
             'food_id' => $request->input('food_id'),
+            'beneficiary_id' => $request->input('beneficiary_id'), 
             'donor_type' => $request->input('donor_type'),
             'quantity' => $request->input('quantity'),
             'remarks' => $request->input('remarks'),

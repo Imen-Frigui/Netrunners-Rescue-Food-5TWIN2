@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             User::factory()->create([
                 'name' => 'Admin',
                 'email' => 'admin@material.com',
-                'password' => ('secret')
+                'password' => ('secret'),
+                'user_type' => 'admin', 
             ]);
         }
 
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PickupRequestSeeder::class);
         $this->call(CharitySeeder::class);
         $this->call(DriverSeeder::class); 
+        $this->call(BeneficiarySeeder::class); 
         $this->call(DonationSeeder::class); 
 
     }

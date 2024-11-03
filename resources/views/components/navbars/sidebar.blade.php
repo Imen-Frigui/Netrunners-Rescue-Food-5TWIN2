@@ -116,6 +116,15 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'beneficiaries-management' ? ' active bg-gradient-info' : '' }}"
+                    href="{{ route('beneficiaries.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Beneficiaries Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'pickup-management' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('pickup-management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -125,14 +134,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                        <a class="nav-link text-white {{ $activePage == 'driver-management' ? ' active bg-gradient-success' : '' }} "
-                            href="{{ route('driver-management') }}">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Drivers Management</span>
-                        </a>
-                </li>
+                <a class="nav-link text-white {{ $activePage == 'driver-management' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('driver-management') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Drivers Management</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-success' : '' }}  "
                     href="{{ route('reviews') }}">

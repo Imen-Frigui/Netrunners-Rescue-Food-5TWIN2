@@ -11,6 +11,7 @@ class Donation extends Model
 
     protected $fillable = [
         'food_id',
+        'beneficiary_id',
         'donor_type',
         'donation_date',
         'quantity',
@@ -25,6 +26,12 @@ class Donation extends Model
     public function food()
     {
         return $this->belongsTo(Food::class);
+    }
+
+
+    public function beneficiary()
+    {
+        return $this->belongsTo(Beneficiary::class);
     }
 
 }
