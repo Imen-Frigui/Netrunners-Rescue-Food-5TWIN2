@@ -5,9 +5,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\BeneficiaryController;
+
 use Illuminate\Http\Request;
-use App\Events\LowStockNotification; 
-use App\Models\Inventory;
+
 use App\Models\Food;
 use App\Models\Restaurant;
 use App\Http\Controllers\FoodController;
@@ -53,13 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
 	// routes/web.php
 	
-
-		// Define the events routes here
-		// Route::prefix('events')->name('events.')->group(function () {
-		// 	Route::get('/', [EventController::class, 'all'])->name('index'); // List of events
-		// 	Route::get('/{event}', [EventController::class, 'show'])->name('show'); // Event details
-
-		// });
 	});
 	Route::get('billing', function () {
 		return view('pages.billing');
@@ -164,7 +158,6 @@ Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocati
 
 # restaurant routes rami :
 Route::resource('restaurants', RestaurantController::class);
-
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
 Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
@@ -173,6 +166,7 @@ Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
 Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])->name('restaurants.dashboard');
+
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -194,10 +188,18 @@ Route::prefix('donation-management')->name('donation-management.')->middleware('
     Route::delete('/donations/{id}', [DonationController::class, 'destroy'])->name('destroy');
 });
 
+// Beneficiary CRUD routes Hanin
+Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
+Route::get('beneficiaries/create', [BeneficiaryController::class, 'create'])->name('beneficiaries.create');
+Route::post('beneficiaries', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');
+Route::get('beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
+Route::get('beneficiaries/{id}/edit', [BeneficiaryController::class, 'edit'])->name('beneficiaries.edit');
+Route::put('beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
+Route::delete('beneficiaries/{id}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
+
 
 # review routes marwen :
 Route::resource('reviews', ReviewController::class);
-
 Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
@@ -247,7 +249,6 @@ Route::resource('inventories', InventoryController::class);
 
 // Additional routes for custom functionalities
 Route::get('api/inventories/low-stock', [InventoryController::class, 'lowStock'])->name('api.inventories.lowStock');
-
 Route::get('/inventories/reorder-suggestions', [InventoryController::class, 'reorderSuggestions'])->name('inventories.reorderSuggestions');
 
 Route::get('restaurants/{restaurant}/inventories', [InventoryController::class, 'indexResto'])->name('inventories.indexResto');
@@ -256,7 +257,6 @@ Route::post('restaurants/{restaurant}/inventories', [InventoryController::class,
 Route::delete('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'destroyResto'])->name('inventories.destroyResto');
 Route::get('restaurants/{restaurant}/inventories/{inventory}/edit', [InventoryController::class, 'editResto'])
     ->name('inventories.editResto');
-// Route to handle the update of an inventory item
 Route::put('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'updateResto'])
     ->name('inventories.updateResto');
 
@@ -269,8 +269,9 @@ Route::get('api/get-details', function (Request $request) {
         'restaurant_name' => $restaurant ? $restaurant->name : 'Unknown',
     ]);
 });
-#welcome page :
 
+
+#welcome page :
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');

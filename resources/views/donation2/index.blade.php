@@ -31,6 +31,7 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th class="align-middle text-center font-weight-bold">Donor Type</th>
+                                            <th class="align-middle text-center font-weight-bold">Beneficiary</th>
                                             <th class="align-middle text-center font-weight-bold">Donated Food</th>
                                             <th class="align-middle text-center font-weight-bold">Quantity</th>
                                             <th class="align-middle text-center font-weight-bold">Status</th>
@@ -41,6 +42,7 @@
                                         @foreach($donations as $donation)
                                         <tr>
                                             <td class="align-middle text-center">{{ $donation->donor_type }}</td>
+                                            <td class="align-middle text-center">{{ optional($donation->beneficiary)->name ?? 'N/A' }}</td>
                                             <td class="align-middle text-center">{{ $donation->food->food_name }}</td>
                                             <td class="align-middle text-center">{{ $donation->quantity }}</td>
                                             <td class="align-middle text-center">
@@ -103,11 +105,15 @@
                         <label for="status" class="form-label">Status</label>
                         <input type="text" id="status" class="form-control detail-input" disabled>
                     </div>
-                    <!-- Centered Donation Date -->
-                    <div class="col-12 mb-3 text-center">
-                        <label for="donationDate" class="form-label">Donation Date</label>
-                        <input type="text" id="donationDate" class="form-control detail-input" disabled>
-                    </div>
+                   <!-- Donation Date and Beneficiary Name in the same row -->
+                <div class="col-md-6 mb-3">
+                    <label for="donationDate" class="form-label">Donation Date</label>
+                    <input type="text" id="donationDate" class="form-control detail-input" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="beneficiaryName" class="form-label">Beneficiary Name</label>
+                    <input type="text" id="beneficiaryName" class="form-control detail-input" disabled>
+                </div>
                     <!-- Full-width Remarks Section -->
                     <div class="col-12 mb-3">
                         <label for="remarks" class="form-label">Remarks</label>
@@ -165,6 +171,7 @@
             $('#quantity').val(donation.quantity);
             $('#status').val(donation.status);
             $('#donationDate').val(donation.donation_date);
+            $('#beneficiaryName').val(donation.beneficiary_name); 
             $('#remarks').val(donation.remarks);
             $('#donationDetailsModal').modal('show');
         }

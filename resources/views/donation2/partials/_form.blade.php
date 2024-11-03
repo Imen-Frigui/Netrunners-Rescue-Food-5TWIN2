@@ -67,5 +67,18 @@
             <div class='invalid-feedback'>{{ $message }}</div>
             @enderror
         </div>
+        <div class="input-group input-group-outline mt-3">
+            <select name="beneficiary_id" class="form-control @error('beneficiary_id') is-invalid @enderror" required>
+                <option value="">Select Beneficiary</option>
+                @foreach ($beneficiaries as $beneficiary)
+                <option value="{{ $beneficiary->id }}" {{ old('beneficiary_id', $donation->beneficiary_id ?? '') == $beneficiary->id ? 'selected' : '' }}>
+                    {{ $beneficiary->name }}
+                </option>
+                @endforeach
+            </select>
+            @error('beneficiary_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
 </div>
