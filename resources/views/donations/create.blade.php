@@ -4,7 +4,7 @@
             <img src="{{ asset('assets/img/donation1.jpg') }}" class="position-absolute w-100 h-100 top-0 start-0" style="object-fit: cover; z-index: -1;" alt="Background Image">
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container my-auto">
-                <div class="row text-center mb-5">
+                <div class="row text-center mb-2">
                     <div class="col-12">
                         <h2 class="text-white font-weight-bold">Make a Donation</h2>
                         <p class="text-white">Your donation can make a difference. Fill out the form below to donate food items.</p>
@@ -23,10 +23,10 @@
                             <div class="card-header text-center">
                                 <h4>Donation Form</h4>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body mb-4">
                                 <form action="{{ route('donations.store') }}" method="POST">
                                     @csrf
-                                    <div class="input-group input-group-outline mt-3">
+                                    <div class="input-group input-group-outline ">
                                         <select name="donor_type" class="form-control @error('donor_type') is-invalid @enderror">
                                             <option value="">Select Donor Type</option>
                                             <option value="Restaurant" {{ old('donor_type') == 'Restaurant' ? 'selected' : '' }}>Restaurant</option>
@@ -67,6 +67,20 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="input-group input-group-outline mt-3">
+                                        <select name="beneficiary_id" class="form-control @error('beneficiary_id') is-invalid @enderror">
+                                            <option value="">Select Beneficiary</option>
+                                            @foreach ($beneficiaries as $beneficiary)
+                                            <option value="{{ $beneficiary->id }}" {{ old('beneficiary_id') == $beneficiary->id ? 'selected' : '' }}>
+                                                {{ $beneficiary->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('beneficiary_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
 
                                     <!-- Submit Button -->
                                     <div class="text-center mt-4">
