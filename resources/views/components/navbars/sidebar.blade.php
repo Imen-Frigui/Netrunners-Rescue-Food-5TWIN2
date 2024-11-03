@@ -109,7 +109,7 @@
                     <span class="nav-link-text ms-1">PickUps Management</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'driver-management' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('driver-management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -117,7 +117,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Drivers Management</span>
                 </a>
-            </li>
+            </li> -->
 
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-success' : '' }}  "

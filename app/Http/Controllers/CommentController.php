@@ -14,21 +14,29 @@ class CommentController extends Controller
      * Store a new comment.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'review_id' => 'required|exists:reviews,id',
-        'comment_body' => 'required|string|max:255',
-    ]);
-
-    Comment::create([
-        'review_id' => $request->review_id,
-        'user_id' => Auth::id(), 
-        'comment_body' => $request->comment_body,
-    ]);
-
-    return redirect()->route('reviews.show', $request->review_id)
-                     ->with('success', 'Comment added successfully!');
-}
+    {
+        $request->validate([
+            'comment_body' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
+        ]);
+    
+        $comment = new Comment();
+        $comment->comment_body = $request->comment_body;
+        $comment->review_id = $request->review_id;
+    
+        // Get the authenticated user's ID and assign it to the comment
+        $comment->user_id = Auth::id(); // Assuming the user is logged in
+    
+        // Handle the image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('comments', 'public'); // Store the image
+            $comment->image_path = $path;
+        }
+    
+        $comment->save();
+    
+        return redirect()->back()->with('success', 'Comment added successfully.');
+    }
 
     /**
      * Show the form to edit a comment.
@@ -36,13 +44,14 @@ class CommentController extends Controller
     public function edit($id)
     {
         $comment = Comment::findOrFail($id);
-
+    
         if ($comment->user_id !== Auth::id()) {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
-
-        return view('comments.edit', compact('comment'));
+    
+        return view('reviews.comments.edit', compact('comment'));
     }
+    
 
     /**
      * Update the specified comment.
@@ -63,7 +72,7 @@ class CommentController extends Controller
             'comment_body' => $request->input('comment_body'),
         ]);
 
-        return redirect()->route('reviews.index')->with('success', 'Comment updated successfully.');
+        return redirect()->route('reviews.show', $comment->review_id)->with('success', 'Comment updated successfully.');
     }
 
     /**

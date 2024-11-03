@@ -12,7 +12,8 @@ class Comment extends Model
     protected $fillable = [
         'review_id',
         'user_id', 
-        'comment_body'
+        'comment_body',
+        'image_path'
     ];
 
     public function review()

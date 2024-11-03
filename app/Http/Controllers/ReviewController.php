@@ -18,11 +18,22 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reviews = Review::all(); // Fetch all reviews
-        return view('reviews.index', compact('reviews')); // Updated to match your file path
+        $rating = $request->input('rating');
+        $search = $request->input('search');
+    
+        $reviews = Review::when($rating, function ($query) use ($rating) {
+                return $query->where('rating', $rating);
+            })
+            ->when($search, function ($query) use ($search) {
+                return $query->where('comment', 'like', '%' . $search . '%');
+            })
+            ->paginate(6);
+    
+        return view('reviews.index', compact('reviews'));
     }
+
     
 
     /**
@@ -63,12 +74,17 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // In your ReviewController
+
     public function show($id)
     {
-        $review = Review::with('comments.user')->findOrFail($id);
+        $review = Review::findOrFail($id);
+        $comments = $review->comments()->paginate(4); // Get paginated comments
     
-        return view('reviews.show', compact('review'));
+        return view('reviews.show', compact('review', 'comments'));
     }
+    
+
     
 
 
