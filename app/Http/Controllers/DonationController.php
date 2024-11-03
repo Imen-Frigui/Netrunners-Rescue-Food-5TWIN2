@@ -159,7 +159,8 @@ class DonationController extends Controller
     public function frontendCreate()
     {
         $foods = Food::all(); 
-        return view('donations.create', compact('foods'));
+        $beneficiaries = Beneficiary::all();
+        return view('donations.create', compact('foods', 'beneficiaries'));
     }
 
     /**
@@ -172,7 +173,8 @@ class DonationController extends Controller
     {
         // Validation rules
         $request->validate([
-            'food_id' => 'required',
+            'food_id' => 'required|exists:food,id',
+            'beneficiary_id' => 'required|exists:beneficiaries,id', 
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'quantity' => 'required|integer|min:1|max:2000',
             'remarks' => 'nullable|string',
