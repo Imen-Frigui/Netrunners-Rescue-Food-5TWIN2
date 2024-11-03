@@ -7,6 +7,10 @@ use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\BeneficiaryController;
 
+use Illuminate\Http\Request;
+
+use App\Models\Food;
+use App\Models\Restaurant;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\DonationController;
 use App\Exports\FoodsExport;
@@ -14,11 +18,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\PickupRequestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
 use App\Http\Controllers\DriverController;
-
+use App\Http\Controllers\InventoryController;
 Route::get('/', function () {
 	return redirect('sign-in');
 })->middleware('guest');
@@ -49,13 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('profile', [FrontOfficeController::class, 'updateProfile'])->name('user-profile.update');
 	// routes/web.php
 	
-
-		// Define the events routes here
-		// Route::prefix('events')->name('events.')->group(function () {
-		// 	Route::get('/', [EventController::class, 'all'])->name('index'); // List of events
-		// 	Route::get('/{event}', [EventController::class, 'show'])->name('show'); // Event details
-
-		// });
 	});
 	Route::get('billing', function () {
 		return view('pages.billing');
@@ -159,6 +157,7 @@ Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::c
 Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
 
 # restaurant routes rami :
+Route::resource('restaurants', RestaurantController::class);
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
 Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
@@ -167,6 +166,7 @@ Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name
 Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
 Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
 Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])->name('restaurants.dashboard');
+
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -188,7 +188,6 @@ Route::prefix('donation-management')->name('donation-management.')->middleware('
     Route::delete('/donations/{id}', [DonationController::class, 'destroy'])->name('destroy');
 });
 
-
 // Beneficiary CRUD routes Hanin
 Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
 Route::get('beneficiaries/create', [BeneficiaryController::class, 'create'])->name('beneficiaries.create');
@@ -201,7 +200,6 @@ Route::delete('beneficiaries/{id}', [BeneficiaryController::class, 'destroy'])->
 
 # review routes marwen :
 Route::resource('reviews', ReviewController::class);
-
 Route::get('reviews', [ReviewController::class, 'index'])->name('reviews');
 Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
 Route::post('reviews', [ReviewController::class, 'store'])->name('reviews.store');
@@ -222,7 +220,7 @@ Route::get('/contact', function () {
 
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/resturant-all', [RestaurantController::class, 'all'])->name('restaurants.all');
-Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showFront'])->name('restaurants.front.show');
+Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showInventory'])->name('restaurants.front.show');
 // Reviews routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
@@ -239,13 +237,45 @@ Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('f
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
 
-// Route::resource('drivers', DriverController::class);
-// Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
-// Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-// Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
+Route::resource('drivers', DriverController::class); 
+Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
+Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
+Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
+
+Route::resource('inventories', InventoryController::class);
+
+// Additional routes for custom functionalities
+Route::get('api/inventories/low-stock', [InventoryController::class, 'lowStock'])->name('api.inventories.lowStock');
+Route::get('/inventories/reorder-suggestions', [InventoryController::class, 'reorderSuggestions'])->name('inventories.reorderSuggestions');
+
+Route::get('restaurants/{restaurant}/inventories', [InventoryController::class, 'indexResto'])->name('inventories.indexResto');
+Route::get('restaurants/{restaurant}/inventories/create', [InventoryController::class, 'createResto'])->name('inventories.createResto');
+Route::post('restaurants/{restaurant}/inventories', [InventoryController::class, 'storeResto'])->name('inventories.storeResto');
+Route::delete('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'destroyResto'])->name('inventories.destroyResto');
+Route::get('restaurants/{restaurant}/inventories/{inventory}/edit', [InventoryController::class, 'editResto'])
+    ->name('inventories.editResto');
+Route::put('restaurants/{restaurant}/inventories/{inventory}', [InventoryController::class, 'updateResto'])
+    ->name('inventories.updateResto');
+
+Route::get('api/get-details', function (Request $request) {
+    $food = Food::find($request->input('food_id'));
+    $restaurant = Restaurant::find($request->input('restaurant_id'));
+
+    return response()->json([
+        'food_name' => $food ? $food->food_name : 'Unknown',
+        'restaurant_name' => $restaurant ? $restaurant->name : 'Unknown',
+    ]);
+});
+
+
 #welcome page :
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 

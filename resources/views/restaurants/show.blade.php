@@ -20,6 +20,8 @@
                 <button type="submit" class="btn btn-danger mt-3">Delete</button>
             </form>
             <a href="{{ route('restaurants') }}" class="btn btn-secondary mt-3">Back to Restaurants</a>
+            
+            <!-- Button to View Inventory -->
         </div>
 
         <x-footers.auth></x-footers.auth>
@@ -32,15 +34,10 @@
     <!-- Initialize Map -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize the map and set its view to the restaurant's coordinates
             var map = L.map('map').setView([{{ $restaurant->latitude }}, {{ $restaurant->longitude }}], 13);
-
-            // Add a tile layer from OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-
-            // Add a marker at the restaurant's location
             L.marker([{{ $restaurant->latitude }}, {{ $restaurant->longitude }}]).addTo(map)
                 .bindPopup('<strong>{{ $restaurant->name }}</strong><br>{{ $restaurant->address }}')
                 .openPopup();

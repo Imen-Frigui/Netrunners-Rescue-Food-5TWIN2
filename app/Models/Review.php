@@ -29,5 +29,11 @@ class Review extends Model
         return $this->belongsTo(Event::class);
     }
 
+    public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+
 
 }
