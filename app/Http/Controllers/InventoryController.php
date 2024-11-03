@@ -147,8 +147,8 @@ class InventoryController extends Controller
     public function createResto(Restaurant $restaurant)
     {
 
-        $foods = Food::all();
-
+        $foods = $restaurant->foods;
+        
         return view('inventories.createResto', compact('foods', 'restaurant'));
     }
 
