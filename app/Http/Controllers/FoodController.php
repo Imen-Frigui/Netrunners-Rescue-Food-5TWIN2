@@ -121,7 +121,9 @@ class FoodController extends Controller
             'storage_conditions' => 'nullable|in:refrigerated,frozen,ambient,dry,humidity_controlled,vacuum_sealed,cool_dark_place',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
         $food = Food::findOrFail($id);
+        $food->restaurants()->sync($request->restaurant_id);
         $food->update($request->all());
 
         return redirect()->route('foods.index')->with('success', 'Food item updated successfully.');

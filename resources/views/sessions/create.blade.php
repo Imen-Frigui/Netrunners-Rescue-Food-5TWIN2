@@ -69,8 +69,8 @@
                                         <label class="form-label">User Type</label>
                                         <select name="user_type" class="form-control">
                                         <option value="user" selected >User</option>
-                                            <option value="admin">Admin</option>
-                                          
+                                        <option value="admin">Admin</option>
+                                        <option value="driver">Driver</option>
                                         </select>
                                     </div>
                                     @error('user_type')

@@ -7,6 +7,9 @@ use App\Models\Food;
 use App\Models\PickupRequest;
 use App\Models\Restaurant;
 use App\Models\User;
+use App\Models\Driver;
+use App\Http\Controllers\InventoryController;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class PickupRequestController extends Controller
@@ -46,7 +49,7 @@ class PickupRequestController extends Controller
         $request = PickupRequest::findOrFail($id);
         $request->status = 'approved';
         $request->save();
-
+       
         return redirect()->back()->with('success', 'Pickup request accepted successfully.');
     }
     public function reject($id)
@@ -64,7 +67,7 @@ class PickupRequestController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::where('user_type', 'user')->get();
         $restaurants = Restaurant::all();
         $food = Food::all();
     
@@ -77,22 +80,44 @@ class PickupRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|integer',  
-            'restaurant_id' => 'required|integer',  
-            'pickup_time' => 'required|date',  
-            'pickup_address' => 'required|string|max:255',  
-            'status' => 'required|in:pending,approved,rejected',  
-            'food_id' => 'required|integer', 
-        ]);
+ public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'restaurant_id' => 'required|exists:restaurants,id',
+        'food_id' => 'required|exists:foods,id',
+        'pickup_time' => [
+            'required',
+            'date',
+            'after:now',  // Ensures pickup time is in the future
+        ],
+        'pickup_address' => 'required|string|max:255',
+        'status' => 'required|in:pending,approved,rejected',
+    ], [
+        'user_id.required' => 'Please select a customer',
+        'user_id.exists' => 'Selected customer is invalid',
+        'restaurant_id.required' => 'Please select a restaurant',
+        'restaurant_id.exists' => 'Selected restaurant is invalid',
+        'food_id.required' => 'Please select a food item',
+        'food_id.exists' => 'Selected food item is invalid',
+        'pickup_time.required' => 'Please specify a pickup time',
+        'pickup_time.after' => 'Pickup time must be in the future',
+        'pickup_address.required' => 'Please enter a pickup address',
+        'status.required' => 'Please select a status',
+        'status.in' => 'Selected status is invalid',
+    ]);
 
-        PickupRequest::create($request->all());
-
-
-        return redirect()->route('pickup-management')->with('success', 'Pickup request created successfully.');
+    try {
+        $pickup = PickupRequest::create($validatedData);
+        return redirect()
+            ->route('pickup-management')
+            ->with('success', 'PickUp request created successfully');
+    } catch (\Exception $e) {
+        return back()
+            ->withInput()
+            ->withErrors(['error' => 'Failed to create pickup request. Please try again.']);
     }
+}
 
     /**
      * Display the specified resource.
@@ -145,45 +170,122 @@ class PickupRequestController extends Controller
         //
     }
 
-    public function quickAdd($restaurant_id, $food_id)
+    public function getAvailableDrivers()
     {
+        $drivers = Driver::with('user')
+            ->whereIn('availability_status', ['available', 'busy'])
+            ->get();
+        
+        return response()->json($drivers);
+    }
+
+    public function assignDriver(Request $request, PickupRequest $pickupRequest)
+    {
+        $request->validate([
+            'driver_id' => 'required|exists:drivers,id'
+        ]);
+
         try {
-            // Find the restaurant and get the address
-            $restaurant = Restaurant::findOrFail($restaurant_id);
-            $pickupAddress = $restaurant->address;
-            $pickupTime = Carbon::now()->addDays(3);
-            $requestTime = Carbon::now();
-    
-            // Check if the user has already made a request for this food item
-            $existingRequest = PickupRequest::where('user_id', Auth::id())
-                ->where('restaurant_id', $restaurant_id)
-                ->where('food_id', $food_id)
-                ->first();
-    
-            if ($existingRequest) {
-                // If a request already exists, show an error message
-                return redirect()->back()->with('error', 'You have already requested a pickup for this food item.');
-            }
-    
-            // Create the new pickup request
-            $pickup = PickupRequest::create([
-                'user_id' => Auth::id(),
-                'restaurant_id' => $restaurant_id,
-                'food_id' => $food_id,
-                'pickup_time' => $pickupTime,
-                'pickup_address' => $pickupAddress,
-                'status' => 'pending',
-                'request_time' => $requestTime,
+            $pickupRequest->update([
+                'driver_id' => $request->driver_id
             ]);
-    
-            // Redirect back with a success message including the pickup time
-            return redirect()->back()->with('success', 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'));
+
+            Driver::where('id', $request->driver_id)
+                ->update(['availability_status' => 'busy']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Driver assigned successfully'
+            ]);
         } catch (\Exception $e) {
-            // In case of any failure, show an error message
-            return redirect()->back()->with('error', 'Failed to create pickup request.');
+            \Log::error('Failed to assign driver: ' . $e->getMessage(), [
+                'exception' => $e,
+                'pickupRequest' => $pickupRequest->id,
+                'driver_id' => $request->driver_id
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to assign driver'
+            ], 500);
         }
     }
-    
+    public function removeDriver(PickupRequest $pickupRequest)
+{
+    try {
+        $driverId = $pickupRequest->driver_id;
+        
+        $pickupRequest->update([
+            'driver_id' => null
+        ]);
+        
+        if ($driverId) {
+            Driver::where('id', $driverId)
+                ->update(['availability_status' => 'available']);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Driver removed successfully'
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Failed to remove driver: ' . $e->getMessage(), [
+            'exception' => $e,
+            'pickupRequest' => $pickupRequest->id
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to remove driver'
+        ], 500);
+    }
+}
+
+public function quickAdd($restaurant_id, $food_id, InventoryController $inventoryController)
+{
+    try {
+        $restaurant = Restaurant::findOrFail($restaurant_id);
+        $pickupAddress = $restaurant->address;
+        $pickupTime = Carbon::now()->addDays(3);
+        $requestTime = Carbon::now();
+        $inventoryController->checkLowStock();
+        // Find the inventory item for the given restaurant and food
+        $inventory = Inventory::where('restaurant_id', $restaurant_id)
+            ->where('food_id', $food_id)
+            ->first();
+
+        // Check if the inventory exists and has enough stock
+        if (!$inventory || $inventory->quantity_on_hand <= 0) {
+            return redirect()->back()->with('error', ['message' => 'Cannot create pickup request. No stock available for this food item.', 'food_id' => $food_id]);
+        }
+
+        $existingRequest = PickupRequest::where('user_id', Auth::id())
+            ->where('restaurant_id', $restaurant_id)
+            ->where('food_id', $food_id)
+            ->first();
+
+        if ($existingRequest) {
+            return redirect()->back()->with('error', ['message' => 'You have already requested a pickup for this food item.', 'food_id' => $food_id]);
+        }
+
+        // Create the pickup request
+        $pickup = PickupRequest::create([
+            'user_id' => Auth::id(),
+            'restaurant_id' => $restaurant_id,
+            'food_id' => $food_id,
+            'pickup_time' => $pickupTime,
+            'pickup_address' => $pickupAddress,
+            'status' => 'pending',
+            'request_time' => $requestTime,
+        ]);
+
+        // Decrease the quantity on hand in the inventory
+        $inventory->decrement('quantity_on_hand');
+
+        return redirect()->back()->with('success', ['message' => 'Pickup request created successfully! Pickup scheduled for ' . $pickupTime->format('M d, Y H:i'), 'food_id' => $food_id]);
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Failed to create pickup request: ' . $e->getMessage());
+    }
+}
+
 // PickupRequestController.php
 public function indexfront()
 {
@@ -193,4 +295,33 @@ public function indexfront()
   
     return view('front-office.pickups', compact('pickups'));
 }
+
+public function getLocations($id)
+{
+    $pickup = PickupRequest::findOrFail($id);
+    
+
+    
+    return response()->json([
+        'pickup_latitude' => $pickup->pickup_latitude ?? 36.7062,
+        'pickup_longitude' => $pickup->pickup_longitude ?? 10.2166,
+        'driver_latitude' => $pickup->driver_latitude ?? 36.7362, 
+        'driver_longitude' => $pickup->driver_longitude ?? 10.2082, 
+        'location' => $pickup->location ?? "Mourouj",
+        'status' => $pickup->status,
+        'food_items' => $pickup->food->name,
+        'driver_name' => $pickup->driver->user->name ?? 'Not Assigned',
+        'driver_phone' => $pickup->driver->user->phone ?? 'N/A',
+    ]);
+}
+
+
+# dependecny injecticon of checklow stock notifacition service when approved it updates : 
+    public function notifyLowStock()
+    {
+        $inventoryController = new InventoryController();
+        $response = $inventoryController->checkLowStock();
+
+        return $response; // Return the response or handle it as needed
+    }
 }

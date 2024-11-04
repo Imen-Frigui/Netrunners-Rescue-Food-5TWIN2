@@ -18,11 +18,22 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reviews = Review::all(); // Fetch all reviews
-        return view('reviews.index', compact('reviews')); // Updated to match your file path
+        $rating = $request->input('rating');
+        $search = $request->input('search');
+    
+        $reviews = Review::when($rating, function ($query) use ($rating) {
+                return $query->where('rating', $rating);
+            })
+            ->when($search, function ($query) use ($search) {
+                return $query->where('comment', 'like', '%' . $search . '%');
+            })
+            ->paginate(6);
+    
+        return view('reviews.index', compact('reviews'));
     }
+
     
 
     /**
@@ -45,11 +56,11 @@ class ReviewController extends Controller
     {
         $validatedData = $request->validate([
             'comment' => 'required|string',
+            
             'rating' => 'required|integer|between:1,5'
         ]);
     
-        // Set user_id statically to 1
-        $validatedData['user_id'] = 1;
+        $validatedData['user_id'] = Auth::id();
     
         $review = Review::create($validatedData);
     
@@ -63,11 +74,18 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // In your ReviewController
+
     public function show($id)
-{
-    $review = Review::findOrFail($id);
-        return view('reviews.show', compact('review'));
-}
+    {
+        $review = Review::findOrFail($id);
+        $comments = $review->comments()->paginate(4); // Get paginated comments
+    
+        return view('reviews.show', compact('review', 'comments'));
+    }
+    
+
+    
 
 
     /**
@@ -108,7 +126,7 @@ class ReviewController extends Controller
         $review = Review::find($id);
         if ($review) {
             // Ensure user_id remains 1
-            $validatedData['user_id'] = 1;
+            $validatedData['user_id'] = Auth::id();
     
             $review->update($validatedData);
             return redirect()->route('reviews')->with('success', 'Review updated successfully.');
@@ -149,7 +167,7 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
         $review = Review::find($id);
         if ($review) {
             // Ensure user_id remains 1
-            $validatedData['user_id'] = 1;
+            $validatedData['user_id'] =Auth::id();
     
             $review->update($validatedData);
             return redirect()->route('myreviews')->with('success', 'Review updated successfully.');

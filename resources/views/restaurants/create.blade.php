@@ -12,27 +12,39 @@
 
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required>
+                    <input type="text" name="name" id="name" class="form-control border @error('name') is-invalid @enderror" value="{{ old('name') }}" >
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="address">Address</label>
-                    <input type="text" name="address" id="address" class="form-control" required>
+                    <input type="text" name="address" id="address" class="form-control border @error('address') is-invalid @enderror" value="{{ old('address') }}" >
+                    @error('address')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="text" name="phone" id="phone" class="form-control" required>
+                    <input type="text" name="phone" id="phone" class="form-control border @error('phone') is-invalid @enderror" value="{{ old('phone') }}" >
+                    @error('phone')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" required>
+                    <input type="text" name="email" id="email" class="form-control border @error('email') is-invalid @enderror" value="{{ old('email') }}" >
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Latitude and Longitude inputs (hidden) -->
-                <input type="hidden" name="latitude" id="latitude">
-                <input type="hidden" name="longitude" id="longitude">
+                <input type="hidden" name="latitude" id="latitude" >
+                <input type="hidden" name="longitude" id="longitude" >
 
                 <!-- Map Container -->
                 <div id="map" style="height: 400px; width: 100%;"></div>

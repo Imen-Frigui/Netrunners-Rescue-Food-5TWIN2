@@ -31,7 +31,7 @@ class SessionsController extends Controller
         $attributes = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'user_type' => 'required|in:admin,user'
+            'user_type' => 'required|in:admin,user,driver'
         ]);
 
         $user = User::where('email', $attributes['email'])->first();
@@ -57,6 +57,7 @@ class SessionsController extends Controller
     {
         switch ($user->user_type) {
             case 'admin':
+            case 'driver': 
                 return redirect()->route('dashboard');
             case 'user':
             default:
