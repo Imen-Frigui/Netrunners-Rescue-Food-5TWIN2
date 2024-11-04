@@ -7,9 +7,9 @@ use App\Models\Food;
 use App\Models\PickupRequest;
 use App\Models\Restaurant;
 use App\Models\User;
-use App\Models\Driver;
 use App\Http\Controllers\InventoryController;
 use App\Models\Inventory;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class PickupRequestController extends Controller
@@ -168,6 +168,86 @@ class PickupRequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAvailableDrivers()
+    {
+        $drivers = Driver::with('user')
+            ->whereIn('availability_status', ['available', 'busy'])
+            ->get();
+        
+        return response()->json($drivers);
+    }
+
+    public function assignDriver(Request $request, PickupRequest $pickupRequest)
+    {
+        $request->validate([
+            'driver_id' => 'required|exists:drivers,id'
+        ]);
+
+        try {
+            $pickupRequest->update([
+                'driver_id' => $request->driver_id
+            ]);
+
+            Driver::where('id', $request->driver_id)
+                ->update(['availability_status' => 'busy']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Driver assigned successfully'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to assign driver: ' . $e->getMessage(), [
+                'exception' => $e,
+                'pickupRequest' => $pickupRequest->id,
+                'driver_id' => $request->driver_id
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to assign driver'
+            ], 500);
+        }
+    }
+
+    public function getAvailableDrivers()
+    {
+        $drivers = Driver::with('user')
+            ->whereIn('availability_status', ['available', 'busy'])
+            ->get();
+        
+        return response()->json($drivers);
+    }
+
+    public function assignDriver(Request $request, PickupRequest $pickupRequest)
+    {
+        $request->validate([
+            'driver_id' => 'required|exists:drivers,id'
+        ]);
+
+        try {
+            $pickupRequest->update([
+                'driver_id' => $request->driver_id
+            ]);
+
+            Driver::where('id', $request->driver_id)
+                ->update(['availability_status' => 'busy']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Driver assigned successfully'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to assign driver: ' . $e->getMessage(), [
+                'exception' => $e,
+                'pickupRequest' => $pickupRequest->id,
+                'driver_id' => $request->driver_id
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to assign driver'
+            ], 500);
+        }
     }
 
     public function getAvailableDrivers()
