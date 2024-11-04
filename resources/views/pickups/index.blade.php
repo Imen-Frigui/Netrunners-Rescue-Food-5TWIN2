@@ -1,4 +1,5 @@
-<x-layout bodyClass="g-sidenav-show  bg-gray-200">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<x-layout bodyClass="g-sidenav-show bg-gray-200">
     <x-navbars.sidebar activePage="pickup-management"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="PickUp Requests Management"></x-navbars.navs.auth>
@@ -130,7 +131,8 @@
                 font-size: 1rem;
                 vertical-align: middle;
             }
-
+        </style>
+        <style>
             .driver-card {
                 transition: transform 0.2s ease;
                 cursor: pointer;
@@ -260,97 +262,6 @@
                 setTimeout(() => {
                     messageArea.style.display = 'none';
                 }, 3000);
-            }
-        </script>
-        <style>
-            .driver-card {
-                cursor: pointer;
-                transition: transform 0.2s;
-            }
-
-            .driver-card:hover {
-                transform: scale(1.02);
-            }
-
-            .status-indicator {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                display: inline-block;
-                margin-right: 8px;
-            }
-
-            .status-available {
-                background-color: green;
-            }
-
-            .status-busy {
-                background-color: red;
-            }
-        </style>
-
-        <script>
-            let currentPickupId = null;
-
-            function openDriverModal(pickupId) {
-                console.log("clicked")
-                currentPickupId = pickupId;
-                fetch(`/api/available-drivers`)
-                    .then(response => response.json())
-                    .then(drivers => {
-                        const driversHtml = drivers.map(driver => `
-                 <div class="row mb-3">
-                    <div class="col-12">
-                        <div class="card driver-card ${driver.availability_status === 'available' ? 'available' : 'busy'} shadow-sm" 
-                             onclick="assignDriver(${driver.id}, ${pickupId})">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="card-title mb-0 d-flex align-items-center">
-                                        <span class="status-indicator ${driver.availability_status === 'available' ? 'status-available' : 'status-busy'} me-2"></span>
-                                        ${driver.user.name}
-                                    </h6>
-                                    <span class="badge ${driver.availability_status === 'available' ? 'bg-success' : 'bg-danger'}">
-                                        ${driver.availability_status}
-                                    </span>
-                                </div>
-                                <p class="card-text text-secondary mt-2 mb-0">
-                                    <i class="material-icons">phone</i> ${driver.phone_number}
-                                </p>
-                                <p class="card-text text-secondary mb-0">
-                                    <i class="material-icons">directions_car</i> ${driver.vehicle_type}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                        `).join('');
-
-                        document.getElementById('driversList').innerHTML = driversHtml;
-                        new bootstrap.Modal(document.getElementById('assignDriverModal')).show();
-                    });
-            }
-            function assignDriver(driverId, pickupId) {
-                 const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
-                 const csrfToken = csrfTokenMeta ? csrfTokenMeta.content : '';
-    console.log(driverId)
-    console.log(pickupId)
-                fetch(`/pickup/${pickupId}/assign-driver`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ driver_id: driverId })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            console.log(data)
-                            alert('Failed to assign driver. Please try again.');
-                        }
-                    });
             }
         </script>
     </main>

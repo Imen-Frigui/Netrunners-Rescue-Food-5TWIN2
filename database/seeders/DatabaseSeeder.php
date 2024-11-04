@@ -33,5 +33,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DriverSeeder::class);
         $this->call(BeneficiarySeeder::class);
         $this->call(DonationSeeder::class);
+        $this->call(BeneficiarySeeder::class);
+        $this->call(DonationSeeder::class);
+
     }
 }

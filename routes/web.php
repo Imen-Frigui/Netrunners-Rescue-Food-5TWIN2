@@ -6,9 +6,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\BeneficiaryController;
-
 use Illuminate\Http\Request;
-
 use App\Models\Food;
 use App\Models\Restaurant;
 use App\Http\Controllers\FoodController;
@@ -173,11 +171,39 @@ Route::get('driver-management', [DriverController::class, 'index'])->name('drive
 Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
 Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
 Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
+
 
 Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
+	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
+
+
+Route::get('driver-management', function () {
+	return view('drivers.index');
+})->name('driver-management');
+
+Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
+Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
+Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
+Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
+
+
+Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
+Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
+Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
+    ->name('pickup.assign-driver');
+	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
+Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
+
 # restaurant routes rami :
 Route::resource('restaurants', RestaurantController::class);
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
@@ -196,6 +222,8 @@ Route::get('/events/{event}', [EventController::class, 'show'])->name('events.sh
 
 # sponsors routes imen :
 Route::get('/sponsors/{sponsor}', [SponsorController::class, 'show'])->name('sponsors.show');
+
+
 
 // Donations routes Hanin :
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
@@ -267,10 +295,15 @@ Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocatio
 Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
 Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 
-// Route::resource('drivers', DriverController::class);
-// Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
-// Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-// Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
+Route::resource('drivers', DriverController::class); 
+Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
+Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
+Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
+
+Route::resource('drivers', DriverController::class); 
+Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
+Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
+Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
@@ -307,7 +340,6 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
-
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
