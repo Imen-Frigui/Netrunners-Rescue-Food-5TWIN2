@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Donation;
 use App\Models\Food;
 use Illuminate\Http\Request;
+use App\Models\Sponsor;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        $totalSponsorshipAmount = Sponsor::with('events')->get()->sum(function ($sponsor) {
+            return $sponsor->events->sum('pivot.sponsorship_amount');
+        });
+
+        $sponsorsCount = Sponsor::count();
+
         // Fetch donation counts grouped by status
         $donationCounts = Donation::selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
@@ -29,6 +36,6 @@ class DashboardController extends Controller
         $foodLabels = array_keys($foodCounts);
         $foodData = array_values($foodCounts);
 
-        return view('dashboard.index', compact('labels', 'data', 'foodLabels', 'foodData'));
+        return view('dashboard.index', compact('labels', 'data', 'foodLabels', 'foodData','totalSponsorshipAmount', 'sponsorsCount'));
     }
 }

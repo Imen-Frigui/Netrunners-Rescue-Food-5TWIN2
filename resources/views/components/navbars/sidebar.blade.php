@@ -79,6 +79,16 @@
                     <span class="nav-link-text ms-1">Events Management</span>
                 </a>
             </li>
+            <!-- Sponsors Management -->
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'sponsors' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('sponsors.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sponsors Management</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'restaurants' ? ' active bg-gradient-success' : '' }}"
                     href="{{ route('restaurants') }}">

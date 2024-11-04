@@ -131,7 +131,8 @@
                 font-size: 1rem;
                 vertical-align: middle;
             }
-
+        </style>
+        <style>
             .driver-card {
                 transition: transform 0.2s ease;
                 cursor: pointer;
