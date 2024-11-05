@@ -10,17 +10,20 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">{{ $report->charity->charity_name }} Report Details</h6>
+                       
                     </div>
                 </div>
                 
                 <div class="card">
-                    <div class="card-header pb-0 px-3">
-                        <h6 class="mb-0">Report Information</h6>
+                  <div class="card-header pb-0 px-3">
+                   <h6 class="mb-0">Report Information</h6> <a href="{{ route('reports.download', $report->id) }}" class="btn btn-info">
+                                    <i class="material-icons text-sm me-2">file_download</i> Download PDF
+                                </a> 
 
                         <div class="confirm-div">
-
+                     
                         <div class="modals-container">
-
+                       
                          <!-- Add Mark as Solved Button -->
                          <form action="{{ route('reports.solve', $report->id) }}" method="POST" style="display: inline;">
                                         @csrf

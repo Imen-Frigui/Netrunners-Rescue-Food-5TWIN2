@@ -193,6 +193,7 @@ Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('repo
 Route::get('/charities/{charity}/reports/create', [ReportController::class, 'create'])->name('charities.reports.create');
 Route::post('/reports/{id}/solve', [ReportController::class, 'markAsSolved'])->name('reports.solve');
 Route::patch('/reports/{id}/reject', [ReportController::class, 'markAsRejected'])->name('reports.reject');
+Route::get('/reports/{id}/download', [ReportController::class, 'downloadPdf'])->name('reports.download');
 
 
 #welcome page :

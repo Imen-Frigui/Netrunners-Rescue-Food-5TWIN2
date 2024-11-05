@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Report; // Import the Report model
 use App\Models\Charity;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -154,4 +154,21 @@ public function markAsRejected($id)
     // Redirect back to reports index with success message
     return redirect()->route('reports.index')->with('success', 'Report marked as rejected successfully.');
 }
+
+public function downloadPdf($id)
+{
+    // Find the report by ID and load related charity data
+    $report = Report::with('charity')->findOrFail($id);
+
+    // Generate HTML content from a Blade view (we'll create this next)
+    $html = view('reports.pdf', compact('report'))->render();
+
+    // Load the HTML content into DOMPDF
+    $pdf = Pdf::loadHTML($html);
+
+    // Stream the PDF as a downloadable file
+    return $pdf->download('report_' . $report->id . '.pdf');
+}
+
+
 }
