@@ -8,11 +8,15 @@ use App\Models\Food;
 use Illuminate\Http\Request;
 use App\Models\Sponsor;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        if ( in_array(Auth::user()->user_type , ['driver', 'user'])) {
+            return redirect('http://localhost:8000/front-office');
+        }
         // Fetch the counts of charities by type
         $charityTypeCounts = Charity::select('charity_type', DB::raw('count(*) as count'))
                                     ->groupBy('charity_type')
