@@ -43820,3 +43820,7 @@ div.trumbowyg-dropdown-table table td.active {
   width: 40px !important;
   white-space: nowrap;
 }
+.table-bordered tbody tr td,
+.table-bordered thead tr th {
+    border: 1px solid #dee2e6;
+}

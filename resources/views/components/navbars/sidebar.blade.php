@@ -19,16 +19,12 @@
 
     </div>
 
-
-    </div>
-
-
     <hr class="horizontal light mt-0 mb-2">
 
-    <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
 
-            <!-- Dashboard Route - Now on Top -->
+            <!-- Dashboard Route -->
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8"></h6>
             </li>
@@ -42,13 +38,10 @@
                 </a>
             </li>
 
-            <!-- Laravel Examples Section -->
+            <!-- User Profile Section -->
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">User Profile
-                    Section</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">User Profile Section</h6>
             </li>
-
-            <!-- User Profile Route -->
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'user-profile' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('user-profile') }}">
@@ -59,10 +52,24 @@
                 </a>
             </li>
 
-            <!-- Pages Section -->
+            @if(auth()->check())
+            @if(auth()->user()->user_type === "driver")
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Management Section
-                </h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Driver Section</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'assigned-pickups' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('my-pickups') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">My Assigned Pickup Requests</span>
+                </a>
+            </li>
+            @elseif(auth()->user()->user_type === "admin")
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Management Section</h6>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'events' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('events.index') }}">
@@ -70,6 +77,16 @@
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                     <span class="nav-link-text ms-1">Events Management</span>
+                </a>
+            </li>
+            <!-- Sponsors Management -->
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'sponsors' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('sponsors.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sponsors Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -81,7 +98,6 @@
                     <span class="nav-link-text ms-1">Restaurants Management</span>
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'charities' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('charities') }}">
@@ -101,6 +117,24 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'donation-management' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('donation-management.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-donate"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Donations Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'beneficiaries-management' ? ' active bg-gradient-info' : '' }}"
+                    href="{{ route('beneficiaries.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Beneficiaries Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'pickup-management' ? ' active bg-gradient-success' : '' }} "
                     href="{{ route('pickup-management') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -109,14 +143,31 @@
                     <span class="nav-link-text ms-1">PickUps Management</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'driver-management' ? ' active bg-gradient-success' : '' }} "
+                    href="{{ route('driver-management') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Drivers Management</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'reviews' ? ' active bg-gradient-success' : '' }}  "
-                    class="nav-link" href="{{ route('reviews') }}">
+                    href="{{ route('reviews') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-star"></i>
                     </div>
                     <span class="nav-link-text ms-1">Reviews Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'inventories' ? ' active bg-gradient-success' : '' }}  "
+                    href="{{ route('inventories.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Inventory Managment</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -128,91 +179,9 @@
                     <span class="nav-link-text ms-1">Users Management</span>
                 </a>
             </li>
-            </li>
-            <!-- Other existing pages -->
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'tables' ? ' active bg-gradient-primary' : '' }} "
-            href="{{ route('tables') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">Tables</span>
-            </a>
-            </li>
+            @endif
+            @endif
 
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'billing' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('billing') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">receipt_long</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Billing</span>
-                </a>
-            </li> --}}
-
-
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'virtual-reality' ? ' active bg-gradient-primary' : '' }} "
-            href="{{ route('virtual-reality') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
-            </a>
-            </li> --}}
-
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'rtl' ? ' active bg-gradient-primary' : '' }} "
-            href="{{ route('rtl') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
-            </div>
-            <span class="nav-link-text ms-1">RTL</span>
-            </a>
-            </li> --}}
-
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'notifications' ? ' active bg-gradient-primary' : '' }} "
-            href="{{ route('notifications') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">notifications</i>
-            </div>
-            <span class="nav-link-text ms-1">Notifications</span>
-            </a>
-            </li> --}}
-
-            <!-- Account Pages Section -->
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'profile' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('profile') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">person</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('static-sign-in') }}">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-            </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('static-sign-up') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">assignment</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sign Up</span>
-                </a>
-            </li> --}}
         </ul>
     </div>
 </aside>

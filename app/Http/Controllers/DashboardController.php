@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Charity;
+use App\Models\Donation;
+use App\Models\Food;
 use Illuminate\Http\Request;
+use App\Models\Sponsor;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         // Fetch the counts of charities by type
-        $charityTypeCounts = Charity::select('charity_type', \DB::raw('count(*) as count'))
+        $charityTypeCounts = Charity::select('charity_type', DB::raw('count(*) as count'))
                                     ->groupBy('charity_type')
                                     ->get();
 
@@ -30,6 +34,33 @@ class DashboardController extends Controller
         $charitiesLastWeek = Charity::where('created_at', '>=', now()->subWeek())->count(); // Count charities created in the last week
 
         // Pass the data to the dashboard view
-        return view('dashboard.index', compact('charityTypes', 'charityCounts', 'timeSinceAdded', 'totalCharities', 'charitiesLastWeek'));
+        
+        
+        $totalSponsorshipAmount = Sponsor::with('events')->get()->sum(function ($sponsor) {
+            return $sponsor->events->sum('pivot.sponsorship_amount');
+        });
+
+        $sponsorsCount = Sponsor::count();
+
+        // Fetch donation counts grouped by status
+        $donationCounts = Donation::selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')->all();
+
+        $labels = array_keys($donationCounts);
+        $data = array_values($donationCounts);
+
+
+        $foodCounts = Food::selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')->all();
+
+        $donationLabels = array_keys($donationCounts);
+        $donationData = array_values($donationCounts);
+
+        $foodLabels = array_keys($foodCounts);
+        $foodData = array_values($foodCounts);
+
+        return view('dashboard.index', compact('labels', 'data', 'foodLabels', 'foodData','totalSponsorshipAmount', 'sponsorsCount','charityTypes', 'charityCounts', 'timeSinceAdded', 'totalCharities', 'charitiesLastWeek'));
     }
 }

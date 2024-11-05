@@ -11,7 +11,8 @@ class Review extends Model
     protected $fillable = [
         'user_id',
         'comment',
-        'rating'
+        'rating',
+        'restaurant_id', 
     ];
 
     public function user(){
@@ -27,5 +28,12 @@ class Review extends Model
     public function event(){
         return $this->belongsTo(Event::class);
     }
+
+    public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+
 
 }

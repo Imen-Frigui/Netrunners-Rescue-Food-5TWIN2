@@ -32,6 +32,10 @@ class StoreEventRequest extends FormRequest
             'restaurant_id' => 'nullable|exists:restaurants,id',
             'charity_id' => 'nullable|exists:charities,id',
             'published_at' => 'nullable|date',
+            'sponsor_ids' => 'array',
+            'sponsor_ids.*' => 'exists:sponsors,id',
+            'sponsorship_amounts' => 'array',
+            'sponsorship_amounts.*' => 'nullable|numeric|min:0',
         ];
     }
 

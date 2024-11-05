@@ -76,7 +76,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ str_contains($activePage, 'reviews') ? 'active' : '' }}"
-                       href="{{ route('donations') }}">
+                       href="{{ route('myreviews') }}">
                        <i class="fas fa-star"></i>
                         <span>reviews</span>
                     </a>

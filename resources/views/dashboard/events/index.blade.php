@@ -15,26 +15,48 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header"><i class="fa fa-align-justify"></i> Events
-                            <a href="{{ route('events.create') }}" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0"><i
-                                    class="fa fa-plus"></i>&nbsp; New Event</a>
+                            <a href="{{ route('events.create') }}" role="button" class="btn btn-primary btn-spinner btn-sm pull-right m-b-0"><i class="fa fa-plus"></i>&nbsp; New Event</a>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="row justify-content-md-between">
-                                    <div class="col col-lg-7 col-xl-5 form-group">
-                                        <div class="input-group">
-                                            <input placeholder="Search" name="search" value="{{ request()->input('search') }}" class="form-control"> 
-                                            <span class="input-group-append">
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search</button>
-                                            </span>
+                            <form method="GET" action="{{ route('events.index') }}" class="mb-4">
+                                <div class="row align-items-center">
+                                    <!-- Search Field -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="search">Search</label>
+                                            <input type="text" name="search" id="search" placeholder="Search events" value="{{ old('search', $query) }}" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-sm-auto form-group"><select class="form-control">
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="100">100</option>
-                                    </select></div>
+        
+                                    <!-- Event Date Filter -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="event_date">Event Date</label>
+                                            <input type="date" name="event_date" id="event_date" value="{{ old('event_date', $eventDate) }}" class="form-control">
+                                        </div>
+                                    </div>
+        
+                                    <!-- Restaurant Filter -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="restaurant_id">Restaurant</label>
+                                            <select name="restaurant_id" id="restaurant_id" class="form-control">
+                                                <option value="">Select Restaurant</option>
+                                                @foreach($restaurants as $restaurant)
+                                                    <option value="{{ $restaurant->id }}" {{ $restaurant->id == old('restaurant_id', $restaurantId) ? 'selected' : '' }}>
+                                                        {{ $restaurant->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+        
+                                    <!-- Search Button -->
+                                    <div class="col-md-2 mb-1">
+                                        <div class="form-group mt-5">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             <div class="user-detail-tooltips-list col"></div>
@@ -89,7 +111,7 @@
                                                 <td style="font-size: .875rem;">{{ $event->event_date ? $event->event_date->format('Y-m-d H:i') : 'N/A' }}</td>
                                                 <td style="font-size: .875rem;">{{ $event->max_participants }}</td>
                                                 <td style="font-size: .875rem;">{{ $event->restaurant ? $event->restaurant->name : 'No Set' }}</td>
-                                                <td style="font-size: .875rem;">{{ $event->charity ? $event->charity->name : 'No Set' }}</td>
+                                                <td style="font-size: .875rem;">{{ $event->charity ? $event->charity->charity_name : 'No Set' }}</td>
                                                 <td>
                                                     <div class="row no-gutters">
                                                         <div class="col-auto"><a href="{{ route('events.edit', $event->id) }}"
