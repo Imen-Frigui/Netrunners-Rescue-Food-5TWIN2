@@ -11,7 +11,8 @@
                         <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                                <i class="fas fa-solid fa-hand-holding-heart"></i>                            </div>
+                                <i class="fas fa-solid fa-hand-holding-heart"></i>
+                            </div>
                             <div class="text-end pt-1">
                                 <p class="text-sm mb-0 text-capitalize">Total Charities</p>
                                 <h4 class="mb-0">{{ $totalCharities }}</h4>
@@ -19,23 +20,26 @@
                         </div>
                         <hr class="dark horizontal my-0">
                         <div class="card-footer p-3">
-                        <p class="mb-0"><span class="text-success text-sm font-weight-bolder"> {{ $charitiesLastWeek }}</span>  added in the past week.</p> <!-- Display charities added last week -->
+                            <p class="mb-0"><span class="text-success text-sm font-weight-bolder"> {{ $charitiesLastWeek }}</span> added in the past week.</p> <!-- Display charities added last week -->
 
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header p-3 pt-2">
                             <div
                                 class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                                 <i class="fas fa-hand-holding-usd"></i>
                             </div>
-                            <h5>Total Sponsorship Amount</h5>
-                            <p class="text-sm mb-0 text-capitalize">${{ number_format($totalSponsorshipAmount, 2) }}</p>
+                            <div class="text-end pt-1">
+                                <p class="text-sm mb-0 text-capitalize">Total Sponsorship Amount</p>
+                                <h4 class="mb-0">${{ number_format($totalSponsorshipAmount, 2) }}</h4>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <p>Total Number of Sponsors: {{ $sponsorsCount }}</p>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                            <p class="mb-0">Total Number of Sponsors: <span class="text-sm font-weight-bolder">{{ $sponsorsCount }}</span></p>
                         </div>
                     </div>
                 </div>
@@ -100,27 +104,27 @@
                     </div>
                 </div>
                 <!-- Charity Type Stats Card -->
-    <div class="col-lg-4 col-md-6 mt-4 mb-4">
-        <div class="card z-index-2">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
-                    <div class="chart">
-                        <!-- Canvas for the Charity Type Stats Chart -->
-                        <canvas id="chart-charity-types" class="chart-canvas" height="170"></canvas>
+                <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                    <div class="card z-index-2">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                            <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+                                <div class="chart">
+                                    <!-- Canvas for the Charity Type Stats Chart -->
+                                    <canvas id="chart-charity-types" class="chart-canvas" height="170"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="mb-0">Charity Types Distribution</h6>
+                            <p class="text-sm">A breakdown of the charities by type.</p>
+                            <hr class="dark horizontal">
+                            <div class="d-flex">
+                                <i class="material-icons text-sm my-auto me-1">schedule</i>
+                                <p class="mb-0 text-sm">Updated {{ $timeSinceAdded }}</p> <!-- This shows the last charity added time -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <h6 class="mb-0">Charity Types Distribution</h6>
-                <p class="text-sm">A breakdown of the charities by type.</p>
-                <hr class="dark horizontal">
-                <div class="d-flex">
-                    <i class="material-icons text-sm my-auto me-1">schedule</i>
-                    <p class="mb-0 text-sm">Updated {{ $timeSinceAdded }}</p> <!-- This shows the last charity added time -->
-                </div>
-            </div>
-        </div>
-    </div>
                 <div class="col-lg-4 mt-4 mb-3">
                     <div class="card z-index-2 ">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -514,52 +518,55 @@
         });
     </script>
 
-    
+
     <script>
-    // Get the charity types and counts from the controller (injected via Blade)
-    const charityTypes = @json($charityTypes);
-    const charityCounts = @json($charityCounts);
+        // const charityTypes = @json($charityTypes);
+        // const charityCounts = @json($charityCounts);
 
-
-
-    // Charity Type Stats Chart
-    var ctx = document.getElementById("chart-charity-types").getContext("2d");
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: charityTypes, // Charity types as labels
-            datasets: [{
-                label: "Charities",
-                data: charityCounts, // Charity counts as data
-                backgroundColor: "rgba(255, 255, 255, .8)",
-                maxBarThickness: 6
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
+        // Charity Type Stats Chart
+        var ctx = document.getElementById("chart-charity-types").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: charityTypes, // Charity types as labels
+                datasets: [{
+                    label: "Charities",
+                    data: charityCounts, // Charity counts as data
+                    backgroundColor: "rgba(255, 255, 255, .8)",
+                    maxBarThickness: 6
+                }],
             },
-            scales: {
-                y: {
-                    grid: {
-                        drawBorder: false,
-                        color: 'rgba(255, 255, 255, .2)'
-                    },
-                    ticks: {
-                        beginAtZero: true,
-                        color: "#fff"
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
                     }
                 },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#f8f9fa' }
-                }
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            color: 'rgba(255, 255, 255, .2)'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            color: "#fff"
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#f8f9fa'
+                        }
+                    }
+                },
             },
-        },
-    });
-    var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
+        });
+        var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
 
         new Chart(ctx3, {
             type: "line",
@@ -640,6 +647,6 @@
                 },
             },
         });
-</script>
+    </script>
     @endpush
 </x-layout>
