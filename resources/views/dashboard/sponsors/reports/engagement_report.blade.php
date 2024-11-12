@@ -1,9 +1,9 @@
-<div class="section">
-    <h2 class="text-primary">Engagement Report for {{ $sponsor->name }}</h2>
+<div class="section mt-5">
+    <h4 class="text-danger"><i class="fa fa-bar-chart"></i> Engagement Report for {{ $sponsor->name }}</h4>
     <p class="text-muted">Total Scans: <strong>{{ $totalScans }}</strong></p>
 
     <table class="table table-hover table-striped">
-        <thead class="table-dark">
+        <thead class="table-secondary">
             <tr>
                 <th>Event Name</th>
                 <th>Scan Count</th>
