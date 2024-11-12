@@ -20,6 +20,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\FrontOfficeController;
+use App\Http\Controllers\ReportController;
+
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SponsorController;
@@ -147,15 +149,19 @@ Route::get('driver-management', function () {
 })->name('driver-management');
 
 Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
-Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
-Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
-Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+// Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
+// Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
+// Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
 });
 
 
-Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
+// Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
@@ -167,37 +173,11 @@ Route::get('driver-management', function () {
 	return view('drivers.index');
 })->name('driver-management');
 
-Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
-Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
-Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
-Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
 });
 
 
-Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
-Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
-Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
-    ->name('pickup.assign-driver');
-	Route::post('/pickup/remove-driver/{pickupRequest}', [PickupRequestController::class, 'removeDriver'])->name('removeDriver');
-Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
-
-
-Route::get('driver-management', function () {
-	return view('drivers.index');
-})->name('driver-management');
-
-Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
-Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
-Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
-Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');
-});
-
-
-Route::post('/driver', action: [DriverController::class, 'store'])->name('drivers.store');
 Route::get('/api/available-drivers', [PickupRequestController::class, 'getAvailableDrivers']);
 Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::class, 'assignDriver'])
     ->name('pickup.assign-driver');
@@ -209,21 +189,18 @@ Route::resource('restaurants', RestaurantController::class);
 Route::get('restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('restaurants/create', [RestaurantController::class, 'create'])->name('restaurants.create');
 Route::post('restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
-Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
-Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
-Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
-Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
+// Route::get('restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
+// Route::get('restaurants/{id}/edit', [RestaurantController::class, 'edit'])->name('restaurants.edit');
+// Route::put('restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
+// Route::delete('restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.destroy');
 Route::get('restaurants/dashboard', [RestaurantController::class, 'dashboard'])->name('restaurants.dashboard');
 
 # events routes imen :
 Route::get('/events-rescue', [EventController::class, 'all'])->name('events.all');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 
-
 # sponsors routes imen :
 Route::get('/sponsors/{sponsor}', [SponsorController::class, 'show'])->name('sponsors.show');
-
-
 
 // Donations routes Hanin :
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');
@@ -290,23 +267,24 @@ Route::get('/frontcharities', [CharityController::class, 'frontindex'])->name('f
 Route::get('/frontdetails/{id}/details', [CharityController::class, 'frontdetails'])->name('charities.frontdetails');
 
 
-Route::resource('drivers', DriverController::class); 
+Route::resource('drivers', DriverController::class);
+Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
 Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
-
-Route::resource('drivers', DriverController::class); 
-Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
-Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
-
-Route::resource('drivers', DriverController::class); 
-Route::put('drivers/{driver}/location', [DriverController::class, 'updateLocation']);
-Route::put('drivers/{driver}/availability', [DriverController::class, 'updateAvailability']);
-Route::get('drivers/{driver}/deliveries', [DriverController::class, 'currentDeliveries']);
 Route::post('/pickup-request/{restaurant_id}/{food_id}', [PickupRequestController::class, 'quickAdd'])->name('pickup.quick-add');
 
 Route::get('/pickup-requests', [PickupRequestController::class, 'indexfront'])->name('pickup.requests');
+
+//Reports routes
+Route::resource('/reports', ReportController::class);
+// Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+Route::delete('/reports/{id}', [ReportController::class, 'destroy'])->name('reports.delete');
+Route::get('/charities/{charity}/reports/create', [ReportController::class, 'create'])->name('charities.reports.create');
+Route::post('/reports/{id}/solve', [ReportController::class, 'markAsSolved'])->name('reports.solve');
+Route::patch('/reports/{id}/reject', [ReportController::class, 'markAsRejected'])->name('reports.reject');
+Route::get('/reports/{id}/download', [ReportController::class, 'downloadPdf'])->name('reports.download');
+
+
 
 Route::resource('inventories', InventoryController::class);
 
@@ -335,12 +313,6 @@ Route::get('api/get-details', function (Request $request) {
 
 
 #welcome page :
-
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
-Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
-Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
-
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');

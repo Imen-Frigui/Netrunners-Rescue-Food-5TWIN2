@@ -29,10 +29,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ReviewSeeder::class);
         $this->call(PickupRequestSeeder::class);
         $this->call(CharitySeeder::class);
+        $this->call(ReportSeeder::class);
         $this->call(SponsorSeeder::class);
         $this->call(DriverSeeder::class);
-        $this->call(BeneficiarySeeder::class);
-        $this->call(DonationSeeder::class);
         $this->call(BeneficiarySeeder::class);
         $this->call(DonationSeeder::class);
 

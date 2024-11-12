@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['Individual', 'Organization', 'School', 'Hospital', 'Shelter', 'Community Center', 'Family']);
-            $table->foreignId('managed_by')->constrained('users')->onDelete('set null'); 
-            $table->enum('status', ['Active', 'Inactive'])->default('Active'); 
+            $table->unsignedBigInteger('managed_by')->nullable();
+            $table->foreign('managed_by')->references('id')->on('users')->onDelete('set null');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->text('needs')->nullable();
             $table->timestamps();
         });

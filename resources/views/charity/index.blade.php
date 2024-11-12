@@ -46,11 +46,17 @@
                             });
                         </script>
 
-                        <div class=" me-3 my-3 text-end">
+<div class="me-3 my-3 text-end">
                             <a class="btn bg-gradient-dark mb-0" href="{{ route('charities.create') }}"><i
                                     class="material-icons text-sm">add</i>&nbsp;&nbsp;Add New
                                 Charity</a>
+                        
+                        <a class="btn bg-gradient-danger mb-0 ms-2" href="{{ route('reports.index') }}">
+        <i class="material-icons text-sm">assignment</i>&nbsp;&nbsp;View Reports
+    </a>
                         </div>
+
+
                         <div class="card-body px-0 pb-2">
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
@@ -123,6 +129,25 @@
                         </div>
                     </div>
                 </div>
+
+                  <!-- Custom Pagination Links -->
+        <div class="d-flex justify-content-center mt-4">
+            @if ($charities->onFirstPage())
+                <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
+                    <button class="btn btn-light" disabled>Previous</button>
+                </span>
+            @else
+                <a href="{{ $charities->previousPageUrl() }}" rel="prev" class="btn btn-light">Previous</a>
+            @endif
+
+            @if ($charities->hasMorePages())
+                <a href="{{ $charities->nextPageUrl() }}" rel="next" class="btn btn-light">Next</a>
+            @else
+                <span class="disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
+                    <button class="btn btn-light" disabled>Next</button>
+                </span>
+            @endif
+        </div>
             </div>
             <x-footers.auth></x-footers.auth>
         </div>

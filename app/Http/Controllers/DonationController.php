@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DonationAddedNotification;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Donation;
 use App\Models\Food;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 use App\Models\Beneficiary;
 
@@ -44,7 +48,7 @@ class DonationController extends Controller
      */
     public function create()
     {
-        $foods = Food::all(); 
+        $foods = Food::all();
         $beneficiaries = Beneficiary::all();
         // Retrieve all available food items
         return view('donation2.create', compact('foods', 'beneficiaries'));
@@ -61,7 +65,7 @@ class DonationController extends Controller
         // Validation rules
         $request->validate([
             'food_id' => 'required|exists:food,id',
-            'beneficiary_id' => 'required|exists:beneficiaries,id', 
+            'beneficiary_id' => 'required|exists:beneficiaries,id',
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'donation_date' => 'required|date',
             'quantity' => 'required|integer|min:1|max:2000',
@@ -69,9 +73,17 @@ class DonationController extends Controller
             'remarks' => 'nullable|string',
         ]);
 
-        Donation::create($request->all());
+        // Donation::create($request->all());
+        $donation = Donation::create($request->all());
+        $users = User::all();
 
-        return redirect()->route('donation-management.index')->with('success', 'Donation created successfully.');
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new DonationAddedNotification($donation, $user));
+        }
+
+
+        return redirect()->route('donation-management.index')->with('success', 'Donation created successfully!, Notification emails have been sent to all users.');
+
     }
 
     /**
@@ -84,7 +96,7 @@ class DonationController extends Controller
     {
         try {
             $donation = Donation::with('food')->findOrFail($id);
-    
+
             // Prepare data to send to modal
             return response()->json([
                 'donor_type' => $donation->donor_type,
@@ -93,7 +105,7 @@ class DonationController extends Controller
                 'status' => $donation->status,
                 'donation_date' => $donation->donation_date,
                 'remarks' => $donation->remarks,
-                'beneficiary_name' => optional($donation->beneficiary)->name 
+                'beneficiary_name' => optional($donation->beneficiary)->name
 
             ]);
         } catch (\Exception $e) {
@@ -126,8 +138,8 @@ class DonationController extends Controller
     {
         // Validation rules
         $request->validate([
-            'food_id' => 'required|exists:food,id', 
-            'beneficiary_id' => 'required|exists:beneficiaries,id',             
+            'food_id' => 'required|exists:food,id',
+            'beneficiary_id' => 'required|exists:beneficiaries,id',
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'donation_date' => 'required|date',
             'quantity' => 'required|integer|min:1',
@@ -158,7 +170,7 @@ class DonationController extends Controller
 
     public function frontendCreate()
     {
-        $foods = Food::all(); 
+        $foods = Food::all();
         $beneficiaries = Beneficiary::all();
         return view('donations.create', compact('foods', 'beneficiaries'));
     }
@@ -174,7 +186,7 @@ class DonationController extends Controller
         // Validation rules
         $request->validate([
             'food_id' => 'required|exists:food,id',
-            'beneficiary_id' => 'required|exists:beneficiaries,id', 
+            'beneficiary_id' => 'required|exists:beneficiaries,id',
             'donor_type' => 'required|in:Restaurant,Individual,Charity',
             'quantity' => 'required|integer|min:1|max:2000',
             'remarks' => 'nullable|string',
@@ -182,15 +194,14 @@ class DonationController extends Controller
 
         Donation::create([
             'food_id' => $request->input('food_id'),
-            'beneficiary_id' => $request->input('beneficiary_id'), 
+            'beneficiary_id' => $request->input('beneficiary_id'),
             'donor_type' => $request->input('donor_type'),
             'quantity' => $request->input('quantity'),
             'remarks' => $request->input('remarks'),
-            'status' => 'Pending', 
+            'status' => 'Pending',
             'donation_date' => now(),
         ]);
 
         return redirect()->route('donations.create')->with('success', 'Thank you! Your donation has been submitted.');
     }
-    
 }

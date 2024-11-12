@@ -1,7 +1,8 @@
+<x-navbars.Navbar activePage='charities'></x-navbars.Navbar>
+
 <x-layout bodyClass="g-sidenav-show bg-gray-200">
-    <x-navbars.sidebar activePage="tables"></x-navbars.sidebar>
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-        <x-navbars.navs.auth titlePage="Add New Report"></x-navbars.navs.auth>
+<main class="main-content position-relative mt-7 max-height-vh-100 h-100 border-radius-lg">
+
         <div class="container-fluid py-4">
             <div class="card my-4">
                 @if ($errors->any())
@@ -54,11 +55,7 @@
                             @error('content') <span class="invalid-feedback">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="report_date" class="form-label">Report Date</label>
-                            <input type="date" class="form-control border border-2 p-2 @error('report_date') is-invalid @enderror" id="report_date" name="report_date" value="{{ old('report_date') }}" required>
-                            @error('report_date') <span class="invalid-feedback">{{ $message }}</span> @enderror
-                        </div>
+                      
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn bg-gradient-dark">Create Report</button>

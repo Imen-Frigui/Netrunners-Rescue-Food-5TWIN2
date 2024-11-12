@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Charity;
+use App\Models\Report;
+
 use Illuminate\Http\Request;
 
 class CharityController extends Controller
@@ -11,16 +13,19 @@ class CharityController extends Controller
 
     public function index()
 {
-    $charities = Charity::all();
+    $charities = Charity::paginate(4);
     return view('charity.index', compact('charities'))->with('activePage', 'charities');
 }
 
 
 public function frontindex()
 {
-    $charities = Charity::paginate(4); // Display 4 charities per page
+    // Eager load reports with each charity to avoid missing data
+    $charities = Charity::with('reports')->paginate(8);
     return view('charity.frontindex', compact('charities'))->with('activePage', 'frontindex');
 }
+
+
 
 
 
@@ -34,7 +39,7 @@ public function frontindex()
     public function showdetails($id)
     {
         // Find the charity by ID
-        $charity = Charity::findOrFail($id);
+        $charity = Charity::withCount('reports')->findOrFail($id);
     
         // Pass charity data to the view
         return view('charity.details', compact('charity'));
@@ -164,4 +169,25 @@ public function destroy($id)
 
         return view('charities.index', compact('charities'));
     }
+
+    public function charityStats()
+    {
+        // Fetch and count charities by type
+        $charityTypeCounts = Charity::select('charity_type', \DB::raw('count(*) as count'))
+                                    ->groupBy('charity_type')
+                                    ->get();
+    
+        // Prepare data for the chart
+        $charityTypes = $charityTypeCounts->pluck('charity_type');
+        $charityCounts = $charityTypeCounts->pluck('count');
+    
+        return view('dashboard.index', compact('charityTypes', 'charityCounts'));
+    }
+    public function showAllReports()
+{
+    $reports = Report::all(); // Or however you get the list of reports
+    return view('reports.all', compact('reports'));
+}
+
+
 }
