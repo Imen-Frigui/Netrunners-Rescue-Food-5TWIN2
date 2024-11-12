@@ -93,7 +93,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('sponsors', SponsorController::class);
 	Route::get('sponsors/{sponsor}/export/pdf', [SponsorController::class, 'exportPdf'])->name('sponsors.export.pdf');
 	Route::get('sponsors/{sponsor}/export/csv', [SponsorController::class, 'exportCsv'])->name('sponsors.export.csv');
-
+	Route::get('sponsors/{sponsor}/invoice', [SponsorController::class, 'generateInvoice'])->name('sponsors.invoice');
+	Route::get('sponsors/{sponsor}/report', [SponsorController::class, 'report'])->name('sponsors.report');
 	
 	// Route for listing charities (index)
 	Route::get('charities', [CharityController::class, 'index'])->name('charities');
@@ -201,6 +202,9 @@ Route::get('/events/{event}', [EventController::class, 'show'])->name('events.sh
 
 # sponsors routes imen :
 Route::get('/sponsors/{sponsor}', [SponsorController::class, 'show'])->name('sponsors.show');
+Route::get('sponsors/{sponsor}/scan/{eventId?}', [SponsorController::class, 'trackScan'])->name('sponsors.scan');
+Route::get('sponsors/{sponsor}/qr-code/{eventId}', [SponsorController::class, 'generateQrCode'])->name('sponsors.qr_code');
+
 
 // Donations routes Hanin :
 Route::get('/donations', [FoodController::class, 'donations'])->name('donations');

@@ -20594,3 +20594,10 @@ div.trumbowyg-dropdown-table table td.active {
     display:none
   }
 }
+/* Prevent text color change on button click */
+.btn:focus, .btn:active {
+  color: inherit !important;
+  background-color: inherit !important;
+  outline: none;
+  box-shadow: none;
+}

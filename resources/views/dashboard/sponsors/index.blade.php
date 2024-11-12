@@ -33,6 +33,7 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Company</th>
+                                <th>Total Sponsorship</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -44,6 +45,7 @@
                                     <td>{{ $sponsor->email }}</td>
                                     <td>{{ $sponsor->phone }}</td>
                                     <td>{{ $sponsor->company }}</td>
+                                    <td>${{ number_format($sponsor->total_sponsorship_amount, 2) }}</td>
                                     <td>
                                         <a href="{{ route('sponsors.edit', $sponsor->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
                                         <form action="{{ route('sponsors.destroy', $sponsor->id) }}" method="POST" style="display:inline-block;">
@@ -51,6 +53,12 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Delete</button>
                                         </form>
+                                        <a href="{{ route('sponsors.invoice', $sponsor->id) }}" class="btn btn-info btn-sm">
+                                            <i class="fa fa-download"></i> Invoice
+                                        </a>
+                                        <a href="{{ route('sponsors.report', $sponsor->id) }}" class="btn btn-secondary btn-sm">
+                                            <i class="fa fa-chart-bar"></i> View Report
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
