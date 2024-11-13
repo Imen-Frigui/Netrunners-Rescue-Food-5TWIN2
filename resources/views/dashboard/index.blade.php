@@ -520,8 +520,8 @@
 
 
     <script>
-        // const charityTypes = @json($charityTypes);
-        // const charityCounts = @json($charityCounts);
+        const charityTypes = @json($charityTypes);
+        const charityCounts = @json($charityCounts);
 
         // Charity Type Stats Chart
         var ctx = document.getElementById("chart-charity-types").getContext("2d");
