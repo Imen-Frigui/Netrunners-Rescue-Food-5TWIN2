@@ -39,10 +39,16 @@
                                 <ul class="list-group list-group-flush">
                                     @foreach($sponsor->events as $event)
                                         <li class="list-group-item">
+                                            <div class="row">
                                             <a href="{{ route('events.show', $event->id) }}" class="text-decoration-none">
                                                 {{ $event->name }} - ${{ $event->pivot->sponsorship_amount }}
                                             </a>
+                                            <a href="{{ route('sponsors.qr_code', ['sponsor' => $sponsor->id, 'eventId' => $event->id]) }}" class="btn btn-info btn-sm">
+                                                <i class="fa fa-qrcode"></i> Generate QR Code for {{ $event->name }}
+                                            </a>
+                                            </div>
                                         </li>
+                                        
                                     @endforeach
                                 </ul>
                             </div>

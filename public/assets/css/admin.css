@@ -43824,3 +43824,10 @@ div.trumbowyg-dropdown-table table td.active {
 .table-bordered thead tr th {
     border: 1px solid #dee2e6;
 }
+/* Prevent text color change on button click */
+.btn:focus, .btn:active {
+    color: inherit !important;
+    background-color: inherit !important;
+    outline: none;
+    box-shadow: none;
+}

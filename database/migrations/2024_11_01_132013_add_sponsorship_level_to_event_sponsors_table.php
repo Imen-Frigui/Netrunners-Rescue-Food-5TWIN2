@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('event_sponsors', function (Blueprint $table) {
+        Schema::table('event_sponsor', function (Blueprint $table) {
             $table->string('sponsorship_level')->nullable()->after('sponsor_id');
-            $table->decimal('sponsorship_amount', 10, 2)->nullable()->after('sponsorship_level');
+            // $table->decimal('sponsorship_amount', 10, 2)->nullable()->after('sponsorship_level');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('event_sponsors', function (Blueprint $table) {
+        Schema::table('event_sponsor', function (Blueprint $table) {
             $table->dropColumn('sponsorship_level');
             $table->dropColumn('sponsorship_amount');
         });

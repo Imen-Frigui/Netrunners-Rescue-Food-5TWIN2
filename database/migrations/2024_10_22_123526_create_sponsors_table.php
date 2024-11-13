@@ -21,10 +21,12 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->timestamps();
         });
-        Schema::create('event_sponsors', function (Blueprint $table) {
+        Schema::create('event_sponsor', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sponsor_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('sponsor_id')->constrained('sponsors')->onDelete('cascade');
+            $table->decimal('sponsorship_amount', 10, 2)->default(0);
+            $table->timestamp('invoice_date')->nullable();
             $table->timestamps();
         });
     }
@@ -36,7 +38,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_sponsors');
+        Schema::dropIfExists('event_sponsor');
         Schema::dropIfExists('sponsors');
     }
 };
