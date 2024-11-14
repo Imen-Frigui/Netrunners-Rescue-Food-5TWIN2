@@ -40,15 +40,15 @@
                                     @foreach($sponsor->events as $event)
                                         <li class="list-group-item">
                                             <div class="row">
-                                            <a href="{{ route('events.show', $event->id) }}" class="text-decoration-none">
-                                                {{ $event->name }} - ${{ $event->pivot->sponsorship_amount }}
-                                            </a>
-                                            <a href="{{ route('sponsors.qr_code', ['sponsor' => $sponsor->id, 'eventId' => $event->id]) }}" class="btn btn-info btn-sm">
-                                                <i class="fa fa-qrcode"></i> Generate QR Code for {{ $event->name }}
-                                            </a>
+                                                <a href="{{ route('events.show', $event->id) }}" class="text-decoration-none">
+                                                    {{ $event->name }} - ${{ $event->pivot->sponsorship_amount }}
+                                                </a>
+                                                <!-- Trigger modal for QR code -->
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#qrCodeModal-{{ $event->id }}">
+                                                    <i class="fa fa-qrcode"></i> Generate QR Code
+                                                </button>
                                             </div>
                                         </li>
-                                        
                                     @endforeach
                                 </ul>
                             </div>
@@ -59,4 +59,22 @@
             <x-footers.guest></x-footers.guest>
         </div>
     </main>
+
+    <!-- QR Code Modal -->
+    @foreach($sponsor->events as $event)
+    <div class="modal fade" id="qrCodeModal-{{ $event->id }}" tabindex="-1" aria-labelledby="qrCodeModalLabel-{{ $event->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrCodeModalLabel-{{ $event->id }}">QR Code for {{ $event->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {!! QrCode::size(200)->generate(route('sponsors.scan', ['sponsor' => $sponsor->id, 'eventId' => $event->id])) !!}
+                    <p>Scan this QR code to visit the sponsor's event page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 </x-layout>
