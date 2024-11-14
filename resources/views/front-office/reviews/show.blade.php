@@ -1,7 +1,9 @@
-<x-layout bodyClass="g-sidenav-show bg-gray-200">
-    <x-navbars.sidebar activePage="reviews"></x-navbars.sidebar>
+@extends('components.front-office')
 
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+@section('content')
+<x-navbars.Navbar activePage='reviews'></x-navbars.Navbar>
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="Review Details"></x-navbars.navs.auth>
 
         <div class="container-fluid py-4">
@@ -22,9 +24,9 @@
                         @endfor
                     </p>
 
-                    <a href="{{ route('reviews') }}" class="btn btn-secondary">Back to Reviews</a>
-                    <a href="{{ route('reviews.edit', $review->id) }}" class="btn btn-primary">Edit Review</a>
-                </div>
+                    <a href="{{ route('myreviews') }}" class="btn btn-secondary">Back to Reviews</a>
+                    <a href="{{ route('myreviewedit', $review->id) }}" class="btn btn-sm btn-warning">Edit Review</a> 
+                    </div>
             </div>
 
             <div class="card p-3 mb-4">
@@ -51,7 +53,7 @@
                     <!-- Edit and Delete Buttons (only visible to comment owner) -->
                     @if(Auth::id() === $comment->user_id)
                         <div>
-                            <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="{{ route('editfront', $comment->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
@@ -96,5 +98,6 @@
 
         <x-footers.auth></x-footers.auth>
     </main>
-    <x-plugins></x-plugins>
-</x-layout>
+
+
+@endsection
