@@ -1,99 +1,166 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<x-layout bodyClass="g-sidenav-show bg-gray-200">
+<x-layout bodyClass="g-sidenav-show bg-gray-100">
     <x-navbars.sidebar activePage="pickup-management"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="PickUp Requests Management"></x-navbars.navs.auth>
 
         <div class="container-fluid py-4">
             @if(session('success'))
-                <div class="alert alert-success" style="color: white;">
-                    {{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span class="alert-icon"><i class="material-icons">check_circle</i></span>
+                    <span class="alert-text">{{ session('success') }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             @endif
-            <div id="messageArea" class="alert alert-success" style="display: none; color: white;"></div>
-            <div class="row align-items-center mb-3">
-                <div class="col-md-8">
-                    <form action="{{ route('pickup-management') }}" method="GET" class="row g-3">
-                        <div class="col-md-5">
-                            <div class="input-group">
-                                <span class="input-group-text bg-primary text-white">
-                                    <i class="material-icons">search</i>
-                                </span>
-                                <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ request('search') }}">
-                            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form action="{{ route('pickup-management') }}" method="GET"
+                                class="row g-3 align-items-center">
+                                <div class="col-md-4">
+                                    <div class="input-group input-group-dynamic">
+                                        <span class="input-group-text bg-gradient-primary text-white">
+                                            <i class="material-icons">search</i>
+                                        </span>
+                                        <input type="text" name="search" class="form-control ps-3"
+                                            placeholder="Search by customer or location..."
+                                            value="{{ request('search') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="status" class="form-select border ps-3">
+                                        <option value="">All Status</option>
+                                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>
+                                            Approved</option>
+                                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                                            Pending</option>
+                                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
+                                            Rejected</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn bg-gradient-info w-100 mb-0">
+                                        <i class="material-icons me-2">filter_list</i> Filter
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <a href="{{ route('pickup.create') }}" class="btn bg-gradient-success w-100 mb-0">
+                                        <i class="material-icons me-2">add</i> New Request
+                                    </a>
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-md-4">
-                            <select name="status" id="status" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="material-icons">filter_list</i> Filter
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <a class="btn btn-success" href="{{ route('pickup.create') }}">
-                        <i class="material-icons">add</i> New Pickup Request
-                    </a>
+                    </div>
                 </div>
             </div>
 
+            <!-- Pickup Requests Grid -->
             <div class="row">
                 @foreach($pickupRequests as $request)
                     <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm h-100 driver-card">
-                            <div class="card-header bg-gradient-success text-white">
-                                <h6 class="text-white mb-0">Pickup #{{ $request->id }}</h6>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Customer:</strong> {{ $request->user->name }}</p>
-                                <p><strong>Location:</strong> {{ $request->pickup_address }}</p>
-                                <p><strong>Date:</strong> {{ $request->pickup_time }}</p>
-                                <p><strong>Created:</strong> {{ $request->created_at->format('d/m/Y') }}</p>
-                                <div class="d-flex align-items-center">
-                                    <span class="status-indicator {{ $request->status == 'approved' ? 'status-available' : ($request->status == 'pending' ? 'status-busy' : 'status-rejected') }}"></span>
-                                    <span class="text-secondary">{{ ucfirst($request->status) }}</span>
-                                </div>
-                                <div class="mt-3 d-flex justify-content-between">
-                                    <a href="{{ route('pickup.edit', $request->id) }}" class="btn btn-outline-warning btn-sm">
-                                        <i class="material-icons">edit</i> Edit
-                                    </a>
-                                    <div>
-                                        @if($request->status === 'pending')
-                                            <a href="{{ route('pickup.accept', $request->id) }}" class="text-success me-2" title="Accept">
-                                                <i class="material-icons">check_circle</i>
-                                            </a>
-                                            <a href="{{ route('pickup.reject', $request->id) }}" class="text-danger" title="Reject">
-                                                <i class="material-icons">cancel</i>
-                                            </a>
-                                        @endif
+                        <div class="card shadow-lg pickup-card h-100">
+                            <div
+                                class="card-header p-3 bg-gradient-{{ $request->status == 'approved' ? 'success' : ($request->status == 'pending' ? 'warning' : 'danger') }}">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <h6 class="text-white mb-0">Pickup #{{ $request->id }}</h6>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <span class="badge bg-light text-dark">
+                                            {{ ucfirst($request->status) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <div class="text-center">
-                                    @if($request->driver)
+                            <div class="card-body p-3">
+                                <div class="timeline timeline-one-side">
+                                    <div class="timeline-block mb-3">
+                                        <span class="timeline-step bg-primary">
+                                            <i class="material-icons text-white">person</i>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <h6 class="text-dark mb-0">{{ $request->user->name }}</h6>
+                                            <p class="text-secondary font-weight-normal text-sm">Customer</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="timeline-block mb-3">
+                                        <span class="timeline-step bg-success">
+                                            <i class="material-icons text-white">location_on</i>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <h6 class="text-dark mb-0">Pickup Location</h6>
+                                            <p class="text-secondary font-weight-normal text-sm">
+                                                {{ $request->pickup_address }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="timeline-block">
+                                        <span class="timeline-step bg-info">
+                                            <i class="material-icons text-white">schedule</i>
+                                        </span>
+                                        <div class="timeline-content">
+                                            <h6 class="text-dark mb-0">Pickup Time</h6>
+                                            <p class="text-secondary font-weight-normal text-sm">{{ $request->pickup_time }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Actions Section -->
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <a href="{{ route('pickup.edit', $request->id) }}" class="btn btn-outline-info btn-sm">
+                                        <i class="material-icons">edit</i> Edit
+                                    </a>
+                                    @if($request->status === 'pending')
                                         <div>
-                                            <p><strong>Driver:</strong> {{ $request->driver->user->name }}</p>
-                                            <p><small>Phone: {{ $request->driver->user->phone }}</small></p>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeDriver({{ $request->id }})">
+                                            <button onclick="window.location.href='{{ route('pickup.accept', $request->id) }}'"
+                                                class="btn btn-success btn-sm me-2">
+                                                <i class="material-icons">check_circle</i>
+                                            </button>
+                                            <button onclick="window.location.href='{{ route('pickup.reject', $request->id) }}'"
+                                                class="btn btn-danger btn-sm">
+                                                <i class="material-icons">cancel</i>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Driver Section -->
+                            <div class="card-footer p-3 bg-light">
+                                @if($request->driver)
+                                    <div class="driver-info">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="material-icons text-primary me-2">local_shipping</i>
+                                            <h6 class="mb-0">Assigned Driver</h6>
+                                        </div>
+                                        <div class="ps-4">
+                                            <p class="mb-1"><strong>{{ $request->driver->user->name }}</strong></p>
+                                            <p class="text-sm mb-2">
+                                                <i class="material-icons text-sm me-1">phone</i>
+                                                {{ $request->driver->user->phone }}
+                                            </p>
+                                            <button class="btn btn-outline-danger btn-sm w-100"
+                                                onclick="removeDriver({{ $request->id }})">
                                                 <i class="material-icons">remove_circle</i> Remove Driver
                                             </button>
                                         </div>
-                                    @elseif($request->status === 'approved')
-                                        <button type="button" class="btn btn-success btn-sm" onclick="openDriverModal({{ $request->id }})">
-                                            <i class="material-icons">person_add</i> Assign Driver
-                                        </button>
-                                    @else
-                                        <span class="text-secondary">No driver assigned</span>
-                                    @endif
-                                </div>
+                                    </div>
+                                @elseif($request->status === 'approved')
+                                    <button class="btn bg-gradient-primary btn-sm w-100"
+                                        onclick="openDriverModal({{ $request->id }})">
+                                        <i class="material-icons me-2">person_add</i> Assign Driver
+                                    </button>
+                                @else
+                                    <p class="text-center text-secondary mb-0">No driver assigned</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -101,44 +168,81 @@
             </div>
         </div>
 
-        <div class="modal fade" id="assignDriverModal" tabindex="-1" aria-labelledby="assignDriverModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        <!-- Driver Assignment Modal -->
+        <div class="modal fade" id="assignDriverModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="assignDriverModalLabel">Assign Driver</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header bg-gradient-primary">
+                        <h5 class="modal-title text-white">Assign Driver</h5>
+                        <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row g-3" id="driversList">
-                        </div>
+                        <div class="row g-3" id="driversList"></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <style>
-            .input-group-text {
-                border: none;
+            .pickup-card {
+                transition: all 0.3s ease;
             }
 
-            .form-control,
-            .form-select,
-            .btn {
-                border-radius: 0.25rem;
+            .pickup-card:hover {
+                transform: translateY(-5px);
             }
 
-            .material-icons {
+            .timeline {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .timeline-block {
+                display: flex;
+                align-items: flex-start;
+            }
+
+            .timeline-step {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 15px;
+            }
+
+            .timeline-step i {
                 font-size: 1rem;
-                vertical-align: middle;
+            }
+
+            .timeline-content {
+                flex: 1;
+            }
+
+            .form-select {
+                height: 42px;
+            }
+
+            .input-group-text {
+                padding: 0.625rem 1rem;
             }
 
             .driver-card {
-                transition: transform 0.2s ease;
                 cursor: pointer;
+                transition: transform 0.2s ease;
+                border: 2px solid transparent;
             }
 
             .driver-card:hover {
-                transform: scale(1.03);
+                transform: translateY(-3px);
+                border-color: #4CAF50;
+            }
+
+            .driver-card.busy:hover {
+                border-color: #FFA726;
             }
 
             .status-indicator {
@@ -150,69 +254,63 @@
             }
 
             .status-available {
-                background-color: green;
+                background-color: #4CAF50;
             }
 
             .status-busy {
-                background-color: orange;
-            }
-
-            .status-rejected {
-                background-color: red;
+                background-color: #FFA726;
             }
         </style>
-
 
         <script>
             let currentPickupId = null;
 
+
             function openDriverModal(pickupId) {
-                console.log("clicked")
                 currentPickupId = pickupId;
                 fetch(`/api/available-drivers`)
                     .then(response => response.json())
                     .then(drivers => {
-                        console.log(drivers)
                         const driversHtml = drivers.map(driver => `
-                 <div class="row mb-3">
-                    <div class="col-12">
-                        <div class="card driver-card ${driver.availability_status === 'available' ? 'available' : 'busy'} shadow-sm" 
-                             onclick="assignDriver(${driver.id}, ${pickupId})">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="card-title mb-0 d-flex align-items-center">
-                                        <span class="status-indicator ${driver.availability_status === 'available' ? 'status-available' : 'status-busy'} me-2"></span>
-                                        ${driver.user.name}
-                                    </h6>
-                                    <span class="badge ${driver.availability_status === 'available' ? 'bg-success' : 'bg-danger'}">
-                                        ${driver.availability_status}
-                                    </span>
+                            <div class="col-md-6 mb-3">
+                                <div class="card driver-card ${driver.availability_status === 'available' ? '' : 'busy'}" 
+                                     onclick="assignDriver(${driver.id}, ${pickupId})">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <span class="status-indicator ${driver.availability_status === 'available' ? 'status-available' : 'status-busy'}"></span>
+                                                <h6 class="mb-0">${driver.user.name}</h6>
+                                            </div>
+                                            <span class="badge bg-${driver.availability_status === 'available' ? 'success' : 'warning'}">
+                                                ${driver.availability_status}
+                                            </span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-sm text-secondary mb-2">
+                                            <i class="material-icons me-2">phone</i>
+                                            ${driver.user.phone}
+                                        </div>
+                                        <div class="d-flex align-items-center text-sm text-secondary">
+                                            <i class="material-icons me-2">directions_car</i>
+                                            ${driver.vehicle_type}
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="card-text text-secondary mt-2 mb-0">
-                                    <i class="material-icons">phone</i> ${driver.user.phone}
-                                </p>
-                                <p class="card-text text-secondary mb-0">
-                                    <i class="material-icons">directions_car</i> ${driver.vehicle_type}
-                                </p>
                             </div>
-                        </div>
-                    </div>
-                </div>
                         `).join('');
 
                         document.getElementById('driversList').innerHTML = driversHtml;
                         new bootstrap.Modal(document.getElementById('assignDriverModal')).show();
                     });
             }
+
             function assignDriver(driverId, pickupId) {
                 const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
                 const csrfToken = csrfTokenMeta ? csrfTokenMeta.content : '';
-
                 fetch(`/pickup/${pickupId}/assign-driver`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
+                        'X-CSRF-TOKEN': csrfToken,
                     },
                     body: JSON.stringify({ driver_id: driverId })
                 })
@@ -224,47 +322,54 @@
                                 location.reload();
                             }, 1500);
                         } else {
-                            console.log(data)
                             alert('Failed to assign driver. Please try again.');
                         }
                     });
             }
-            function removeDriver(pickupRequestId) {
-                fetch(`/pickup/remove-driver/${pickupRequestId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showMessage('Driver removed successfully!');
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
-                        } else {
-                            alert(data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to remove driver');
-                    });
 
+            function removeDriver(pickupRequestId) {
+                if (confirm('Are you sure you want to remove the driver from this pickup request?')) {
+                    fetch(`/pickup/remove-driver/${pickupRequestId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showMessage('Driver removed successfully!');
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            } else {
+                                alert(data.message || 'Failed to remove driver');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Failed to remove driver');
+                        });
+                }
             }
             function showMessage(message) {
-                const messageArea = document.getElementById('messageArea');
-                messageArea.textContent = message;
-                messageArea.style.display = 'block';
+                const messageArea = document.createElement('div');
+                messageArea.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3';
+                messageArea.style.zIndex = '1050';
+                messageArea.innerHTML = `
+        <span class="alert-icon"><i class="material-icons">check_circle</i></span>
+        <span class="alert-text">${message}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    `;
+                document.body.appendChild(messageArea);
+
                 setTimeout(() => {
-                    messageArea.style.display = 'none';
+                    messageArea.remove();
                 }, 3000);
             }
         </script>
     </main>
-
-
-    </html>
 </x-layout>
