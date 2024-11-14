@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if ( in_array(Auth::user()->user_type , ['driver', 'user'])) {
+        if ( in_array(Auth::user()->user_type , ['user'])) {
             return redirect('http://localhost:8000/front-office');
         }
         // Fetch the counts of charities by type

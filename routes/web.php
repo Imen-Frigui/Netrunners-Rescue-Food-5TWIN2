@@ -149,7 +149,7 @@ Route::get('driver-management', function () {
 	return view('drivers.index');
 })->name('driver-management');
 
-Route::get('driver-management', [DriverController::class, 'index'])->name('driver-management');
+Route::get('driver-management', action: [DriverController::class, 'index'])->name('driver-management');
 // Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
 // Route::get('/driver/edit/{id}', [DriverController::class, 'edit'])->name('drivers.edit');
 // Route::put('/driver/{id}', [DriverController::class, 'update'])->name('drivers.update');
@@ -170,9 +170,7 @@ Route::post('/pickup/{pickupRequest}/assign-driver', [PickupRequestController::c
 Route::get('/pickup-locations/{id}', [PickupRequestController::class, 'getLocations']);
 
 
-Route::get('driver-management', function () {
-	return view('drivers.index');
-})->name('driver-management');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-pickups', [DriverController::class, 'myPickups'])->name('my-pickups');

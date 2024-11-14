@@ -17,8 +17,8 @@ class DriverController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Driver::with(['pickupRequests.food']);
 
+        $query = Driver::with(['pickupRequests.food']);
         if ($request->has('search') && $request->input('search') != '') {
             $searchTerm = $request->input('search');
             $query->whereHas('user', function ($q) use ($searchTerm) {
