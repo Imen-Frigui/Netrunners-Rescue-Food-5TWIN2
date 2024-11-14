@@ -17,7 +17,7 @@
                             </div>
                             <div class="card-body">
                             <div class="text-start mt-4 text" >
-                            Add a Review    <a href="{{ route('myreviewcreate') }}" 
+                            Add a Review    <a href="{{ route('myreviewcreateResto', ['restaurantId' => $restaurant->id]) }}" 
    class="btn-icon position-relative" 
    style="display: inline-flex; align-items: center; justify-content: center; 
           width: 50px; height: 50px; border-radius: 50%; background-color: #f39c12; 
