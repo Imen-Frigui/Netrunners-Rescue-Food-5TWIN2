@@ -151,10 +151,34 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
     }
 
 
-    public function indexFront ()
+    public function indexFront (Request $request)
     {
-        $reviews = Review::where('user_id', auth()->id())->get();
-    return view('front-office.reviews.index', compact('reviews'));
+
+        $rating = $request->input('rating');
+        $search = $request->input('search');
+    
+        $reviews = Review::where('user_id', auth()->id()) // Assuming 'user_id' tracks the user's reviews
+            ->when($rating, function ($query) use ($rating) {
+                return $query->where('rating', $rating);
+            })
+            ->when($search, function ($query) use ($search) {
+                return $query->where('comment', 'like', '%' . $search . '%');
+            })
+            ->paginate(6);
+    
+            return view('front-office.reviews.index', compact('reviews'));
+
+
+
+    }
+
+
+    public function showFront($id)
+    {
+        $review = Review::findOrFail($id);
+        $comments = $review->comments()->paginate(4); // Get paginated comments
+    
+        return view('front-office.reviews.show', compact('review', 'comments'));
     }
 
     public function updateFront(Request $request, $id)
@@ -166,7 +190,6 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
     
         $review = Review::find($id);
         if ($review) {
-            // Ensure user_id remains 1
             $validatedData['user_id'] =Auth::id();
     
             $review->update($validatedData);
@@ -190,6 +213,14 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
         }
     }
 
+
+    public function destroyFront($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+return redirect()->route('myreviews')->with('success', 'Review deleted successfully.');
+    }
+
     
 
     public function createFront()
@@ -210,6 +241,42 @@ return redirect()->route('reviews')->with('success', 'Review deleted successfull
             ]);
     
             return redirect()->route('myreviews')->with('success', 'Review created successfully.'); // Adjust redirection as needed
+        }
+
+
+
+
+        public function createFrontResto($restaurantId) 
+        {
+            // Fetch the restaurant by ID to ensure it exists
+            $restaurant = Restaurant::findOrFail($restaurantId); 
+
+            // Pass the restaurant to the view
+            return view('front-office.reviews.RestaurantReview', compact('restaurant'));
+        }
+
+        public function storeFrontResto(Request $request ,$restaurantId) 
+        {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'comment' => 'required|string',
+                'rating' => 'required|integer|between:1,5',
+            ]);
+
+            // Ensure the restaurant exists
+            $restaurant = Restaurant::findOrFail($restaurantId);
+
+            // Create the review
+            $review = Review::create([
+                'user_id' => Auth::id(),
+                'restaurant_id' => $restaurant->id,
+                'comment' => $validatedData['comment'],
+                'rating' => $validatedData['rating'],
+            ]);
+
+            // Redirect to the showInventory page with a success message
+            return redirect()->route('restaurants.front.show', ['restaurant' => $restaurant])
+                             ->with('success', 'Review created successfully.');
         }
 
     

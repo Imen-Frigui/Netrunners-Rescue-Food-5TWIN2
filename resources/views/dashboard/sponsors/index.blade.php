@@ -3,6 +3,19 @@
     @section('styles')
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+
+        <style>
+            .btn:active,
+            .btn:focus,
+            .btn:hover,
+            .btn:visited {
+            color:#000000 !important;
+            box-shadow:none !important;
+            }
+            .btn.btn-sm i, .btn-group-sm > .btn i {
+            font-size: 1rem;
+            }
+        </style>
     @endsection
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <x-navbars.navs.auth titlePage="Sponsors Dashboard"></x-navbars.navs.auth>
@@ -57,7 +70,7 @@
                                             <i class="fa fa-download"></i> Invoice
                                         </a>
                                         <a href="{{ route('sponsors.report', $sponsor->id) }}" class="btn btn-secondary btn-sm">
-                                            <i class="fa fa-chart-bar"></i> View Report
+                                            <i class="fa fa-chart-bar" style="color: gray"></i> View Report
                                         </a>
                                     </td>
                                 </tr>

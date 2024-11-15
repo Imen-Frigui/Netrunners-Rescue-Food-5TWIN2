@@ -24,6 +24,9 @@ return new class extends Migration
             $table->integer('max_participants')->nullable();
             $table->foreignId('restaurant_id')->nullable()->onDelete('cascade');
             $table->foreignId('charity_id')->nullable()->onDelete('cascade');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

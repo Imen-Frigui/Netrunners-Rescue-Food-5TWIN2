@@ -255,15 +255,7 @@ Route::get('/contact', function () {
 Route::get('/restaurants', [RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/resturant-all', [RestaurantController::class, 'all'])->name('restaurants.all');
 Route::get('/front/restaurants/{restaurant}', [RestaurantController::class, 'showInventory'])->name('restaurants.front.show');
-// Reviews routes
-Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
 
-Route::get('/myreviews', [ReviewController::class, 'indexFront'])->name('myreviews');
-Route::get('/myreviewedit/{id}', [ReviewController::class, 'editFront'])->name('myreviewedit');
-
-Route::post('/updatemyreviews/{id}', [ReviewController::class, 'updateFront'])->name('updatemyreviews');
-Route::get('myreviews/create', [ReviewController::class, 'createFront'])->name('myreviewcreate');
-Route::post('myreviews', [ReviewController::class, 'storeFront'])->name('myreviewstore');
 
 
 Route::get('/charities', [CharityController::class, 'index'])->name('charities');
@@ -321,5 +313,21 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+Route::get('/mycomments/{id}/edit', [CommentController::class, 'editFront'])->name('editfront');
+Route::put('/mcomments/{id}', [CommentController::class, 'updateFront'])->name('updatefront');
 
 
+// Reviews routes
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews');
+
+Route::get('/myreviews', [ReviewController::class, 'indexFront'])->name('myreviews');
+Route::get('/myreviewedit/{id}', [ReviewController::class, 'editFront'])->name('myreviewedit');
+
+Route::post('/updatemyreviews/{id}', [ReviewController::class, 'updateFront'])->name('updatemyreviews');
+Route::get('myreviews/create', [ReviewController::class, 'createFront'])->name('myreviewcreate');
+Route::post('myreviews', [ReviewController::class, 'storeFront'])->name('myreviewstore');
+Route::delete('myreviews/{id}', [ReviewController::class, 'destroyFront'])->name('myreviewdelete');
+Route::get('/myreviews/{id}', [ReviewController::class, 'showFront'])->name('myreview');
+
+Route::get('myreviews/createResto/{restaurantId}', [ReviewController::class, 'createFrontResto'])->name('myreviewcreateResto');
+Route::post('myreviewsResto/{restaurantId}', [ReviewController::class, 'storeFrontResto'])->name('myreviewstoreResto');
