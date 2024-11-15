@@ -17,7 +17,6 @@ class Driver extends Model
         'availability_status',
         'current_location',
         'max_delivery_capacity',
-        'phone_number'
     ];
 
     protected $casts = [

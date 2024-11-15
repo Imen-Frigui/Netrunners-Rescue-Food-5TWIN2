@@ -43,11 +43,11 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="phone_number" class="form-label">Phone Number</label>
+                                        <label for="phone" class="form-label">Phone Number</label>
                                         <input type="text"
-                                            class="form-control @error('phone_number') is-invalid @enderror"
-                                            id="phone_number" name="phone_number" value="{{ old('phone_number', $driver->phone_number) }}" >
-                                        @error('phone_number')
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone" value="{{ old('phone', $driver->user->phone) }}" >
+                                        @error('phone')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

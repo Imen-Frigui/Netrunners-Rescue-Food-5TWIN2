@@ -56,7 +56,7 @@ class DriverController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:8',
             'vehicle_type' => 'required|string|max:255',
             'vehicle_plate_number' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
@@ -67,8 +67,8 @@ class DriverController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
-            'password' => 'secret', 
-            "user_type"=>"driver"
+            'password' => 'secret',
+            "user_type" => "driver"
         ]);
 
         Driver::create([
@@ -116,21 +116,46 @@ class DriverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $driver = Driver::findOrFail($id);
+        $driver = Driver::with('user')->findOrFail($id);
+        $user = $driver->user;
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'phone_number' => 'required|string|max:15',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'sometimes|string|max:8',
             'vehicle_type' => 'required|string|max:255',
             'vehicle_plate_number' => 'required|string|max:255',
             'license_number' => 'required|string|max:255',
             'availability_status' => 'required|in:available,busy,offline',
+            'max_delivery_capacity' => 'sometimes|numeric',
         ]);
 
-        $driver->update($validatedData);
+        try {
+            $user->update([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'] ?? $user->phone
+            ]);
 
-        return redirect()->route('driver-management')->with('success', 'Driver profile updated successfully.');
+            $driver->update([
+                'vehicle_type' => $validatedData['vehicle_type'],
+                'vehicle_plate_number' => $validatedData['vehicle_plate_number'],
+                'license_number' => $validatedData['license_number'],
+                'availability_status' => $validatedData['availability_status'],
+                'max_delivery_capacity' => $validatedData['max_delivery_capacity'] ?? $driver->max_delivery_capacity,
+                // 'phone_number' => $validatedData['phone_number'] ?? $driver->user->phone
+            ]);
+
+            return redirect()
+                ->route('driver-management')
+                ->with('success', 'Driver profile updated successfully.');
+
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to update driver profile. ' . $e->getMessage());
+        }
     }
 
     /**
@@ -138,17 +163,29 @@ class DriverController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+     */public function destroy(Driver $driver)
+{
+    try {
+        $user = $driver->user;
+        $driver->delete();
+        $user->delete();
+        
+        return redirect()
+            ->route('driver-management')
+            ->with('success', 'Driver deleted successfully.');
+            
+    } catch (\Exception $e) {
+        return redirect()
+            ->back()
+            ->with('error', 'Failed to delete driver. ' . $e->getMessage());
     }
+}
 
     public function myPickups(Request $request)
     {
         $user = auth()->user();
         $driver = Driver::where('user_id', $user->id)->first();
-        
+
         if (!$driver) {
             return redirect()->route('driver-management')->with('error', 'Driver not found.');
         }

@@ -148,6 +148,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('driver-management', function () {
 	return view('drivers.index');
 })->name('driver-management');
+Route::delete('/drivers/{driver}', [DriverController::class, 'destroy'])->name('drivers.destroy');
+
 
 Route::get('driver-management', action: [DriverController::class, 'index'])->name('driver-management');
 // Route::get('/driver/create', [DriverController::class, 'create'])->name('drivers.create');
